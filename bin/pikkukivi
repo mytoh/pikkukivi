@@ -1,0 +1,15 @@
+#!/usr/bin/env gosh
+;; -*- coding: utf-8 -*-
+
+;;  example usage in shell's rc:
+; alias pk='gosh run-pikkukivi'
+; alias rm='pk rm'
+
+(use pikkukivi.bin-runner)
+
+
+(define (main args)
+  (bin-runner (cdr args)))
+
+
+;; vim: ft=scheme
