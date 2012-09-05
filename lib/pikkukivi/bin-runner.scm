@@ -25,6 +25,7 @@
     pikkukivi.piste
     pikkukivi.tmux-start
     pikkukivi.aliases
+    pikkukivi.kuva
     ))
 (select-module pikkukivi.bin-runner)
 
