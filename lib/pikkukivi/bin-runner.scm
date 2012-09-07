@@ -1,5 +1,4 @@
 
-
 (define-module pikkukivi.bin-runner
   (use gauche.process)
   (use file.util)
@@ -9,26 +8,8 @@
   (use kirjasto.työkalu)
   (export bin-runner)
   (extend
-    pikkukivi.talikko
-    pikkukivi.unpack
-    pikkukivi.repl
-    pikkukivi.ls
-    pikkukivi.rm
-    pikkukivi.emma
-    pikkukivi.colour
-    pikkukivi.topless
-    pikkukivi.ascii-taide
-    pikkukivi.verkko
-    pikkukivi.scm
-    pikkukivi.launch-app
-    pikkukivi.print-path
-    pikkukivi.piste
-    pikkukivi.tmux-start
-    pikkukivi.aliases
-    pikkukivi.kuva
-    ))
+    pikkukivi.commands))
 (select-module pikkukivi.bin-runner)
-
 
 
 (define (run-alias command args)

@@ -18,6 +18,7 @@ alias l='pk ls -d'
 alias pahvi='pk pahvi'
 alias futaba='pk futaba'
 alias yotsuba='pk yotsuba'
+alias kuva='pk kuva'
 
 alias buk='pk buk'
 alias ningen-ng='buk ningen-ng'
