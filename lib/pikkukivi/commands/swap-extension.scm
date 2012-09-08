@@ -1,5 +1,4 @@
 
-
 (define-module pikkukivi.commands.swap-extension
   (export
     swap-extension)
@@ -23,3 +22,4 @@
            (print f)
            (move-file f (path-swap-extension f destext)))
          src-files)))))
+
