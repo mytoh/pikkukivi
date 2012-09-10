@@ -4,13 +4,20 @@
   (use file.util)
   (use util.match)
   (use util.list)
-  (use kirjasto.pääte)
-  (use kirjasto.työkalu)
+  (use pikkukivi.alias)
   (export bin-runner)
   (extend
     pikkukivi.commands))
 (select-module pikkukivi.bin-runner)
 
+
+(define (screen-title command)
+  (cond
+    ((equal?  (sys-basename (sys-getenv "SHELL"))
+              "tcsh")
+     (display (string-append "_" command "")))
+     (else
+       (display  string-append "k" command  "\\"))))
 
 (define (run-alias command args)
   (let* ((c (assoc-ref alias-list (string->symbol command)))
@@ -23,7 +30,7 @@
        (screen-title command)
        (cmd args))
       (else
-        ((eval-string command) args)))))
+        ((eval (read-from-string command) 'user) args)))))
 
 (define (bin-runner args)
   (run-alias (car args) (cdr args))
