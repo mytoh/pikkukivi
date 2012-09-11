@@ -12,10 +12,10 @@
 
 (define (new-session session window-name . command)
   (when (not (has-session? session))
-    (run-process `(tmux new-session -d -s ,session -n ,window-name ,@command) :wait #t)))
+    (run-process `(tmux -u2 new-session -d -s ,session -n ,window-name ,@command) :wait #t)))
 
 (define (new-window session window-name . command)
-  (run-process `(tmux new-window
+  (run-process `(tmux -u2 new-window
                       -d
                       -n ,window-name ,@command) :wait #t))
 
@@ -23,7 +23,7 @@
   (run-process `(tmux -u2 attach-session -t ,session) :wait #t))
 
 (define  (has-session? session)
-  (let* ((p (run-process `(tmux -q has-session -t ,session) :wait #t :output :null :error :null))
+  (let* ((p (run-process `(tmux -u2 -q has-session -t ,session) :wait #t :output :null :error :null))
          (status (process-exit-status p)))
     (if (zero? status)
       #t

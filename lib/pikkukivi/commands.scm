@@ -19,6 +19,7 @@
     pikkukivi.commands.kuva
     pikkukivi.commands.yes
     pikkukivi.commands.swap-extension
+    pikkukivi.commands.piip
 
     pikkukivi.commands.verkko
     pikkukivi.commands.scm
