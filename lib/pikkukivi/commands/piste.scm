@@ -37,6 +37,7 @@
     ".stumpwm.d"
     ".tcsh.d"
     ".tmux.d"
+    ".tmux.conf"
     ".xcolours"
     ".zsh.d"
     ".Xresources"
