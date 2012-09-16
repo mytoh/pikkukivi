@@ -17,292 +17,13 @@
   (use clojure))
 (select-module pikkukivi.commands.ls)
 
-(define *extension-colours*
-  (hash-table
-    'eq?
-    '(cmd  . 2)
-    '(exe  . 2)
-    '(com  . 2)
-    '(btm  . 2)
-    '(bat  . 2)
 
-    ; archives
-    '(tar  . 1)
-    '(tgz  . 1)
-    '(arj  . 1)
-    '(taz  . 1)
-    '(lzh  . 1)
-    '(zip  . 43)
-    '(rar  . 83)
-    '(txz  . 68)
-    '(xz   . 68)
-    '(cbz  . 111)
-    '(cbr  . 192)
-    '(z    . 1)
-    '(Z    . 1)
-    '(gz   . 1)
-    '(bz2  . 1)
-    '(bz   . 1)
-    '(tbz  . 1)
-    '(tbz2 . 1)
-    '(tz   . 1)
-    '(deb  . 1)
-    '(rpm  . 1)
-    '(ace  . 1)
-    '(zoo  . 1)
-    '(cpio . 1)
-    '(7z   . 1)
-    '(rz   . 1)
-    '(dmg   . 1)
-
-    ; images
-    '(jpg  . 5)
-    '(jpeg . 5)
-    '(gif  . 5)
-    '(bmp  . 5)
-    '(ppm  . 5)
-    '(tga  . 5)
-    '(xbm  . 5)
-    '(xpm  . 5)
-    '(tif  . 5)
-    '(tiff . 5)
-    '(png  . 5)
-    '(mng  . 5)
-    '(xcf  . 5)
-    '(pcx  . 5)
-    '(ico  . 5)
-    '(svg  . 5)
-
-    ; video
-    '(mpg  . 5)
-    '(mpeg . 5)
-    '(m2v  . 5)
-    '(avi  . 5)
-    '(mkv  . 5)
-    '(flv  . 5)
-    '(ts  . 5)
-    '(ogm  . 5)
-    '(mp4  . 5)
-    '(m4v  . 5)
-    '(mp4v . 5)
-    '(mov  . 5)
-    '(qt   . 5)
-    '(wmv  . 5)
-    '(asf  . 5)
-    '(rm   . 5)
-    '(rmvb . 5)
-
-    ; audio
-    '(mp3  . 6)
-    '(wav  . 6)
-    '(mid  . 6)
-    '(midi . 6)
-    '(au   . 6)
-    '(ogg  . 6)
-    '(flac . 6)
-    '(aac  . 6)
-
-    '(flc  . 5)
-    '(fli  . 5)
-    '(gl   . 5)
-    '(dl   . 5)
-    '(pdf  . 2)
-    '(ps   . 2)
-    '(ini  . 2)
-    '(patch . 2)
-    '(diff . 2)
-    '(log  . 2)
-    '(tex  . 2)
-    '(doc  . 2)
-
-    '; scheme
-    '(scm  . 72)
-    '(sch  . 72)
-    '(ss   . 72)
-    '(sls  . 72)
-    '(sps  . 72)
-    '(rkt  . 72)
-    ; list
-    '(el  . 162)
-    '(lisp  . 162)
-    '(cl  . 162)
-
-    ; langs
-    '(pl  . 72)
-    '(py  . 88)
-    '(pyc  . 38)
-    '(html . 38)
-    '(mht . 38)
-    '(xml . 38)
-    '(vim  . 70)
-    '(c  . 123)
-    '(stub . 123)
-    '(h  . 123)
-    '(hs  . 23)
-    '(java  . 93)
-    '(jnlp  . 93)
-
-    ;; text
-    '(md   . 40)
-    '(mkd   . 40)
-    '(markdown   . 40)
-    '(rst   . 49)
-    '(rest   . 49)
-    '(txt  . 2)
-    '(text  . 2)
-
-    ;; font
-    '(ttf . 71)
-    '(ttc . 71)
-    '(otf . 71)
-    '(bdf . 71)
-
-    ;; shell
-    '(sh   . 2)
-    '(csh  . 2)
-    '(zsh  . 2)
-    '(bash  . 2)
-    '(fish  . 2)
-    '(ksh  . 2)
-    '(mksh  . 2)
-
-
-    '(conf . 12)
-    '(rc   . 109)
-    '(man . 32)
-    '(core . 22)
-    '(d    . 1)
-    '(pro  . 3)
-    '(db   . 30)
-    '(swap   . 39)
-    '(in   . 139)
-    '(mk   . 103)
-    '(mak   . 103)
-    '(bin  . 99)
-    '(nds   . 103)
-    '(gba   . 103)
-    '(GBA   . 103)
-    '(air  . 49)
-    '(m4 . 23)
-    '(ac . 24)
-    '(spec . 28)
-    '(guess . 42)
-    '(gpd . 22)
-    '(sub . 72)
-    ))
-
-
-(define *normal-file-colours*
-  '(
-    ("README$" 33)
-    ("readme$" 33)
-    ("LICENSE$" 33)
-    ("NEWS$" 33)
-    ("HACKING$" 33)
-    ("Changelog$" 33)
-    ("AUTHORS$" 33)
-    ("COPYING$" 33)
-    ("DIST$" 33)
-    ("VERSION$" 33)
-    ("INSTALL$" 33)
-
-    ("Makefile" 103)
-
-    ("Rakefile" 133)
-    ("Gemfile" 133)
-    ))
-
-
-;;colorscheme trapd00r
-(define *trapd00r*
-  (vector
-    237
-    131
-    107
-    75
-    240
-    209
-    185
-    216
-    220
-    208
-    243
-    161
-    240
-    025
-    248
-    196))
-
-;colorscheme early
-(define *early*
-  (vector
-    233
-    245
-    250
-    201
-    239
-    209
-    185
-    216
-    244
-    254
-    243
-    241
-    240
-    239
-    237
-    220
-    ))
-
-
-(define *colours* *trapd00r*)
-
-;colorscheme normal
-(define *normal*
-  (vector
-    208
-    197
-    190
-    196
-    242
-    209
-    185
-    215
-    032
-    061
-    142
-    197
-    106
-    060
-    236
-    215
-    ))
-
-;;colorscheme greyscale
-; (define *colours*
-;   (vector
-;     252
-;     251
-;     250
-;     249
-;     239
-;     244
-;     240
-;     242
-;     244
-;     244
-;     243
-;     241
-;     240
-;     239
-;     236
-;     242
-;     ))
-;
-
-
-
-
+(load (build-path (home-directory) ".ls/config"))
+(define
+  *colours*
+  (with-input-from-file
+    (build-path (home-directory) ".ls/themes" *colour-theme*)
+    read))
 
 
 
@@ -365,7 +86,7 @@
                   *normal-file-colours*)))
     (cond
       ((null? colour)
-      (ls-make-colour 14 name ))
+      (ls-make-colour 14 name))
       (else
     (ls-make-colour (cadar colour) name)))))
 
@@ -476,9 +197,9 @@
     (cond
       ;; sec
       ((< delta 10)
-       (print-time-format 'sec 3 delta ))
+       (print-time-format 'sec 3 delta))
       ((< delta 60)
-       (print-time-format 'sec 3 delta ))
+       (print-time-format 'sec 3 delta))
       ;; min
       ((< delta  (* 2 60))
        (print-time-format 'min 15 delta))

@@ -19,7 +19,6 @@
   '(; normal repo
     "git://code.call-cc.org/chicken-core"
     "git://gitorious.org/cmus/cmus.git"
-    "git://a-chinaman.com/nuscsh"
     "git://git.sv.gnu.org/screen.git"
     "git://git.savannah.gnu.org/stow.git"
     "git://git.infradead.org/get_iplayer.git"
@@ -49,7 +48,6 @@
     (adamv         homebrew)
     (rossy2401     img2xterm)
     (Arrowmaster   mcomix)
-    (marcomaggi    nausicaa)
     (robbyrussell  oh-my-zsh)
     (pkgng         pkgng)
     (coderholic    pyradio)
@@ -100,12 +98,11 @@
     (valvallow      lifegame)
     (saironiq       shellscripts)
     (mason-larobina luakit)
-    (jwiegley        eshell)
     (robm           dzen)
     (jhawthorn     meh)
     (kahua         Kahua)
     (digego         extempore)
-    (calvis         cKanren)
+    (mytoh         cKanren)
     (tlatsas       xcolors)
     (Raynes       fs)
     (clojure      clojure-contrib)
@@ -120,7 +117,11 @@
     (cavalle        steak)
     (cldwalker        boson-more)
     (cldwalker        boson)
-    (webyrd        miniKanren)))
+    (webyrd        miniKanren)
+    (chujoii       battery-scheme)
+    (chujoii       xattr-tag)
+    (ghc ghc)
+    ))
 
 ;; update git repository
 (define (update-gitdir)

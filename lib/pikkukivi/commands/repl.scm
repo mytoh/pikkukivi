@@ -108,6 +108,7 @@
 ;; prompter
 (define prompter
   (lambda ()
+    (print (symbol->string (module-name (current-module))))
     (display (colour-string 33 "> "))
     (flush)))
 

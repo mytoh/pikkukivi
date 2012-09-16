@@ -7,67 +7,17 @@
   (use util.list) ; slices
   (use util.match)
   (use file.util)
+  (use srfi-1)
   (require-extension (srfi 1 13))    ; iota
   (use kirjasto.tiedosto)
   (use kirjasto.väri))
 (select-module pikkukivi.commands.piste)
 
 (define *srcdir* (expand-path "~/local/git/dotfiles"))
+(define piste-file (build-path (home-directory) ".pisterc"))
 (define *dotfiles*
-  '(
-    ".vim/after"
-    ".vim/config"
-    ".vim/snippets"
-    ".config/fish/config.fish"
-    ".config/fish/freebsd.fish"
-    ".config/fish/mac.fish"
-    ".config/fish/voi-minun-fish.fish"
-    ".config/fish/lib"
-    ".config/fish/plugins"
-    ".config/fish/themes"
-    ".config/feh/buttons"
-    ".config/feh/keys"
-    ".config/feh/themes"
-    ".mksh.d"
-    ".gosh"
-    ".aa"
-    ".dwm"
-    ".ncmpc"
-    ".site"
-    ".stumpwm.d"
-    ".tcsh.d"
-    ".tmux.d"
-    ".tmux.conf"
-    ".xcolours"
-    ".zsh.d"
-    ".Xresources"
-    ".xresources.d"
-    ".bash_profile"
-    ".bashrc"
-    ".complete.tcsh"
-    ".emacs-w3m"
-    ".gaucherc"
-    ".gtkrc.mine"
-    ".inputrc"
-    ".mkshrc"
-    ".mpdconf"
-    ".pentadactylrc"
-    ".portmasterrc"
-    ".qvwm-theme"
-    ".qvwmrc"
-    ".rcrc"
-    ".rtorrent.rc"
-    ".screenrc"
-    ".stumpwmrc"
-    ".tcshrc"
-    ".vimperatorrc"
-    ".vimrc"
-    ".vimshrc"
-    ".xinitrc"
-    ".xmodmaprc"
-    ".xmonad/xmonad.hs"
-    ".zshrc"
-    ))
+  (remove (^s (string=? "" s))
+          (file->string-list piste-file)))
 
 
 ;; util

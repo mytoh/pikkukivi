@@ -15,7 +15,6 @@
     pikkukivi.commands.print-path
     pikkukivi.commands.piste
     pikkukivi.commands.tmux-start
-    pikkukivi.commands.commands
     pikkukivi.commands.kuva
     pikkukivi.commands.yes
     pikkukivi.commands.swap-extension
@@ -23,5 +22,8 @@
 
     pikkukivi.commands.verkko
     pikkukivi.commands.scm
+
+    pikkukivi.commands.commands
+    pikkukivi.commands.help
     ))
 (select-module pikkukivi.commands)

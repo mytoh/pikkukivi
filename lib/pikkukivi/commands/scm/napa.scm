@@ -42,6 +42,8 @@
          (git-clone (cdr args)))
         ("st"
          (run-command `(git status)))
+        ("ps"
+         (run-command `(git push)))
         ((or "up" "pl")
          (run-command '(git pull)))
         ("create"
@@ -95,7 +97,7 @@
 
 (define (darcs args)
   (cond
-    ( (null? args)
+    ((null? args)
     (run-command '(darcs)))
     (else
       (match (car args)
