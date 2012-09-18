@@ -16,10 +16,10 @@
         (string-append
           "usage: panna <command> <package>\n"
           "\n"
-          (make-help "commands"  "; list available commands\n")
-          (make-help "help    "  "; display this message\n")
+          (desc "commands"  "; list available commands\n")
+          (desc "help    "  "; display this message\n")
           )))
 
-(define (make-help cmd mes)
+(define (desc cmd mes)
   (format #f "    ~@a ~@a" (colour-string 5 cmd) (colour-string 223 mes)))
 
