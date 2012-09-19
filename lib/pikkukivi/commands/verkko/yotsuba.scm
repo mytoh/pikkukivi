@@ -88,9 +88,9 @@
       (match (length got-images)
         (0 (newline))
         (1 (print " " (colour-string 49 (number->string (length got-images)))
-                  " new file"))
+                  " file"))
         (_ (print " " (colour-string 49 (number->string (length got-images)))
-                  " new files"))))))
+                  " files"))))))
 
 (define (get-html bd td)
   (let-values (((status headers body)
@@ -119,7 +119,7 @@
        (get-img html board)
        (cd ".."))
       (else
-        (display (colour-string 237 (str thread "'s gone")))
+        (display (colour-string 103 (str thread "'s gone")))
         (flush)
         (sys-select #f #f #f 100000)
         (display "\r")
