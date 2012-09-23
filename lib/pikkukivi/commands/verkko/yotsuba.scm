@@ -106,6 +106,12 @@
       (else
         (ces-convert body "*jp" "utf-8")))))
 
+(define (string->html-file thread body)
+  (with-output-to-file
+    (path-swap-extension thread "html")
+    (lambda () (display body)))
+  body)
+
 (define (yotsuba-get args)
   (let* ((board (car args))
          (thread (cadr args))
@@ -116,6 +122,7 @@
        (display (colour-string 4 thread))
        (mkdir thread)
        (cd thread)
+       (string->html-file thread html)
        (get-img html board)
        (cd ".."))
       (else
