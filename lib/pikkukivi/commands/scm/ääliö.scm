@@ -30,9 +30,6 @@
     "git://pcmanfm.git.sourceforge.net/gitroot/pcmanfm/pcmanfm"
     ; repo with other name
     ("git://git.sourceforge.jp/gitroot/ninix-aya/master.git"  "ninix-aya")
-    ; minun github repo
-    configs
-    dotfiles
     ; github repo
     (VoQn          Gauche-Color)
     (shirok        Gauche-makiki)
@@ -102,7 +99,6 @@
     (jhawthorn     meh)
     (kahua         Kahua)
     (digego         extempore)
-    (mytoh         cKanren)
     (tlatsas       xcolors)
     (Raynes       fs)
     (clojure      clojure-contrib)
