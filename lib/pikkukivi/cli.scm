@@ -1,14 +1,14 @@
 
-(define-module pikkukivi.bin-runner
+(define-module pikkukivi.cli
+  (export runner)
   (use gauche.process)
   (use file.util)
   (use util.match)
   (use util.list)
   (use pikkukivi.alias)
-  (export bin-runner)
   (extend
     pikkukivi.commands))
-(select-module pikkukivi.bin-runner)
+(select-module pikkukivi.cli)
 
 
 (define (screen-title command)
@@ -17,7 +17,7 @@
               "tcsh")
      (display (string-append "_" command "")))
      (else
-       (display  string-append "k" command  "\\"))))
+       (display  (string-append "k" command  "\\"))))) 
 
 (define (run-alias command args)
   (let* ((c (assoc-ref alias-list (string->symbol command)))
@@ -32,6 +32,6 @@
       (else
         ((eval (read-from-string command) 'user) args)))))
 
-(define (bin-runner args)
+(define (runner args)
   (run-alias (car args) (cdr args))
   0)

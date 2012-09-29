@@ -63,9 +63,9 @@
       (match (length got-images)
         (0 (newline))
         (1 (print (str " " (colour-string 49 (number->string (length got-images)))
-                       " new file")))
+                       " file")))
         (_ (print (str " " (colour-string 49 (number->string (length got-images)))
-                       " new files")))))))
+                       " files")))))))
 
 (define (url->filename url)
   (receive (a fname ext)

@@ -5,11 +5,11 @@
 ; alias pk='gosh run-pikkukivi'
 ; alias rm='pk rm'
 
-(use pikkukivi.bin-runner)
+(use pikkukivi.cli )
 
 
 (define (main args)
-  (bin-runner (cdr args)))
+  (runner (cdr args)))
 
 
 ;; vim: ft=scheme
