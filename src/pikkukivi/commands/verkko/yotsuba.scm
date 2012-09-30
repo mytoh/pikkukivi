@@ -147,7 +147,9 @@
         (print "no directories")))))
 
 (define (yotsuba-get-repeat args)
-  (loop-forever (yotsuba-get args)))
+  (loop-forever
+    (begin
+    (yotsuba-get args))))
 
 
 (define (yotsuba-get-repeat-all args)
