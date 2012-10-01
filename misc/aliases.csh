@@ -8,11 +8,6 @@ alias nap 'pk napa'
 alias unpack 'pk unpack'
 alias paths 'pk print-path'
 
-alias ls 'pk ls -d'
-alias la 'pk ls -d -a'
-alias ll 'pk ls -d -ptsf'
-alias lla 'pk ls -d -ptsf -a'
-alias l 'pk ls -d'
 
 alias pahvi 'pk pahvi'
 alias futaba 'pk futaba'

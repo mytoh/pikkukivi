@@ -4,7 +4,6 @@
   (extend
     pikkukivi.commands.unpack
     pikkukivi.commands.repl
-    pikkukivi.commands.ls
     pikkukivi.commands.rm
     pikkukivi.commands.emma
     pikkukivi.commands.colour
