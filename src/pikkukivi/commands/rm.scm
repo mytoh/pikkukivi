@@ -18,16 +18,14 @@
         (rm-normal files)))))
 
 (define (rm-normal files)
-  (let loop ((files files))
-    (cond
-      ((null? files)
-       '())
-      (else
-        (let ((file (car files)))
-          (cond
-            ((file-exists? file)
-             (remove-files file)))
-          (loop (cdr files)))))))
+  (for-each
+    (lambda (f)
+      (cond ((file-is-symlink? f)
+             (sys-remove f))
+        (else
+          (remove-directory* f))))
+    files))
+
 
 (define (rm-verbose files)
   (let loop ((files files))
