@@ -1,18 +1,13 @@
+
 alias spc2ubar='gosh-skripti space2underbar.scm'
 alias ea='gosh-skripti extattr.scm'
 
 alias pk='pikkukivi'
 alias rr='pk rm'
 alias nap='pk napa'
-alias tk='pk talikko'
 alias unpack='pk unpack'
 alias paths='pk print-path'
 
-alias ls='pk ls -d'
-alias la='pk ls -d -a'
-alias ll='pk ls -d -ptsf'
-alias lla='pk ls -d -ptsf -a'
-alias l='pk ls -d'
 
 alias pahvi='pk pahvi'
 alias futaba='pk futaba'
@@ -23,7 +18,7 @@ alias buk='pk buk'
 alias ningen-ng='buk ningen-ng'
 alias ningen-ok='buk ningen-ok'
 
-alias gsi="rlwrap pikkukivi repl"
+alias gsi "rlwrap pikkukivi repl"
 alias emma='pk emma'
 alias sgit='pk ääliö'
 
