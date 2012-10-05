@@ -12,9 +12,9 @@
   (use srfi-11)
   (use kirjasto.komento.työkalu)
   (use kirjasto.työkalu)
-  (use kirjasto.väri) ; colour-string
   (use kirjasto.merkkijono)
   (use kirjasto.pääte)
+  (use maali)
   (use clojure)
   (require-extension (srfi 1))
   )
@@ -62,9 +62,9 @@
                                    image-url-list))))
       (match (length got-images)
         (0 (newline))
-        (1 (print (str " " (colour-string 49 (number->string (length got-images)))
+        (1 (print (str " " (paint (number->string (length got-images)) 49)
                        " file")))
-        (_ (print (str " " (colour-string 49 (number->string (length got-images)))
+        (_ (print (str " " (paint (number->string (length got-images)) 49)
                        " files")))))))
 
 (define (url->filename url)
@@ -134,13 +134,13 @@
          (html (get-html board thread)))
     (cond
       ((string? html)
-       (display (colour-string 4 thread))
+       (display (paint thread 4))
        (mkdir thread)
        (cd thread)
        (get-img html board)
        (cd ".."))
       (else
-        (print (colour-string 237 (str thread "'s gone")))))))
+        (print (paint (str thread "'s gone") 237))))))
 
 (define (futaba-get-all args)
   (let ((board (car args))
@@ -161,13 +161,13 @@
     (cond
       ((string? html)
        (tput-clr-bol)
-       (display (colour-string 4 thread))
+       (display (paint thread 4))
        (mkdir thread)
        (cd thread)
        (get-img html board)
        (cd ".."))
       (else
-        (display (colour-string 237 (str thread "'s gone")))
+        (display (paint (str thread "'s gone") 237))
         (flush)
         (sys-select #f #f #f 100000)
         (display "\r")
@@ -177,7 +177,7 @@
   (loop-forever
     (let ((board (car args))
           (dirs (values-ref (directory-list2 (current-directory) :children? #t) 0)))
-      (print (str "Board " (colour-string 229 board)))
+      (print (str "Board " (paint board 229 )))
       (cond
         ((not (null? dirs))
          (for-each
@@ -185,7 +185,7 @@
              (futaba-get-repeat (list board d)))
            dirs))
         (else (print "no directories")))
-      (print (colour-string 237 "----------")))))
+      (print (paint "----------" 237)))))
 
 (define (futaba args)
   (let-args args

@@ -16,9 +16,9 @@
     (srfi 1 11 13))
   (use kirjasto.komento.työkalu)
   (use kirjasto.työkalu)
-  (use kirjasto.väri) ; colour-string
   (use kirjasto.merkkijono)
   (use kirjasto.pääte)
+  (use maali)
   (use clojure)
   )
 (select-module pikkukivi.commands.verkko.yotsuba)
@@ -87,9 +87,9 @@
                                        img-url-list))))
       (match (length got-images)
         (0 (newline))
-        (1 (print " " (colour-string 49 (number->string (length got-images)))
+        (1 (print " " (paint (number->string (length got-images)) 49)
                   " file"))
-        (_ (print " " (colour-string 49 (number->string (length got-images)))
+        (_ (print " " (paint (number->string (length got-images)) 49)
                   " files"))))))
 
 (define (get-html bd td)
@@ -119,14 +119,14 @@
     (cond
       ((string? html)
        (tput-clr-bol)
-       (display (colour-string 4 thread))
+       (display (paint thread 4))
        (mkdir thread)
        (cd thread)
        (string->html-file thread html)
        (get-img html board)
        (cd ".."))
       (else
-        (display (colour-string 103 (str thread "'s gone")))
+        (display (paint (str thread "'s gone") 103))
         (flush)
         (sys-select #f #f #f 100000)
         (display "\r")
@@ -142,7 +142,7 @@
          (lambda (d)
            (yotsuba-get (list bd d)))
          dirs)
-       (print (colour-string 33 bd) " fetch finished"))
+       (print (paint bd 33 ) " fetch finished"))
       (else
         (print "no directories")))))
 

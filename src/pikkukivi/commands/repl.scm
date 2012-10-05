@@ -11,7 +11,8 @@
   (use srfi-1)
   (use gauche.reload)
   (use gauche.interactive.info)
-  (use kirjasto.väri) ; colour-string
+  (use kirjasto.väri)
+  (use maali)
   )
 (select-module pikkukivi.commands.repl)
 
@@ -59,45 +60,45 @@
 (define printer-colourize
   (lambda (result)
     (let ((make-colour (lambda (assoc-key s)
-                    (colour-string
-                      (assoc-ref *colours* assoc-key)
-                      (x->string  s)))))
-    (match (class-name (class-of result))
-      ;; list
-      ('<pair>
-       (make-colour 'list  result))
-      ('<list>
-       (make-colour 'list  result))
+                         (paint
+                           (x->string  s)
+                           (assoc-ref *colours* assoc-key)))))
+      (match (class-name (class-of result))
+        ;; list
+        ('<pair>
+         (make-colour 'list  result))
+        ('<list>
+         (make-colour 'list  result))
 
-      ;; symbol
-      ('<symbol>
-       (make-colour 'symbol  result))
+        ;; symbol
+        ('<symbol>
+         (make-colour 'symbol  result))
 
-      ;; string
-      ('<string>
-       (make-colour 'string result))
-      ('<char>
-       (make-colour 'string result))
+        ;; string
+        ('<string>
+         (make-colour 'string result))
+        ('<char>
+         (make-colour 'string result))
 
-      ;; number
-      ('<number>
-       (make-colour  'number  result))
-      ('<integer>
-       (make-colour  'number  result))
+        ;; number
+        ('<number>
+         (make-colour  'number  result))
+        ('<integer>
+         (make-colour  'number  result))
 
-      ;; boolean
-      ('<boolean>
-       (cond
-         (result
-           (make-colour 'true "#t"))
-         (else
-           (make-colour 'false "#f"))))
-      (_ result)))))
+        ;; boolean
+        ('<boolean>
+         (cond
+           (result
+             (make-colour 'true "#t"))
+           (else
+             (make-colour 'false "#f"))))
+        (_ result)))))
 
 (define printer
   (lambda results
     (map (lambda (r)
-           (display (colour-string 39 "=> "))
+           (display (paint "=> " 39))
 
            (display
              (printer-colourize r))
@@ -109,7 +110,7 @@
 (define prompter
   (lambda ()
     (print (symbol->string (module-name (current-module))))
-    (display (colour-string 33 "> "))
+    (display (paint "> " 33))
     (flush)))
 
 

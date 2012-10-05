@@ -7,7 +7,7 @@
   (use gauche.parseopt)
   (use util.match)
   (use file.util) ; directory-list, current-directory
-  (use kirjasto.väri)
+  (use maali)
   (use clojure))
 
 (select-module pikkukivi.commands.scm.ääliö)
@@ -128,8 +128,8 @@
          (display "update finished!\n"))
         (else
           (when (file-is-directory? (car dirs))
-          (display (colour-string 4 "=> "))
-          (display (colour-string 3 (sys-basename (car dirs))))
+          (display (paint "=> " 4))
+          (display (paint (sys-basename (car dirs)) 3))
           (newline)
             (run-process '(git pull) :wait #t :directory (car dirs)))
           (newline)
@@ -146,8 +146,8 @@
         (else
           (cond
             ((file-is-directory? (car dirs))
-             (display (colour-string 4 "=> "))
-             (display (colour-string 3 (sys-basename (car dirs))))
+             (display (paint "=> " 4))
+             (display (paint (sys-basename (car dirs)) 3))
              (newline)
              (run-process '(git gc) :wait #t :directory (car dirs))
              (newline))
@@ -196,9 +196,9 @@
     (^ (x) (cond
              ((list? x)
               (print
-                (string-append (colour-string 33 (x->string (car x)))
+                (string-append (paint (x->string (car x)) 33)
                                ": "
-                               (colour-string 93 (x->string (cadr x))))))
+                               (paint (x->string (cadr x)) 93))))
              (else
                (print x))))
     *repos*))
@@ -216,7 +216,7 @@
                 ;; commands
                 ((or "update" "up")
                  (begin
-                   (print (string-append (colour-string 8 "updating ") "repositories"))
+                   (print (string-append (paint "updating " 8) "repositories"))
                    (update-gitdir)))
                 ("clean"
                  (clean-gitdir))
@@ -224,7 +224,7 @@
                  (list-repos))
                 ("clone"
                  (begin
-                   (print (string-append (colour-string 3 "cloning ") "repositories"))
+                   (print (string-append (paint "cloning " 3) "repositories"))
                    (clone-gitdir)))
                 (_ (usage 1)))))
   0)
