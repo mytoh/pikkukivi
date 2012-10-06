@@ -11,9 +11,9 @@
   (require-extension
     (srfi 1 11))
   (use kirjasto.komento.työkalu)
-  (use kirjasto.väri)
   (use kirjasto.merkkijono)
-  (use clojure) 
+  (use maali)
+  (use clojure)
   )
 (select-module pikkukivi.commands.verkko.pahvi)
 
@@ -38,7 +38,7 @@
                                                                    (cond
                                                                      (match (match 1))
                                                                      (else #f))))
-                                                               (cut read-line in #t )))))))))
+                                                               (cut read-line in #t)))))))))
     (zip
       (parse-element parse-image-id body)
       (parse-element parse-image-url body))))
@@ -71,12 +71,12 @@
     1))
 
 (define (get-posts-all tag)
-  (print (str  "Tag: " (colour-string 33 tag)))
+  (print (str  "Tag: " (paint tag 33)))
   (let ((last (x->number (parse-last-page-number (get-post-page 1 tag)))))
-    (print (str (colour-string 82 (number->string last))
+    (print (str (paint (number->string last) 82)
                           " pages found"))
     (dotimes (num last)
-      (print (str (colour-string 99 "getting page ") (colour-string 33 (number->string (+ num 1)))))
+      (print (str (paint "getting page " 99 ) (paint (number->string (+ num 1)) 33 )))
       (get-image (parse-post-number-url (get-post-page (+ num 1) tag))))))
 
 (define (usage status)

@@ -7,6 +7,7 @@
   (use util.match)
   (use file.util)
   (require-extension (srfi 1 13))    ; iota
+  (use maali)
   (use pikkukivi)
   )
 (select-module pikkukivi.commands.help)
@@ -21,5 +22,5 @@
           )))
 
 (define (desc cmd mes)
-  (format #f "    ~@a ~@a" (colour-string 5 cmd) (colour-string 223 mes)))
+  (format #f "    ~@a ~@a" (paint cmd 5 ) (paint mes 223 )))
 
