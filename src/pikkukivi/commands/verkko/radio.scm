@@ -8,7 +8,7 @@
   (use file.util)
   (require-extension (srfi 1 13))    ; iota
   (use kirjasto.merkkijono)
-  (use kirjasto.väri)
+  (use maali)
   (use clojure))
 (select-module pikkukivi.commands.verkko.radio)
 
@@ -205,9 +205,9 @@
       (else
         (print
           (str
-            (colour-string
-              123
-              (symbol->string (car (car st))))
+            (paint
+              (symbol->string (car (car st)))
+              123)
             ": "
             (cadr (car st))))
         (loop (cdr st))))))

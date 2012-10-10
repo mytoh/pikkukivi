@@ -8,7 +8,7 @@
   (use file.util)
   (use gauche.sequence)
   (use kirjasto.tiedosto)
-  (use kirjasto.väri))
+  )
 (select-module pikkukivi.commands.print-path)
 
 

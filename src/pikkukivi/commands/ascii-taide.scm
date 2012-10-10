@@ -9,7 +9,7 @@
   (use file.util)
   (require-extension (srfi 1 13))    ; iota
   (use kirjasto.tiedosto)
-  (use kirjasto.väri))
+  )
 (select-module pikkukivi.commands.ascii-taide)
 
 (define ascii-directory
