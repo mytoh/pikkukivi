@@ -1,4 +1,4 @@
-#!/usr/bin/env gosh
+":"; exec gosh -- $0 "$@"
 ;; -*- coding: utf-8 -*-
 
 ;;  example usage in shell's rc:
