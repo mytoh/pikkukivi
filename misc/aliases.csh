@@ -4,7 +4,6 @@ alias ea 'gosh-skripti extattr.scm'
 
 alias pk 'pikkukivi'
 alias rr 'pk rm'
-alias nap 'pk napa'
 alias unpack 'pk unpack'
 alias paths 'pk print-path'
 
