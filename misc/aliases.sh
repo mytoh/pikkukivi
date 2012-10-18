@@ -17,7 +17,7 @@ alias buk='pk buk'
 alias ningen-ng='buk ningen-ng'
 alias ningen-ok='buk ningen-ok'
 
-alias gsi "rlwrap pikkukivi repl"
+alias gsi="rlwrap pikkukivi repl"
 alias emma='pk emma'
 alias sgit='pk ääliö'
 
