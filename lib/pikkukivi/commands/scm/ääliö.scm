@@ -46,6 +46,7 @@
     (rossy2401     img2xterm)
     (Arrowmaster   mcomix)
     (robbyrussell  oh-my-zsh)
+    (sorin-ionescu prezto)
     (pkgng         pkgng)
     (coderholic    pyradio)
     (bmizerany     roundup)

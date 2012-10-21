@@ -110,7 +110,8 @@
 (define prompter
   (lambda ()
     (print (symbol->string (module-name (current-module))))
-    (display (paint "#; " 238))
+    (display (string-append (paint "#;" 238)  
+             (paint "> " 67)))
     (flush)))
 
 

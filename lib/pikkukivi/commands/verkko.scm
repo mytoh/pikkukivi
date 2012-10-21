@@ -8,6 +8,7 @@
     pikkukivi.commands.verkko.buk
     pikkukivi.commands.verkko.radio
     pikkukivi.commands.verkko.sget
+    pikkukivi.commands.verkko.pervo
     pikkukivi.commands.verkko.sssh))
 (select-module pikkukivi.commands.verkko)
 
