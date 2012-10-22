@@ -61,8 +61,7 @@
       (find-all-tags "div" html))))
 
 (define (get-page url number)
-  (surl (build-path url (string-append "?p=" (number->string number))))
-  )
+  (surl (build-path url (string-append "?p=" (number->string number)))))
 
 (define (parse-last-page-number html)
   (/ (length (filter (lambda (s) (#/http\:\/\/\w+\.org\/\w\/(\d+)\/(\w+)\/\?p\=\d/ s))
@@ -91,15 +90,19 @@
     ))
 
 (define (save-image url download-path)
+  (print url)
   (call-with-output-file download-path
     (lambda (in)
       (let-values (((scheme user-info hostname port-number path query fragment)
                     (uri-parse (string-trim-both url #\"))))
-        (values-ref (http-get (string-append hostname ":" (number->string port-number))
-                              path
-                              :cookie *eh-cookie*
-                              :sink in
-                              :flusher (lambda _ #t))
+        (values-ref
+          (http-get (if port-number
+                      (string-append hostname ":" (number->string port-number))
+                      hostname)  
+                    path
+                    :cookie *eh-cookie*
+                    :sink in
+                    :flusher (lambda _ #t))
           2)))))
 
 (define (make-save-directory-name html)
@@ -116,9 +119,13 @@
              (parse-single-pages (get-page (car args) i))))
          (directory-name (make-save-directory-name index-page)))
     (for-each-with-index
-      (lambda (i url)
+      (lambda (page-number url)
+        (guard (exc
+                 ((<system-error> exc)
+                  (get-image
+                    page-number directory-name
+                    (parse-image-url (surl url))))))
         (get-image
-          i
-          directory-name
+          page-number directory-name
           (parse-image-url (surl url))))
       single-pages)))

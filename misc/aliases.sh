@@ -11,6 +11,7 @@ alias paths='pk print-path'
 alias pahvi='pk pahvi'
 alias futaba='pk futaba'
 alias yotsuba='pk yotsuba'
+alias pervo='pk pervo'
 alias kuva='pk kuva'
 
 alias buk='pk buk'
