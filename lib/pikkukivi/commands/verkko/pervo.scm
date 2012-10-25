@@ -30,8 +30,7 @@
 
 (define member-id
   (let ((m (make <mersenne-twister> :seed (sys-time))))
-    (rxmatch->string #/(\d){6}/ (number->string (+ (mt-random-real m) (mt-random-real m)))))
-  )
+    (rxmatch->string #/(\d){6}/ (number->string (+ (mt-random-real m) (mt-random-real m))))))
 
 (define *eh-cookie*
   (alist->ns-cookie-string
@@ -40,8 +39,7 @@
       ("path" "/" )
       ("domain" ".exhentai.org" )
       ("nw" 1)
-      ("tips" 1)
-      )))
+      ("tips" 1))))
 
 (define *download-directory*
   "download")
@@ -86,8 +84,7 @@
       (make-directory* dir))
     (if (file-exists? download-path)
       (print download-path " exists!")
-      (save-image (string-trim-both url #\") download-path))
-    ))
+      (save-image (string-trim-both url #\") download-path))))
 
 (define (save-image url download-path)
   (print url)
@@ -98,7 +95,7 @@
         (values-ref
           (http-get (if port-number
                       (string-append hostname ":" (number->string port-number))
-                      hostname)  
+                      hostname)
                     path
                     :cookie *eh-cookie*
                     :sink in
@@ -124,8 +121,8 @@
                  ((<system-error> exc)
                   (get-image
                     page-number directory-name
-                    (parse-image-url (surl url))))))
+                    (parse-image-url (surl url)))))
         (get-image
           page-number directory-name
-          (parse-image-url (surl url))))
+          (parse-image-url (surl url)))))
       single-pages)))

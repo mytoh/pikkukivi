@@ -3,7 +3,6 @@ alias spc2ubar 'gosh-skripti space2underbar.scm'
 alias ea 'gosh-skripti extattr.scm'
 
 alias pk 'pikkukivi'
-alias rr 'pk rm'
 alias unpack 'pk unpack'
 alias paths 'pk print-path'
 
