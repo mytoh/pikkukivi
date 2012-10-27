@@ -8,7 +8,8 @@
   (use util.match)
   (use file.util) ; directory-list, current-directory
   (use maali)
-  (use clojure))
+  (use clojure)
+  (use clojure.fs))
 
 (select-module pikkukivi.commands.scm.ääliö)
 
@@ -17,7 +18,6 @@
 
 (define-constant *repos*
   '(; normal repo
-    "git://code.call-cc.org/chicken-core"
     "git://gitorious.org/cmus/cmus.git"
     "git://git.sv.gnu.org/screen.git"
     "git://git.savannah.gnu.org/stow.git"
@@ -31,18 +31,10 @@
     ; repo with other name
     ("git://git.sourceforge.jp/gitroot/ninix-aya/master.git"  "ninix-aya")
     ; github repo
-    (VoQn          Gauche-Color)
-    (shirok        Gauche-makiki)
-    (shirok        Gauche-gtk2)
-    (podhmo        gauche-imlib2)
-    (naoyat        gauche-naoyat-lib)
-    (aharisu       Gauche-SDL)
     (okuoku        mosh)
     (tmbinc        bgrep)
     (ninjaaron     bitocra)
     (koron         chalice)
-    (adamv         homebrew-alt)
-    (adamv         homebrew)
     (rossy2401     img2xterm)
     (Arrowmaster   mcomix)
     (robbyrussell  oh-my-zsh)
@@ -118,6 +110,8 @@
     (chujoii       battery-scheme)
     (chujoii       xattr-tag)
     (ghc ghc)
+    (francesco-bracchi sake)
+    (adamv          homebrew)
     ))
 
 ;; update git repository
