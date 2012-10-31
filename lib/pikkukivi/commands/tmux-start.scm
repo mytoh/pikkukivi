@@ -6,6 +6,7 @@
   (use gauche.process)
   (use gauche.parseopt)
   (use util.match)
+  (use file.util)
   (use srfi-98))
 (select-module pikkukivi.commands.tmux-start)
 
@@ -29,6 +30,18 @@
       #t
       #f)))
 
+(define (process-running? name)
+  (if (equal? "" (process-output->string (string-append "pgrep " name) :on-abnormal-exit :ignore))
+    #f #t))
+
+(define (ncmpcpp session)
+  (cond
+    ((and (find-file-in-paths "musicpd")
+       (find-file-in-paths "ncmpcpp"))
+     (if (not (process-running? "musicpd"))
+       (new-window session "ncmpcpp" "musicpd && ncmpcpp")
+       (new-window session "ncmpcpp" "ncmpcpp")))))
+
 (define (tmux)
   (cond
     ; inside tmux
@@ -49,6 +62,7 @@
             (new-session main-session "main")
             (new-window main-session  "vim" "vim")
             (new-window main-session  "w3m" "w3m google.com")
+            (ncmpcpp main-session)
 
             ;; create second session
             (new-session second-session "futaba" )
