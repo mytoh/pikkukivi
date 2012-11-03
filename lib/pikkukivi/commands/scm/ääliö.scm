@@ -112,6 +112,7 @@
     (ghc ghc)
     (francesco-bracchi sake)
     (adamv          homebrew)
+    (okuoku r7rs-bridge)
     ))
 
 ;; update git repository
