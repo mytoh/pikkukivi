@@ -42,6 +42,20 @@
        (new-window session "ncmpcpp" "musicpd && ncmpcpp")
        (new-window session "ncmpcpp" "ncmpcpp")))))
 
+(define (stat session)
+  (cond
+    ((find-file-in-paths "systat")
+     (if  (find-file-in-paths "slurm")
+       (new-window session "stat" "slurm -i em0")
+       (new-window session "stat"))
+     (run-process '(tmux select-window -t "stat") :wait #t)
+     (if (find-file-in-paths "htop")
+       (run-process '(tmux split-window -h -t 0 "htop") :wait #t))
+     (if (find-file-in-paths "tcpdump")
+       (run-process '(tmux split-window -v -t 0 "sudo tcpdump -i em0 -s 0 -A port 80 | grep GET") :wait #t))
+     (run-process '(tmux select-window -t "main") :wait #t)
+     )))
+
 (define (tmux)
   (cond
     ; inside tmux
@@ -63,6 +77,7 @@
             (new-window main-session  "vim" "vim")
             (new-window main-session  "w3m" "w3m google.com")
             (ncmpcpp main-session)
+            (stat main-session)
 
             ;; create second session
             (new-session second-session "futaba" )
