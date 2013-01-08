@@ -46,7 +46,6 @@
            (x->string  board)
            "\\/src\\/[^\"]+"))
     line))
-;; "
 
 
 
