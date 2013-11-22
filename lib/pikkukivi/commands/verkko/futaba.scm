@@ -44,7 +44,7 @@
        line))
 
 
-    (define (get-img html board)
+    (define (get-image html board)
       (let ((image-url-list (remove not
                               (call-with-input-string html
                                                       (lambda (in)
@@ -134,7 +134,7 @@
            (display (paint thread 4))
            (mkdir thread)
            (cd thread)
-           (get-img html board)
+           (get-image html board)
            (cd ".."))
           (else
               (print (paint (string-append thread "'s gone") 237))))))
@@ -161,7 +161,7 @@
            (display (paint thread 4))
            (mkdir thread)
            (cd thread)
-           (get-img html board)
+           (get-image html board)
            (cd ".."))
           (else
               (display (paint (string-append thread "'s gone") 237))
