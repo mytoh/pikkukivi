@@ -9,5 +9,5 @@
 
 (define alias-list
   (with-input-from-file
-    (build-path (home-directory) ".pikkukivi/misc/alias.scm")
-    read)  )
+      (build-path (home-directory) ".pikkukivi/misc/alias.scm")
+    read))

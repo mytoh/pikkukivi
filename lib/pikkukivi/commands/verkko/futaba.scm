@@ -1,6 +1,7 @@
 
 (define-module pikkukivi.commands.verkko.futaba
   (export futaba)
+
   (use rfc.http)
   (use rfc.uri)
   (use gauche.process)
