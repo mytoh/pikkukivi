@@ -19,6 +19,8 @@
            (futaba rest))
           ("yotsuba"
            (yotsuba rest))
+          ("pervo"
+           (pervo rest))
           ("commands"
            (commands rest)))))
 
