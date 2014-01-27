@@ -5,6 +5,7 @@
     futaba
     commands
     yotsuba
+    pervo
     )
 
   (use pikkukivi.commands.unpack)
