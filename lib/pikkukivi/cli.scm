@@ -21,6 +21,8 @@
            (yotsuba rest))
           ("pervo"
            (pervo rest))
+          ("pahvi"
+           (pahvi rest))
           ("commands"
            (commands rest)))))
 

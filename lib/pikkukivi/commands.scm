@@ -6,6 +6,7 @@
     commands
     yotsuba
     pervo
+    pahvi
     )
 
   (use pikkukivi.commands.unpack)
