@@ -7,6 +7,7 @@
     yotsuba
     pervo
     pahvi
+    ylilauta
     )
 
   (use pikkukivi.commands.unpack)

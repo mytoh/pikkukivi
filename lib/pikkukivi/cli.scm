@@ -15,15 +15,17 @@
       (let ((command (cadr args))
             (rest (cddr args)))
         (match command
-          ("futaba"
-           (futaba rest))
-          ("yotsuba"
-           (yotsuba rest))
-          ("pervo"
-           (pervo rest))
-          ("pahvi"
-           (pahvi rest))
-          ("commands"
-           (commands rest)))))
+               ("futaba"
+                (futaba rest))
+               ("yotsuba"
+                (yotsuba rest))
+               ("pervo"
+                (pervo rest))
+               ("pahvi"
+                (pahvi rest))
+               ("ylilauta"
+                (ylilauta rest))
+               ("commands"
+                (commands rest)))))
 
     ))
