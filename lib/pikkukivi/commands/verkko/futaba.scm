@@ -59,11 +59,11 @@
                             (map (lambda (url) (fetch url))
                               image-url-list))))
           (match (length got-images)
-            (0 (newline))
-            (1 (print (string-append " " (paint (number->string (length got-images)) 49)
-                                     " file")))
-            (_ (print (string-append " " (paint (number->string (length got-images)) 49)
-                                     " files")))))))
+                 (0 (newline))
+                 (1 (print (string-append " " (paint (number->string (length got-images)) 49)
+                                          " file")))
+                 (_ (print (string-append " " (paint (number->string (length got-images)) 49)
+                                          " files")))))))
 
     (define (url->filename url)
       (receive (a fname ext)
@@ -78,7 +78,7 @@
                  (flusher (lambda (sink headers)  #t)))
             (if (not (file-is-readable? file))
               (receive (temp-out temp-file)
-                       (sys-mkstemp "yotsuba-temp")
+                       (sys-mkstemp "futaba-temp")
                        (http-get hostname path
                                  :sink temp-out :flusher flusher)
                        (close-output-port temp-out)
@@ -100,33 +100,33 @@
                      (http-get (string-append server ".2chan.net")
                                (string-append "/" board "/res/" thread ".htm")))))
         (match board
-          ("l" ;二次元壁紙
-           (fget  "dat" ))
-          ("k" ;壁紙
-           (fget "cgi"))
-          ("b" ;虹裏
-           (let ((servs '("jun" "dec" "may"))
-                 (get-res (lambda (srv)
-                            (receive (a b c)
-                                     (fget srv)
-                                     (if (not (string=? a "404")) srv #f))))
-                 (get-values (lambda (srv)
-                               (receive (a b c)
-                                        (fget srv)
-                                        (when (not (string=? a "404")) (values a b c))))))
-             (or (and-let* ((s (get-res "jun")))
-                           (get-values "jun"))
-               (and-let* ((s (get-res "dec")))
-                         (get-values "dec"))
-               (and-let* ((s (get-res "may")))
-                         (get-values "may"))
-               (values "404" #f #f))))
-          ("7" ;ゆり
-           (fget "zip"))
-          ("16" ;二次元壁紙
-           (fget "dat"))
-          ("40" ;東方
-           (fget "may")))))
+               ("l" ;二次元壁紙
+                (fget  "dat" ))
+               ("k" ;壁紙
+                (fget "cgi"))
+               ("b" ;虹裏
+                (let ((servs '("jun" "dec" "may"))
+                      (get-res (lambda (srv)
+                                 (receive (a b c)
+                                          (fget srv)
+                                          (if (not (string=? a "404")) srv #f))))
+                      (get-values (lambda (srv)
+                                    (receive (a b c)
+                                             (fget srv)
+                                             (when (not (string=? a "404")) (values a b c))))))
+                  (or (and-let* ((s (get-res "jun")))
+                                (get-values "jun"))
+                    (and-let* ((s (get-res "dec")))
+                              (get-values "dec"))
+                    (and-let* ((s (get-res "may")))
+                              (get-values "may"))
+                    (values "404" #f #f))))
+               ("7" ;ゆり
+                (fget "zip"))
+               ("16" ;二次元壁紙
+                (fget "dat"))
+               ("40" ;東方
+                (fget "may")))))
 
     (define (futaba-get args)
       (let* ((board (car args))

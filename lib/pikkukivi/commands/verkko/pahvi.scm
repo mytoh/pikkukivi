@@ -9,7 +9,7 @@
   (use rfc.http)
   (use rfc.uri)
   (require-extension
-    (srfi 1 11))
+   (srfi 1 11))
   (use kirjasto.komento.työkalu)
   (use kirjasto.merkkijono)
   (use maali)
@@ -27,33 +27,13 @@
 (define (get-html-body host parts)
   (receive (status head body)
            (http-get host parts)
-    body))
-
-(define (parse-post-number-urls body)
-  (let ((parse-image-url (lambda (line) (#/\"file_url\"\:\"(http\:\/\/[[:alpha:]]+\.donmai\.us\/data\/[^\"]+)/ line)))
-        (parse-image-id (lambda (line) (#/\"id\"\:(\d+)/ line)))
-        (parse-element (lambda (proc str)
-                         (remove not
-                                 (delete-duplicates
-                                   (call-with-input-string str
-                                                           (lambda (in)
-                                                             (port-map
-                                                               (lambda (line)
-                                                                 (let ((match (proc line)))
-                                                                   (cond
-                                                                     (match (match 1))
-                                                                     (else #f))))
-                                                               (cut read-line in #t)))))))))
-    (zip
-      (parse-element parse-image-id body)
-      (parse-element parse-image-url body))))
-
+           body))
 
 (define (swget uri id)
   (let-values (((scheme user-info hostname port-number path query fragment)
                 (uri-parse uri)))
     (let* ((orig-file (receive (a f ext) (decompose-path path) #`",|id|.,|ext|"))
-          (temp-file (str "temp-" orig-file)))
+           (temp-file (str "temp-" orig-file)))
       (when (not (file-is-readable? orig-file))
         (http-get hostname path
                   :sink (open-output-file temp-file)
@@ -63,51 +43,54 @@
 
 (define (get-images id-num-list)
   (let loop ((lst  id-num-list))
-    (when (not (null?  lst))
-      (let ((id (car (car lst)))
-            (url (cadr (car lst))))
-        (swget url id)
-        (loop (cdr lst))))))
+       (when (not (null?  lst))
+         (let ((id (car (car lst)))
+               (url (cadr (car lst))))
+           (swget url id)
+           (loop (cdr lst))))))
 
 (define (parse-last-page-number str)
   (if-let1 pagination (rxmatch->string #/<div class\=\"pagination\">.*?<\/div>/
-                                        str)
-    (let ((page (call-with-input-string  pagination (lambda (in)
-                                                       (ssax:xml->sxml in ())))))
-      (caddr (find-max
-               ((node-closure (ntype-names?? '(a))) page)
-               :key (lambda (e) (x->number (caddr e))))))
-    1))
+                                       str)
+           (let ((page (call-with-input-string  pagination (lambda (in)
+                                                             (ssax:xml->sxml in ())))))
+             (caddr (find-max
+                     ((node-closure (ntype-names?? '(a))) page)
+                     :key (lambda (e) (x->number (caddr e))))))
+           1))
 
 (define (parse-next-page-number body)
   (let* ((paginator (rxmatch->string #/<div class\=\"paginator\">.*?<\/div>/
-                                        body))
-        (page
-         (call-with-input-string paginator
-                                 (lambda (in) (ssax:xml->sxml in ()))))
-        (next-string (car (cdaddr
-                           (cadr (last ((node-closure (ntype-names?? '(a))) page)))))))
-    (string->number (rxmatch->string #/\d+/ next-string))))
+                                     body))
+         (page
+          (call-with-input-string paginator
+                                  (lambda (in) (ssax:xml->sxml in ()))))
+         (next-string (cadr (last ((node-closure (ntype-names?? '(a))) page)))))
+    (if (equal? '(rel "next") (cadr next-string))
+      (string->number (rxmatch->string #/\d+/ (car (cdaddr next-string))))
+      #f)))
+
+
+(define (parse-line proc str)
+  (let ((parse (lambda (in)
+                 (port-map
+                  (lambda (line)
+                    (let ((match (proc line)))
+                      (cond
+                        (match (match 1))
+                        (else #f))))
+                  (cut read-line in #t)))))
+    (remove not
+      (delete-duplicates
+          (call-with-input-string str
+                                  parse)))))
 
 (define (parse-post-page-urls _post-page)
   (let ((parse-image-url
          (lambda (line)
            (#/><a href=\"(\/posts\/\d+[^\"]+)\"/
-                              line)))
-        (parse-element (lambda (proc str)
-                         (remove not
-                                 (delete-duplicates
-                                  (call-with-input-string str
-                                                          (lambda (in)
-                                                            (port-map
-                                                             (lambda (line)
-                                                               (let ((match (proc line)))
-                                                                 (cond
-                                                                  (match (match 1))
-                                                                  (else #f))))
-                                                             (cut read-line in #t)))))))))
-    (parse-element parse-image-url _post-page)
-    ))
+                  line))))
+    (parse-line parse-image-url _post-page)))
 
 (define (parse-post-page-image-url body)
   (let* ((data (rxmatch->string #/Size: <a href=\"(\/data\/[^\"]+)\">/
@@ -120,46 +103,37 @@
 
 (define (parse-post-page-image-info body)
   (list
-   (parse-post-page-image-id body)
-   (parse-post-page-image-url body)))
+      (parse-post-page-image-id body)
+    (parse-post-page-image-url body)))
 
 (define (get-posts-all _tag)
-      (print (str  "Tag: " (paint _tag 33)))
-      (let loop ((num 1))
-        (print (paint (str "page: " (paint (number->string num) 34))))
-        (let ((body (get-post-page num _tag)))
-          (map
-           (lambda (url)
-             (let ((post (get-html-body *danbooru-host* url)))
-               (swget
-                (parse-post-page-image-url post)
-                (parse-post-page-image-id post))))
+  (print (str  "Tag: " (paint _tag 33)))
+  (let loop ((num 1))
+       (print (paint (str "page: " (paint (number->string num) 34))))
+       (let ((body (get-post-page num _tag)))
+         (map
+             (lambda (url)
+               (let ((post (get-html-body *danbooru-host* url)))
+                 (swget
+                  (parse-post-page-image-url post)
+                  (parse-post-page-image-id post))))
            (parse-post-page-urls body))
-          (let ((next (parse-next-page-number body)))
-            (if next
-              (loop (+ num 1)))))))
+         (let ((next (parse-next-page-number body)))
+           (if next
+             (loop (+ num 1)))))))
 
 (define (command-get-posts-all tag)
   (mkdir tag)
-    (cd tag)
-    (get-posts-all tag)
-    (cd ".."))
+  (cd tag)
+  (get-posts-all tag)
+  (cd ".."))
 
 (define (usage status)
   (exit status "usage: ~a <command> <package-name>\n" "pahvi"))
 
 (define (pahvi args)
   (let-args args
-    ((tag "t|tag=s")
-     (#f "h|help" (usage 0))
-     . rest)
-    (command-get-posts-all tag)
-    ))
-
-
-
-
-
-
-
-
+            ((tag "t|tag=s")
+             (#f "h|help" (usage 0))
+             . rest)
+            (command-get-posts-all tag)))
