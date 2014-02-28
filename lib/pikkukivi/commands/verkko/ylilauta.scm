@@ -105,8 +105,7 @@
            (get-image html board)
            (cd ".."))
           (else
-              (print (paint (string-append thread "'s gone") 237))))
-        ))
+              (print (paint (string-append thread "'s gone") 237))))))
 
     (define (ylilauta-get-all args)
       (let ((board (car args))
@@ -123,7 +122,7 @@
     (define (ylilauta-get-repeat args)
       (let* ((board (car args))
              (thread (cadr args))
-             (html (get-html board thread)))
+             (html (get-thread-html board thread)))
         (cond
           ((string? html)
            (tput-clr-bol)
