@@ -35,12 +35,15 @@
 
 
     (define (parse-img-url line board)
-      (rxmatch->string
-       (string->regexp
-        (string-append
-            "http[s]?:\/\/static.ylilauta.org\/files\/"
-          "\\w+\/orig\/\\d+.[^\"]+"          ))
-       line))
+      (let ((matched (rxmatch->string
+                      (string->regexp
+                       (string-append
+                           "\/\/static.ylilauta.org\/files\/"
+                         "\\w+\/orig\/[^\"]+"))
+                      line)))
+        (if (string? matched)
+          (string-append "http:" matched)
+          matched)))
 
     (define (get-image html board)
       (let ((image-url-list (remove not
