@@ -1,10 +1,14 @@
-#!/usr/bin/env gosh
+#!/bin/sh
+:; exec gosh -r7 -- $0 "$@"
 
-(use pikkukivi.cli)
-
+(import (scheme base)
+        (scheme process-context)
+        (pikkukivi cli))
 
 (define (main args)
   (run  args))
+
+(main (command-line))
 
 ;; Local Variables:
 ;; mode: scheme
