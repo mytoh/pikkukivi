@@ -1,34 +1,33 @@
 
+(define-library (pikkukivi commands)
+    (export
+      futaba
+      commands
+      yotsuba
+      pervo
+      pahvi
+      ylilauta
+      )
 
-(define-module pikkukivi.commands
-  (export
-    futaba
-    commands
-    yotsuba
-    pervo
-    pahvi
-    ylilauta
-    )
+  (import (scheme base)
+          (pikkukivi commands unpack)
+          (pikkukivi commands repl)
+          (pikkukivi commands rm)
+          (pikkukivi commands emma)
+          (pikkukivi commands colour)
+          (pikkukivi commands topless)
+          (pikkukivi commands ascii-taide)
+          (pikkukivi commands launch-app)
+          (pikkukivi commands print-path)
+          (pikkukivi commands tmux-start)
+          (pikkukivi commands kuva)
+          (pikkukivi commands yes)
+          (pikkukivi commands swap-extension)
+          (pikkukivi commands piip)
 
-  (use pikkukivi.commands.unpack)
-  (use pikkukivi.commands.repl)
-  (use pikkukivi.commands.rm)
-  (use pikkukivi.commands.emma)
-  (use pikkukivi.commands.colour)
-  (use pikkukivi.commands.topless)
-  (use pikkukivi.commands.ascii-taide)
-  (use pikkukivi.commands.launch-app)
-  (use pikkukivi.commands.print-path)
-  (use pikkukivi.commands.tmux-start)
-  (use pikkukivi.commands.kuva)
-  (use pikkukivi.commands.yes)
-  (use pikkukivi.commands.swap-extension)
-  (use pikkukivi.commands.piip)
+          (pikkukivi commands verkko)
+          (pikkukivi commands scm)
 
-  (use pikkukivi.commands.verkko)
-  (use pikkukivi.commands.scm)
-
-  (use pikkukivi.commands.commands)
-  (use pikkukivi.commands.help)
+          (pikkukivi commands commands)
+          (pikkukivi commands help))
   )
-(select-module pikkukivi.commands)

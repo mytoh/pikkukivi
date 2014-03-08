@@ -1,16 +1,12 @@
 
-
-(define-module pikkukivi.cli
-
-  (export run)
-
-  (use file.util)
-  (use util.match)
-  (use util.list)
-  (use pikkukivi.commands)
-
+(define-library (pikkukivi cli)
+    (export run)
+  (import (scheme base)
+          (file util)
+          (util match)
+          (util list)
+          (pikkukivi commands))
   (begin
-
     (define (run args)
       (let ((command (cadr args))
             (rest (cddr args)))

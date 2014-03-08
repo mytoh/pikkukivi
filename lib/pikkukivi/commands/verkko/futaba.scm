@@ -1,22 +1,26 @@
 
-(define-module pikkukivi.commands.verkko.futaba
-  (export futaba)
+(define-library (pikkukivi commands verkko futaba)
+    (export futaba)
 
-  (use rfc.http)
-  (use rfc.uri)
-  (use gauche.process)
-  (use gauche.charconv)
-  (use file.util)
-  (use util.match)
-  (use gauche.collection) ;find
-  (use gauche.parseopt)
-  (use srfi-11)
-  (use kirjasto.komento.työkalu)
-  (use kirjasto.työkalu)
-  (use kirjasto.merkkijono)
-  (use kirjasto.pääte)
-  (use maali)
-  (require-extension (srfi 1))
+  (import(scheme base)
+         (scheme write)
+         (scheme file)
+         (gauche base)
+         (rfc http)
+         (rfc uri)
+         (gauche process)
+         (gauche charconv)
+         (file util)
+         (util match)
+         (gauche collection) ;find
+         (gauche parseopt)
+         (srfi-11)
+         (kirjasto komento työkalu)
+         (kirjasto työkalu)
+         (kirjasto merkkijono)
+         (kirjasto pääte)
+         (maali)
+         (srfi 1))
 
   (begin
 
@@ -101,7 +105,7 @@
                                (string-append "/" board "/res/" thread ".htm")))))
         (match board
                ("l" ;二次元壁紙
-                (fget  "dat" ))
+                (fget  "dat"))
                ("k" ;壁紙
                 (fget "cgi"))
                ("b" ;虹裏
@@ -142,9 +146,14 @@
           (else
               (print (paint (string-append thread "'s gone") 237))))))
 
+    (define (list-directories dir)
+      (receive (dirs _x)
+               (directory-list2 dir :children? #t)
+               dirs))
+
     (define (futaba-get-all args)
       (let ((board (car args))
-            (dirs (values-ref (directory-list2 (current-directory) :children? #t) 0)))
+            (dirs (list-directories (current-directory))))
         (cond
           ((not (null? dirs))
            (for-each
@@ -176,7 +185,7 @@
     (define (futaba-get-repeat-all args)
       (loop-forever
        (let ((board (car args))
-             (dirs (values-ref (directory-list2 (current-directory) :children? #t) 0)))
+             (dirs (list-directories (current-directory))))
          (print (string-append "Board " (paint board 229)))
          (cond
            ((not (null? dirs))
