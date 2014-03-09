@@ -38,12 +38,15 @@
       (let-values (((scheme user-info hostname port-number path query fragment)
                     (uri-parse uri)))
         (let* ((orig-file (receive (a f ext) (decompose-path path) #`",|id|.,|ext|"))
-               (temp-file (str "temp-" orig-file)))
+               (flusher (lambda (sink headers)  #t)))
           (when (not (file-is-readable? orig-file))
-            (http-get hostname path
-                      :sink (open-output-file temp-file)
-                      :flusher (lambda _ #t))
-            (move-file temp-file orig-file)
+            (receive (temp-out temp-file)
+                     (sys-mkstemp "pahvi-temp")
+                     (http-get hostname path
+                               :sink temp-out
+                               :flusher flusher)
+                     (close-output-port temp-out)
+                     (move-file temp-file orig-file))
             (print orig-file)))))
 
     (define (get-images id-num-list)
