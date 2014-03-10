@@ -22,5 +22,7 @@
                ("ylilauta"
                 (ylilauta rest))
                ("commands"
-                (commands rest)))))
+                (commands rest))
+               ("pomfup"
+                (pomfup rest)))))
     ))

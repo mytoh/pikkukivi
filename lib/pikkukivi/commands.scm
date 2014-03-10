@@ -7,6 +7,7 @@
       pervo
       pahvi
       ylilauta
+      pomfup
       )
 
   (import (scheme base)
@@ -24,6 +25,7 @@
           (pikkukivi commands yes)
           (pikkukivi commands swap-extension)
           (pikkukivi commands piip)
+          (pikkukivi commands pomfup)
 
           (pikkukivi commands verkko)
           (pikkukivi commands scm)
