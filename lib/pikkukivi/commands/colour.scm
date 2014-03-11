@@ -161,9 +161,9 @@
             (display
                 (format "[48;5;~Am  " s)))
         (let loop ((ls 232))
-             (when (< ls 256)
-               (cons ls (loop (+ ls 1))))
-             ))
+             (if (< ls 256)
+               (cons ls (loop (+ ls 1)))
+               '())))
       (display "[0m")
       (newline))
 
