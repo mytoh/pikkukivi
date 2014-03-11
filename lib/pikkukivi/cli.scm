@@ -24,5 +24,7 @@
                ("commands"
                 (commands rest))
                ("pomfup"
-                (pomfup rest)))))
+                (pomfup rest))
+               ("colour"
+                (colour rest)))))
     ))

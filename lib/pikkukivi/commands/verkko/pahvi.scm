@@ -78,7 +78,6 @@
           (string->number (rxmatch->string #/\d+/ (car (cdaddr next-string))))
           #f)))
 
-
     (define (parse-line proc str)
       (let ((parse (lambda (in)
                      (port-map

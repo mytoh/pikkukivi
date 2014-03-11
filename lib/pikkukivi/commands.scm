@@ -8,6 +8,7 @@
       pahvi
       ylilauta
       pomfup
+      colour
       )
 
   (import (scheme base)
