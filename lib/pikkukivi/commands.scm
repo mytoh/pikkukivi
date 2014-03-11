@@ -9,6 +9,7 @@
       ylilauta
       pomfup
       colour
+      kuva
       )
 
   (import (scheme base)

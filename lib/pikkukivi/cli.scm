@@ -26,5 +26,7 @@
                ("pomfup"
                 (pomfup rest))
                ("colour"
-                (colour rest)))))
+                (colour rest))
+               ("kuva"
+                (kuva rest)))))
     ))
