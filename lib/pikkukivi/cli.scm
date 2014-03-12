@@ -28,5 +28,7 @@
                ("colour"
                 (colour rest))
                ("kuva"
-                (kuva rest)))))
+                (kuva rest))
+               ("print-path"
+                (print-path rest)))))
     ))

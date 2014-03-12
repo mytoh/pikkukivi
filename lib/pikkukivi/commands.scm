@@ -10,6 +10,7 @@
       pomfup
       colour
       kuva
+      print-path
       )
 
   (import (scheme base)
