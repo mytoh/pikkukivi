@@ -30,5 +30,7 @@
                ("kuva"
                 (kuva rest))
                ("print-path"
-                (print-path rest)))))
+                (print-path rest))
+               ("launch-app"
+                (launch-app rest)))))
     ))

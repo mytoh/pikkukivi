@@ -11,6 +11,7 @@
       colour
       kuva
       print-path
+      launch-app
       )
 
   (import (scheme base)
