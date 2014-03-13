@@ -12,6 +12,7 @@
       kuva
       print-path
       launch-app
+      konachan
       )
 
   (import (scheme base)

@@ -32,5 +32,7 @@
                ("print-path"
                 (print-path rest))
                ("launch-app"
-                (launch-app rest)))))
+                (launch-app rest))
+               ("konachan"
+                (konachan rest)))))
     ))
