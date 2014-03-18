@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi commands verkko pahvi)
+(define-library (pikkukivi commands verkko pahvi)
     (export pahvi)
   (import
     (scheme base)
@@ -38,7 +38,7 @@
       (let-values (((scheme user-info hostname port-number path query fragment)
                     (uri-parse uri)))
         (let* ((orig-file (receive (a f ext) (decompose-path path) #`",|id|.,|ext|"))
-               (flusher (lambda (sink headers)  #t)))
+               (flusher (lambda (sink headers)  #true)))
           (when (not (file-is-readable? orig-file))
             (receive (temp-out temp-file)
                      (sys-mkstemp "pahvi-temp")
@@ -76,7 +76,7 @@
              (next-string (cadr (last ((node-closure (ntype-names?? '(a))) page)))))
         (if (equal? '(rel "next") (cadr next-string))
           (string->number (rxmatch->string #/\d+/ (car (cdaddr next-string))))
-          #f)))
+          #false)))
 
     (define (parse-line proc str)
       (let ((parse (lambda (in)
@@ -85,8 +85,8 @@
                         (let ((match (proc line)))
                           (cond
                             (match (match 1))
-                            (else #f))))
-                      (cut read-line in #t)))))
+                            (else #false))))
+                      (cut read-line in #true)))))
         (remove not
           (delete-duplicates
               (call-with-input-string str
@@ -141,7 +141,7 @@
     (define (pahvi args)
       (let-args args
                 ((tag "t|tag=s")
-                 (#f "h|help" (usage 0))
+                 (#false "h|help" (usage 0))
                  . rest)
                 (command-get-posts-all tag)))
     ))

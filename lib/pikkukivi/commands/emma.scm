@@ -1,64 +1,63 @@
 
+(define-library (pikkukivi commands emma)
+    (export emma)
+  (import
+    (scheme base)
+    (gauche base)
+    (gauche process)
+    (kirjasto komento työkalu)
+    (kirjasto väri)
+    (kirjasto merkkijono)
+    (srfi 1)
+    (srfi  13)
+    (srfi 27))
+  (begin
+    (define response
+      '("muridana"
+        "saaaaaanyaaaa"
+        "X_X"
+        ))
+    (define (message str)
+      (sys-sleep #e1e0)
+      (if (string=? str "quit")
+        (quit)
+        (random-message)))
 
-(define-module pikkukivi.commands.emma
-  (export emma)
-  (use gauche.process)
-  (use kirjasto.komento.työkalu)
-  (use kirjasto.väri)
-  (use kirjasto.merkkijono)
-  (require-extension (srfi 1 13 27))
-  )
-(select-module pikkukivi.commands.emma)
+    (define (random-message)
+      (print
+       (ref response (random-integer (length response)))))
 
+    (define (quit)
+      (print "bye")
+      (exit))
 
-(define response
-  '("muridana"
-    "saaaaaanyaaaa"
-    "X_X"
-    ))
-(define (message str)
-  (sys-sleep #e1e0)
-  (if (string=? str "quit")
-    (quit)
-  (random-message)))
+    ;; reader
+    (define reader
+      (lambda ()
+        (let ((str (read-line)))
+          str)))
 
-(define (random-message)
-  (print
-  (ref response (random-integer (length response))))  )
+    ;; evaluator
+    (define evaluator
+      (lambda (str env)
+        str))
 
-(define (quit)
-  (print "bye")
-  (exit))
+    ;; printer
+    (define printer
+      (lambda (str)
+        (message str)))
 
-;; reader
-(define reader
-  (lambda ()
-    (let ((str (read-line)))  
-      str)))
+    ;; prompter
+    (define prompter
+      (lambda ()
+        (display (colour-string 33 "> "))
+        (flush)))
 
-;; evaluator
-(define evaluator
-  (lambda (str env)
-    str)
-  )
-
-;; printer
-(define printer
-  (lambda (str)
-    (message str)
-    ))
-
-;; prompter
-(define prompter
-  (lambda ()
-    (display (colour-string 33 "> "))
-    (flush)))
-
-(define (emma args)
-  (print "hello")
-  (read-eval-print-loop
-    reader
-    evaluator
-    printer
-    prompter
+    (define (emma args)
+      (print "hello")
+      (read-eval-print-loop
+       reader
+       evaluator
+       printer
+       prompter))
     ))

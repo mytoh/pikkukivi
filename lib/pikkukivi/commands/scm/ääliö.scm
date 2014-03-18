@@ -1,9 +1,10 @@
 
-(define-library (pikkukivi commands scm ääliö)
+ (define-library (pikkukivi commands scm ääliö)
     (export
       ääliö)
   (import
     (scheme base)
+    (scheme write)
     (gauche base)
     (gauche process) ; run-process
     (gauche parseopt)
@@ -29,9 +30,9 @@
         "git://tron.homeunix.org/cvscvt"
         "git://pcmanfm.git.sourceforge.net/gitroot/pcmanfm/libfm"
         "git://pcmanfm.git.sourceforge.net/gitroot/pcmanfm/pcmanfm"
-                                        ; repo with other name
+        ;; repo with other name
         ("git://git.sourceforge.jp/gitroot/ninix-aya/master.git"  "ninix-aya")
-                                        ; github repo
+        ;; github repo
         (okuoku        mosh)
         (tmbinc        bgrep)
         (ninjaaron     bitocra)
@@ -114,115 +115,115 @@
         (francesco-bracchi sake)
         (adamv          homebrew)
         (okuoku r7rs-bridge)
-        )
+        ))
 
-      ;; update git repository
-      (define (update-gitdir)
-        (let ((dirs (list (directory-list (expand-path *gitdir*) :children? #true :add-path? #true))))
-          (let loop ((dirs (car dirs)))
-               (cond
-                 ((null? dirs)
-                  (display "update finished!\n"))
-                 (else
-                     (when (file-is-directory? (car dirs))
-                       (display (paint "=> " 4))
-                       (display (paint (sys-basename (car dirs)) 3))
-                       (newline)
-                       (run-process '(git pull) :wait #true :directory (car dirs)))
-                   (newline)
-                   (loop (cdr dirs)))))))
-
-
-      ;; clean git repository with "git gc"
-      (define (clean-gitdir)
-        (let ((dirs (list (directory-list (expand-path *gitdir*) :children? #true :add-path? #true))))
-          (let loop ((dirs (car dirs)))
-               (cond
-                 ((null? dirs)
-                  (display "cleaning finished!\n"))
-                 (else
-                     (cond
-                       ((file-is-directory? (car dirs))
-                        (display (paint "=> " 4))
-                        (display (paint (sys-basename (car dirs)) 3))
-                        (newline)
-                        (run-process '(git gc) :wait #true :directory (car dirs))
-                        (newline))
-                       (else  #true))
-                   (loop (cdr dirs)))))))
+    ;; update git repository
+    (define (update-gitdir)
+      (let ((dirs (list (directory-list (expand-path *gitdir*) :children? #true :add-path? #true))))
+        (let loop ((dirs (car dirs)))
+             (cond
+               ((null? dirs)
+                (display "update finished!\n"))
+               (else
+                   (when (file-is-directory? (car dirs))
+                     (display (paint "=> " 4))
+                     (display (paint (sys-basename (car dirs)) 3))
+                     (newline)
+                     (run-process '(git pull) :wait #true :directory (car dirs)))
+                 (newline)
+                 (loop (cdr dirs)))))))
 
 
-      ;; clone git repository
-      (define (clone-gitdir)
-        (let ((clone (lambda (url dirname) (run-process `(git clone ,url ,dirname) :wait #true))))
-          (for-each
-              (lambda (l)
-                (if-not (file-is-directory? (x->string (car l)))
-                        (clone (cadr l) (car l))
-                        #true))
-            (repo-url-directory-list))
-          #true))
+    ;; clean git repository with "git gc"
+    (define (clean-gitdir)
+      (let ((dirs (list (directory-list (expand-path *gitdir*) :children? #true :add-path? #true))))
+        (let loop ((dirs (car dirs)))
+             (cond
+               ((null? dirs)
+                (display "cleaning finished!\n"))
+               (else
+                   (cond
+                     ((file-is-directory? (car dirs))
+                      (display (paint "=> " 4))
+                      (display (paint (sys-basename (car dirs)) 3))
+                      (newline)
+                      (run-process '(git gc) :wait #true :directory (car dirs))
+                      (newline))
+                     (else  #true))
+                 (loop (cdr dirs)))))))
 
-      (define (repo-url-directory-list)
-        (map
-            (lambda (e)
-              (cond
-                ((string? e)
+
+    ;; clone git repository
+    (define (clone-gitdir)
+      (let ((clone (lambda (url dirname) (run-process `(git clone ,url ,dirname) :wait #true))))
+        (for-each
+            (lambda (l)
+              (if-not (file-is-directory? (x->string (car l)))
+                      (clone (cadr l) (car l))
+                      #true))
+          (repo-url-directory-list))
+        #true))
+
+    (define (repo-url-directory-list)
+      (map
+          (lambda (e)
+            (cond
+              ((string? e)
                                         ; normal repo
-                 (list (sys-basename (path-sans-extension e)) e))
-                ((list? e)
-                 (cond
-                   ((string? (car e))
+               (list (sys-basename (path-sans-extension e)) e))
+              ((list? e)
+               (cond
+                 ((string? (car e))
                                         ; normal repo
-                    (list (cadr e) (car e)))
-                   ((= (length e) 2)
+                  (list (cadr e) (car e)))
+                 ((= (length e) 2)
                                         ; github
-                    (list (cadr e) #`"git://github.com/,(car e)/,(cadr e)"))
+                  (list (cadr e) #`"git://github.com/,(car e)/,(cadr e)"))
                                         ; github with renaming
-                   (else
-                       (list (caddr e) #`"git://github.com/,(car e)/,(cadr e)"))))
-                ((symbol? e)
+                 (else
+                     (list (caddr e) #`"git://github.com/,(car e)/,(cadr e)"))))
+              ((symbol? e)
                                         ; my github
-                 (list e #`"git@github.com:mytoh/,|e|"))
-                (else
-                    (list e))))
-          *repos* ))
+               (list e #`"git@github.com:mytoh/,|e|"))
+              (else
+                  (list e))))
+        *repos* ))
 
-      (define (list-repos)
-        (map
-            (^ (x) (cond
-                     ((list? x)
-                      (print
-                       (string-append (paint (x->string (car x)) 33)
-                         ": "
-                         (paint (x->string (cadr x)) 93))))
-                     (else
-                         (print x))))
-          *repos*))
+    (define (list-repos)
+      (map
+          (^ (x) (cond
+                   ((list? x)
+                    (print
+                     (string-append (paint (x->string (car x)) 33)
+                       ": "
+                       (paint (x->string (cadr x)) 93))))
+                   (else
+                       (print x))))
+        *repos*))
 
-      (define (usage status)
-        (exit status "usage: ~a <command> <package-name>\n" *program-name*))
+    (define (usage status)
+      (exit status "usage: ~a <command> <package-name>\n" *program-name*))
 
 
-      (define (ääliö args)
-        (let-args args
-                  ((#false "h|help" (usage 0))
-                   . rest)
-                  (with-cwd *gitdir*
-                            (match (car rest)
-                                   ;; commands
-                                   ((or "update" "up")
-                                    (begin
-                                      (print (string-append (paint "updating " 8) "repositories"))
-                                      (update-gitdir)))
-                                   ("clean"
-                                    (clean-gitdir))
-                                   ("list"
-                                    (list-repos))
-                                   ("clone"
-                                    (begin
-                                      (print (string-append (paint "cloning " 3) "repositories"))
-                                      (clone-gitdir)))
-                                   (_ (usage 1)))))
-        0)))
-  )
+    (define (ääliö args)
+      (let-args args
+                ((#false "h|help" (usage 0))
+                 . rest)
+                (with-cwd *gitdir*
+                          (match (car rest)
+                                 ;; commands
+                                 ((or "update" "up")
+                                  (begin
+                                    (print (string-append (paint "updating " 8) "repositories"))
+                                    (update-gitdir)))
+                                 ("clean"
+                                  (clean-gitdir))
+                                 ("list"
+                                  (list-repos))
+                                 ("clone"
+                                  (begin
+                                    (print (string-append (paint "cloning " 3) "repositories"))
+                                    (clone-gitdir)))
+                                 (_ (usage 1)))))
+      0)
+    ))

@@ -24,7 +24,7 @@
           (display (car  app))
           (newline)
           (run-process app
-                       :detached #t
+                       :detached #true
                        :output :null
                        :error :null))
         (print (string-append "no such command "

@@ -14,6 +14,8 @@
       launch-app
       konachan
       unpack
+      repl
+      piip
       )
 
   (import (scheme base)

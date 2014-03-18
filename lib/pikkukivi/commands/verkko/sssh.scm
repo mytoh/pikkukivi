@@ -1,13 +1,16 @@
 
-(define-module pikkukivi.commands.verkko.sssh
-  (export
-    sssh)
-  (use gauche.process)
-  (use util.list) ; slices
-  (use file.util)
-  (require-extension (srfi 1 13))    ; iota
-  )
-(select-module pikkukivi.commands.verkko.sssh)
+(define-library (pikkukivi commands verkko sssh)
+    (export
+      sssh)
+  (import
+    (scheme base)
+    (gauche base)
+    (gauche process)
+    (util list) ; slices
+    (file util)
+    (srfi 1)
+    (srfi  13))
 
-(define (sssh args)
-  (run-process `(ssh ,@args) :wait #t))
+  (begin
+    (define (sssh args)
+      (run-process `(ssh ,@args) :wait #true))))

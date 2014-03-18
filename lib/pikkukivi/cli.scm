@@ -2,6 +2,10 @@
 (define-library (pikkukivi cli)
     (export run)
   (import (scheme base)
+          (scheme repl)
+          (scheme eval)
+          (scheme r5rs)
+          (gauche base)
           (file util)
           (util match)
           (util list)
@@ -36,5 +40,8 @@
                ("konachan"
                 (konachan rest))
                ("unpack"
-                (unpack rest)))))
+                (unpack rest))
+               ("piip"
+                (piip rest))
+               )))
     ))

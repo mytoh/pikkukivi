@@ -1,21 +1,24 @@
-(define-module pikkukivi.commands.verkko.ylilauta
-  (export ylilauta)
-
-  (use rfc.http)
-  (use rfc.uri)
-  (use gauche.process)
-  (use gauche.charconv)
-  (use file.util)
-  (use util.match)
-  (use gauche.collection) ;find
-  (use gauche.parseopt)
-  (use srfi-11)
-  (use kirjasto.komento.työkalu)
-  (use kirjasto.työkalu)
-  (use kirjasto.merkkijono)
-  (use kirjasto.pääte)
-  (use maali)
-  (require-extension (srfi 1))
+(define-library (pikkukivi commands verkko ylilauta)
+    (export ylilauta)
+  (import
+    (scheme base)
+    (scheme write)
+    (gauche base)
+    (rfc http)
+    (rfc uri)
+    (gauche process)
+    (gauche charconv)
+    (file util)
+    (util match)
+    (gauche collection) ;find
+    (gauche parseopt)
+    (srfi-11)
+    (kirjasto komento työkalu)
+    (kirjasto työkalu)
+    (kirjasto merkkijono)
+    (kirjasto pääte)
+    (maali)
+    (srfi 1))
 
   (begin
 

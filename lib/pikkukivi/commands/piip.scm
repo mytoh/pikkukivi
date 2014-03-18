@@ -1,18 +1,20 @@
 
+(define-library (pikkukivi commands piip)
+    (export
+      piip)
+  (import
+    (scheme base)
+    (scheme file)
+    (gauche base))
 
-
-(define-module pikkukivi.commands.piip
-  (export
-    piip))
-(select-module pikkukivi.commands.piip)
-
-(define (piip args)
-  (cond
-    ((equal? (sys-getenv "OSTYPE")
-             "FreeBSD")
-     (call-with-output-file
-       "/dev/speaker"
-       (lambda (in)
-         (display (car args) in))))
-    (else
-      (display ""))))
+  (begin
+    (define (piip args)
+      (cond
+        ((equal? (sys-getenv "OSTYPE")
+           "FreeBSD")
+         (call-with-output-file
+             "/dev/speaker"
+           (lambda (in)
+             (display (car args) in))))
+        (else
+            (display ""))))))
