@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi commands kuva)
+(define-library (pikkukivi commands kuva)
     (export
       kuva)
   (import
@@ -15,14 +15,18 @@
   (begin
     (define (usage status) (exit status "usage: ~a <file>\n" *program-name*))
 
+    (define default-feh-options
+      '(--auto-zoom --fullscreen --quiet))
+
     (define (open-directory dir)
-      (run-process `(feh "-F" ,dir) :wait #t))
+      (run-process `(feh ,@default-feh-options ,dir) :wait #true))
 
     (define (open-regular-file file)
-      (run-process `(feh -Z -F  -q --start-at
+      (run-process `(feh ,@default-feh-options
+                         --start-at
                          ,(sys-realpath file)
                          ,(sys-dirname (sys-realpath file)))
-                   :wait #t))
+                   :wait #true))
 
     (define (open-archive file)
       (let ((temp (build-path
@@ -33,15 +37,15 @@
                      (path-sans-extension file))))))
         (make-directory* temp)
         (unpack (list file temp))
-        (run-process `(feh -F -Z -r -q ,temp) :wait #t)
+        (run-process `(feh ,@default-feh-options  -r ,temp) :wait #true)
         (remove-directory* temp)))
 
     (define open
       (lambda (args)
         (cond ((null? args)
-               (run-process `(feh) :wait #t))
+               (run-process `(feh) :wait #true))
               (else
-                  (let-args args ((#f "h|help" (usage 0)) . rest)
+                  (let-args args ((#false "h|help" (usage 0)) . rest)
                             (match (car rest)
                                    ((? file-is-directory? dir)
                                     (open-directory dir))
