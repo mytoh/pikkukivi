@@ -53,7 +53,7 @@
                                                          (lambda (line)
                                                            (let ((m (parse-img-url line board)))
                                                              m))
-                                                         (cut read-line in #t)))))))
+                                                         (cut read-line in #true)))))))
         (flush)
         (let ((got-images (remove not
                             (map (lambda (url) (fetch url))
@@ -75,7 +75,7 @@
         (let-values (((scheme user-info hostname port-number path query fragment)
                       (uri-parse uri)))
           (let* ((file (url->filename uri))
-                 (flusher (lambda (sink headers)  #t)))
+                 (flusher (lambda (sink headers)  #true)))
             (if (not (file-is-readable? file))
               (receive (temp-out temp-file)
                        (sys-mkstemp "yli-temp")
@@ -112,7 +112,7 @@
 
     (define (ylilauta-get-all args)
       (let ((board (car args))
-            (dirs (values-ref (directory-list2 (current-directory) :children? #t) 0)))
+            (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
         (cond
           ((not (null? dirs))
            (for-each
@@ -144,7 +144,7 @@
     (define (ylilauta-get-repeat-all args)
       (loop-forever
        (let ((board (car args))
-             (dirs (values-ref (directory-list2 (current-directory) :children? #t) 0)))
+             (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
          (print (string-append "Board " (paint board 229)))
          (cond
            ((not (null? dirs))

@@ -72,7 +72,7 @@
                         (close-output-port temp-out)
                         (move-file temp-file file))
                file)
-              (else #f))))))
+              (else #false))))))
 
     (define (get-img body board)
       (let ((img-url-list (delete-duplicates
@@ -99,7 +99,7 @@
                                (str "/" (x->string bd) "/res/"  (x->string td)))))
         (cond
           ((string=? status "404")
-           #f)
+           #false)
           ((string-incomplete? body)
            (if-let1 html (string-incomplete->complete body :omit)
                     html
@@ -129,14 +129,14 @@
           (else
               (display (paint (str thread "'s gone") 103))
             (flush)
-            (sys-select #f #f #f 100000)
+            (sys-select #false #false #false 100000)
             (display "\r")
             (tput-clr-eol)))))
 
 
     (define (yotsuba-get-all args)
       (let ((bd (car args))
-            (dirs (values-ref (directory-list2 (current-directory) :children? #t) 0)))
+            (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
         (cond
           ((not (null? dirs))
            (for-each
@@ -155,7 +155,7 @@
     (define (yotsuba-get-repeat-all args)
       (loop-forever
        (let ((bd (car args))
-             (dirs (values-ref (directory-list2 (current-directory) :children? #t) 0)))
+             (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
          (print "getting " bd)
          (if-not (null? dirs)
                  (for-each

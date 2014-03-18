@@ -57,7 +57,7 @@
                                                          (lambda (line)
                                                            (let ((m (parse-img-url line board)))
                                                              m))
-                                                         (cut read-line in #t)))))))
+                                                         (cut read-line in #true)))))))
         (flush)
         (let ((got-images (remove not
                             (map (lambda (url) (fetch url))
@@ -79,7 +79,7 @@
         (let-values (((scheme user-info hostname port-number path query fragment)
                       (uri-parse uri)))
           (let* ((file (url->filename uri))
-                 (flusher (lambda (sink headers)  #t)))
+                 (flusher (lambda (sink headers)  #true)))
             (if (not (file-is-readable? file))
               (receive (temp-out temp-file)
                        (sys-mkstemp "futaba-temp")
@@ -148,7 +148,7 @@
 
     (define (list-directories dir)
       (receive (dirs _x)
-               (directory-list2 dir :children? #t)
+               (directory-list2 dir :children? #true)
                dirs))
 
     (define (futaba-get-all args)
@@ -178,7 +178,7 @@
           (else
               (display (paint (string-append thread "'s gone") 237))
             (flush)
-            (sys-select #f #f #f 100000)
+            (sys-select #false #false #false 100000)
             (display "\r")
             (tput-clr-eol)))))
 
