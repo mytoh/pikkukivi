@@ -83,7 +83,7 @@
                                  :sink temp-out :flusher flusher)
                        (close-output-port temp-out)
                        (move-file temp-file file))
-              #f)))))
+              #false)))))
 
     (define (get-thread-html board thread)
       (let-values (((status headers body)
@@ -94,7 +94,7 @@
                  (if (string-incomplete? html)
                    (string-incomplete->complete html :omit)
                    html)))
-              (else  #f))))
+              (else  #false))))
 
     (define (ylilauta-get args)
       (let* ((board (car args))
@@ -137,7 +137,7 @@
           (else
               (display (paint (string-append thread "'s gone") 237))
             (flush)
-            (sys-select #f #f #f 100000)
+            (sys-select #false #false #false 100000)
             (display "\r")
             (tput-clr-eol)))))
 
