@@ -1,4 +1,3 @@
-
 ;;; methods from
 ;;; cv2tar.scm by
 ;;;  Walter C. Pelissero
@@ -13,32 +12,35 @@
     )
   (begin
 
+    (define (run command)
+      (run-process command :wait #true))
+
     (define (zip-unpacker file . directory)
       (if (null? (car directory))
-        (run-process `(unzip -q ,file) :wait #t)
-        (run-process `(unzip -q ,file -d ,(caar directory)) :wait #t)))
+        (run `(unzip -q ,file))
+        (run `(unzip -q ,file -d ,(caar directory)))))
 
 
     (define (rar-unpacker file . directory)
       (cond ((null? (car directory))
-             (run-process `(unrar x -ad -inul ,file) :wait #t))
+             (run `(unrar x -ad -inul ,file)))
             (else
-                (run-process `(unrar x -ad -inul ,file ,(caar directory)) :wait #t))))
+                (run `(unrar x -ad -inul ,file ,(caar directory))))))
 
     (define (lha-unpacker file . diretory)
-      (run-process `(lha xq ,file) :wait #t))
+      (run `(lha xq ,file)))
 
     (define (tar-unpacker file . directory)
       (cond ((null? (car directory))
-             (run-process `(tar xf ,file) :wait #t))
+             (run `(tar xf ,file)))
             (else
                 (make-directory* (caar directory))
-              (run-process `(tar xf ,file -C ,(caar directory)) :wait #t))))
+              (run `(tar xf ,file -C ,(caar directory))))))
 
     (define (sevenzip-unpacker file . directory)
       (if (null? (car directory))
-        (run-process `(7z x ,file) :wait #t)
-        (run-process `(7z x ,file -o ,(caar directory)) :wait #t)))
+        (run `(7z x ,file))
+        (run `(7z x ,file -o ,(caar directory)))))
 
     (define-constant *unpacker-alist*
       `(
