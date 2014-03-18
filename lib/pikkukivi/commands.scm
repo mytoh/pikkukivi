@@ -13,6 +13,7 @@
       print-path
       launch-app
       konachan
+      unpack
       )
 
   (import (scheme base)

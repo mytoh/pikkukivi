@@ -34,5 +34,7 @@
                ("launch-app"
                 (launch-app rest))
                ("konachan"
-                (konachan rest)))))
+                (konachan rest))
+               ("unpack"
+                (unpack rest)))))
     ))
