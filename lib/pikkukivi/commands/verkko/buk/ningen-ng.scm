@@ -25,8 +25,10 @@
 
     (define (get-thread thread)
       (receive (status head body)
-               (http-get "xn--u8jm6cyd8028a.net" (string-append "/1" (http-compose-query "/imgboard.php" `((res ,thread)))))
-               (ces-convert body "*jp" "utf-8")))
+        (http-get "xn--u8jm6cyd8028a.net"
+                  (string-append "/1"
+                    (http-compose-query "/imgboard.php" `((res ,thread)))))
+        (ces-convert body "*jp" "utf-8")))
 
     (define (parse-image line)
       (let ((match
@@ -42,10 +44,12 @@
 
     (define (swget url)
       (receive (host port path) (parse-url url)
-               (let ((file (receive (a fname ext) (decompose-path path) (string-append fname "." ext))))
+               (let ((file (receive (a fname ext) (decompose-path path)
+                                    (string-append fname "." ext))))
                  (if (not (file-is-readable? file))
                    (http-get host path
-                             :sink (open-output-file file) :flusher (lambda (s h) (print file) #true))))))
+                             :sink (open-output-file file)
+                             :flusher (lambda (s h) (print file) #true))))))
 
     (define (get-image thread)
       (let ((html (get-thread thread)))
@@ -68,7 +72,8 @@
       (cd ".."))
 
     (define (get-ningen-ng-all)
-      (let ((dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
+      (let ((dirs (values-ref (directory-list2 (current-directory)
+                                               :children? #true) 0)))
         (if (not (null? dirs))
           (for-each
               (lambda (d)
