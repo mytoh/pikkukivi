@@ -16,7 +16,7 @@
 
   (begin
 
-    (define-constant *gitdir*  (expand-path "~/local/git/"))
+    (define-constant *gitdir*  (expand-path "~/huone/git/"))
 
     (define-constant *repos*
       '(; normal repo

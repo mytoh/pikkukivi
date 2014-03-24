@@ -43,5 +43,7 @@
                 (unpack rest))
                ("piip"
                 (piip rest))
+               ("ääliö"
+                (ääliö rest))
                )))
     ))

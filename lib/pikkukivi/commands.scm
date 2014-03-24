@@ -16,6 +16,7 @@
       unpack
       repl
       piip
+      ääliö
       )
 
   (import (scheme base)
