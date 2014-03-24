@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi commands scm ääliö)
+(define-library (pikkukivi commands scm ääliö)
     (export
       ääliö)
   (import
@@ -12,7 +12,7 @@
     (file util) ; directory-list, current-directory
     (maali)
     (clojure)
-    (clojure fs))
+    (kirjasto tiedosto))
 
   (begin
 
