@@ -9,7 +9,7 @@
           (file util)
           (util match)
           (util list)
-          (pikkukivi commands))
+          (pikkukivi command))
   (begin
     (define (run args)
       (let ((command (cadr args))

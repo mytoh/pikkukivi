@@ -1,0 +1,25 @@
+(define-library (pikkukivi command topless)
+    (export topless)
+  (import
+    (scheme base)
+    (gauche base)
+    (gauche process)
+    (kirjasto komento työkalu)
+    (kirjasto väri)
+    (kirjasto merkkijono)
+    (srfi 1)
+    (srfi  13)
+    (srfi  27))
+
+  (begin
+    (define (topless args)
+      (dynamic-wind
+          (run-process '(tput sc) :wait #true)
+        (let loop ()
+             (run-process '(tput cl) :wait #true)
+             (run-process `(,@args) :wait #true)
+             (sys-sleep #e2e0)
+             (run-process '(tput cl) :wait #true)
+             (loop))
+        (run-process '(tput rc) :wait #true)))
+    ))
