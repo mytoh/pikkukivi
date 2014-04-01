@@ -87,7 +87,7 @@
                           :sink temp-out :flusher flusher)
                 (close-output-port temp-out)
                 (move-file temp-file file))
-              #f)))))
+              #false)))))
 
     (define (get-html board thread)
       (let-values (((status headers body)
@@ -97,7 +97,7 @@
                  (if (string-incomplete? html)
                    (string-incomplete->complete html :omit)
                    html)))
-              (else  #f))))
+              (else  #false))))
 
     (define (detect-server board thread)
       (let* ((fget (lambda (server)
@@ -113,7 +113,7 @@
                       (get-res (lambda (srv)
                                  (receive (a b c)
                                    (fget srv)
-                                   (if (not (string=? a "404")) srv #f))))
+                                   (if (not (string=? a "404")) srv #false))))
                       (get-values (lambda (srv)
                                     (receive (a b c)
                                       (fget srv)
@@ -124,7 +124,7 @@
                               (get-values "dec"))
                     (and-let* ((s (get-res "may")))
                               (get-values "may"))
-                    (values "404" #f #f))))
+                    (values "404" #false #false))))
                ("7" ;ゆり
                 (fget "zip"))
                ("16" ;二次元壁紙

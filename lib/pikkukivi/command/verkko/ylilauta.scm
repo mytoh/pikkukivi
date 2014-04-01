@@ -1,5 +1,8 @@
+;; * ylilauta
 (define-library (pikkukivi command verkko ylilauta)
+    ;; ** exports
     (export ylilauta)
+  ;; ** imports
   (import
     (scheme base)
     (scheme write)
@@ -19,7 +22,7 @@
     (maali)
     (srfi 1)
     (srfi 11))
-
+  ;; ** code
   (begin
 
     (define (usage)
@@ -36,6 +39,8 @@
          "\t$ ylilauta -a b             # get images from b with directory name as thread number"))
       (exit 2))
 
+    (define (clear-list lst)
+      (remove not lst))
 
     (define (parse-img-url line board)
       (let ((matched (rxmatch->string
@@ -49,18 +54,18 @@
           matched)))
 
     (define (get-image html board)
-      (let ((image-url-list (remove not
-                              (call-with-input-string html
-                                                      (lambda (in)
-                                                        (port-map
-                                                         (lambda (line)
-                                                           (let ((m (parse-img-url line board)))
-                                                             m))
-                                                         (cut read-line in #true)))))))
+      (let ((image-url-list (clear-list
+                             (call-with-input-string html
+                                                     (lambda (in)
+                                                       (port-map
+                                                        (lambda (line)
+                                                          (let ((m (parse-img-url line board)))
+                                                            m))
+                                                        (cut read-line in #true)))))))
         (flush)
-        (let ((got-images (remove not
-                            (map (lambda (url) (fetch url))
-                              image-url-list))))
+        (let ((got-images (clear-list
+                           (map (lambda (url) (fetch url))
+                             image-url-list))))
           (match (length got-images)
                  (0 (newline))
                  (1 (print (string-append " " (paint (number->string (length got-images)) 49)
@@ -159,6 +164,7 @@
          (tput-clr-bol)
          (print (paint "----------" 237)))))
 
+    ;; ** main
     (define (ylilauta args)
       (let-args args
                 ((all "a|all")
