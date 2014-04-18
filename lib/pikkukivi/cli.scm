@@ -45,5 +45,7 @@
                 (piip rest))
                ("ääliö"
                 (ääliö rest))
+               ("vittu"
+                (vittu rest))
                )))
     ))

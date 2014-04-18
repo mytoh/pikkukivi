@@ -16,6 +16,7 @@
       unpack
       repl
       piip
+      vittu
       ääliö)
   (import (scheme base)
           (pikkukivi command unpack)
@@ -33,6 +34,7 @@
           (pikkukivi command swap-extension)
           (pikkukivi command piip)
           (pikkukivi command pomfup)
+          (pikkukivi command vittu)
 
           (pikkukivi command verkko)
           (pikkukivi command scm)
