@@ -1,4 +1,3 @@
-;;; yotsuba.scm
 
 (define-library (pikkukivi command verkko yotsuba)
     (export yotsuba)
@@ -12,13 +11,11 @@
           (gauche charconv)
           (rfc http)
           (rfc uri)
-          (rfc json)
           (file util)
           (util match)
           (srfi 1)
           (srfi  11)
           (srfi 13)
-          (srfi 43)
           (kirjasto komento työkalu)
           (kirjasto työkalu)
           (kirjasto merkkijono)
@@ -41,6 +38,20 @@
          "\t$ yotsuba -a b            # get images from b with directory name as thread number"))
       (exit 2))
 
+    (define (parse-img line board)
+      (or (rxmatch->string
+           (string->regexp
+            (str "\\/\\/[a-z]\\.4cdn\\.org\\/"
+                 (x->string  board)
+                 "\\/src\\/[^\"]+"))
+           line)
+        (rxmatch->string
+         (string->regexp
+          (str "\\/\\/images\\.4chan\\.org\\/"
+               (x->string board)
+               "\\/src\\/[^\"]+"))
+         line)))
+
     (define (url->filename url)
       (receive (a fname ext)
         (decompose-path (values-ref (uri-parse url) 4))
@@ -51,7 +62,7 @@
         (let-values (((scheme user-info hostname port-number path query fragment)
                       (uri-parse uri)))
           (let* ((file (url->filename uri))
-                 (flusher (lambda (sink headers)  #true)))
+                 (flusher (lambda (sink headers)  #t)))
             (cond
               ((not (file-is-readable? file))
                (receive (temp-out temp-file)
@@ -63,10 +74,29 @@
                file)
               (else #false))))))
 
+    (define (get-img body board)
+      (let ((img-url-list (delete-duplicates
+                              (filter string? (map (lambda (x)
+                                                     (parse-img x board))
+                                                (string-split body
+                                                              (string->regexp
+                                                               "<\/?(?:img)[^>]*>")))))))
+        (flush)
+        (let ((got-images (remove not (map (lambda (url)
+                                             ;; download indivisual image
+                                             (fetch (str "http:" url)))
+                                        img-url-list))))
+          (match (length got-images)
+                 (0 (newline))
+                 (1 (print " " (paint (number->string (length got-images)) 49)
+                           " file"))
+                 (_ (print " " (paint (number->string (length got-images)) 49)
+                           " files"))))))
+
     (define (get-html bd td)
       (let-values (((status headers body)
                     (http-get  "boards.4chan.org"
-                               (str "/" bd "/thread/"  (x->string td)))))
+                               (str "/" (x->string bd) "/res/"  (x->string td)))))
         (cond
           ((string=? status "404")
            #false)
@@ -83,6 +113,27 @@
         (lambda () (display body)))
       body)
 
+    (define (yotsuba-get args)
+      (let* ((board (car args))
+             (thread (cadr args))
+             (html (get-html board thread)))
+        (cond
+          ((string? html)
+           (tput-clr-bol)
+           (display (paint thread 4))
+           (mkdir thread)
+           (cd thread)
+           (string->html-file thread html)
+           (get-img html board)
+           (cd ".."))
+          (else
+              (display (paint (str thread "'s gone") 103))
+            (flush)
+            (sys-select #false #false #false 100000)
+            (display "\r")
+            (tput-clr-eol)))))
+
+
     (define (yotsuba-get-all args)
       (let ((bd (car args))
             (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
@@ -90,18 +141,18 @@
           ((not (null? dirs))
            (for-each
                (lambda (d)
-                 (yotsuba-get-one (list bd d)))
+                 (yotsuba-get (list bd d)))
              dirs)
            (print (paint bd 33) " fetch finished"))
           (else
               (print "no directories")))))
 
-    (define (yotsuba-get-one-repeat args)
+    (define (yotsuba-get-repeat args)
       (loop-forever
        (begin
-         (yotsuba-get-one args))))
+         (yotsuba-get args))))
 
-    (define (yotsuba-get-all-repeat args)
+    (define (yotsuba-get-repeat-all args)
       (loop-forever
        (let ((bd (car args))
              (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
@@ -109,7 +160,7 @@
          (if-not (null? dirs)
                  (for-each
                      (lambda (d)
-                       (yotsuba-get-one (list bd d)))
+                       (yotsuba-get (list bd d)))
                    dirs)
                  (print "no directories")))))
 
@@ -124,78 +175,12 @@
                   ((null? restargs)
                    (usage))
                   ((and all repeat)
-                   (yotsuba-get-all-repeat restargs))
+                   (yotsuba-get-repeat-all restargs))
                   (repeat
-                   (yotsuba-get-one-repeat restargs))
+                   (yotsuba-get-repeat restargs))
                   (all
                    (yotsuba-get-all restargs))
                   (else
-                      (yotsuba-get-one restargs)))
-                (tput-cursor-normal)))
-
-    (define (api-thread board number)
-      (let-values (((status headers body)
-                    (http-get "api.4chan.org"
-                              (string-append "/" board "/thread/" number ".json"))))
-        (if (thread-exists status)
-          (parse-json-string body)
-          #false)))
-
-    (define (post-tim post)
-      (let ((tim (assoc "tim" post)))
-        (if tim (cdr tim) #false)))
-
-    (define (post-ext post)
-      (let ((ext (assoc "ext" post)))
-        (if ext (cdr ext) #false)))
-
-    (define (thread-exists status)
-      (string=? status "200"))
-
-    (define (make-post-image-url board post)
-      (if (post-tim post)
-        (string-append
-            "http://images.4cdn.org/"
-          board "/"
-          (number->string (post-tim post))
-          (post-ext post))
-        '()))
-
-    (define (get-img posts board)
-      (let ((img-url-list (vector-map
-                              (lambda (_index post)
-                                (make-post-image-url board post))
-                            posts)))
-        (flush)
-        (let ((got-images (remove not (map (lambda (url)
-                                             ;; download indivisual image
-                                             (fetch url))
-                                        img-url-list))))
-          (match (length got-images)
-                 (0 (newline))
-                 (1 (print " " (paint (number->string (length got-images)) 49)
-                           " file"))
-                 (_ (print " " (paint (number->string (length got-images)) 49)
-                           " files"))))))
-
-    (define (yotsuba-get-one args)
-      (let* ((board (car args))
-             (thread (cadr args))
-             (response (api-thread board thread)))
-        (cond
-          (response
-           (tput-clr-bol)
-           (display (paint thread 4))
-           (mkdir thread)
-           (cd thread)
-           (string->html-file thread (get-html board thread))
-           (get-img (cdar response) board)
-           (cd ".."))
-          (else
-              (display (paint (str thread "'s gone") 103))
-            (flush)
-            (sys-select #false #false #false 100000)
-            (display "\r")
-            (tput-clr-eol)))))
-
-    ))
+                      (yotsuba-get restargs)))
+                (tput-cursor-normal))))
+  )
