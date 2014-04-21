@@ -47,7 +47,7 @@
         (path-swap-extension fname ext)))
 
     (define (fetch uri)
-      (when (string? uri)
+      (if (string? uri)
         (let-values (((scheme user-info hostname port-number path query fragment)
                       (uri-parse uri)))
           (let* ((file (url->filename uri))
@@ -61,7 +61,8 @@
                  (close-output-port temp-out)
                  (move-file temp-file file))
                file)
-              (else #false))))))
+              (else #false))))
+        #false))
 
     (define (get-html bd td)
       (let-values (((status headers body)
