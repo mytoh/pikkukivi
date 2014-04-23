@@ -1,6 +1,6 @@
 ;;; vittu.scm
 
- (define-library (pikkukivi command vittu)
+(define-library (pikkukivi command vittu)
     (export vittu)
   (import (scheme base)
           (scheme write)
@@ -30,11 +30,17 @@
         (display message)
         (newline)))
 
+    (define (kill-processes procs)
+      (for-each
+          (lambda (proc)
+            (cond
+              ((search-process proc)
+               (kill-process proc)
+               (message-killed proc))
+              (else (process-not-found proc))))
+        procs))
+
     (define (vittu args)
-      (cond
-        ((search-process (car args))
-         (kill-process (car args))
-         (message-killed (car args)))
-        (else (process-not-found (car args)))))
+      (kill-processes args))
 
     ))
