@@ -17,8 +17,8 @@
       (let ((pk-commands
              (concatenate (map (lambda (m)
                                  (module-exports (find-module (car m))))
-                            (append (library-fold 'pikkukivi.commands.* acons '())
-                              (library-fold 'pikkukivi.commands.*.* acons '()))))))
+                            (append (library-fold 'pikkukivi.command.* acons '())
+                              (library-fold 'pikkukivi.command.*.* acons '()))))))
         (for-each print
           (sort
            (delete-duplicates
