@@ -17,7 +17,7 @@
         (not (string-null? result))))
 
     (define (kill-process prog)
-      (run-command `(killall ,prog)))
+      (run-command `(killall -9 ,prog)))
 
     (define (process-not-found prog)
       (display (string-append prog " not found"))
