@@ -1,7 +1,7 @@
 ;; *- coding: utf-8 -*-
 
-(define-library (pikkukivi command launch-app)
-    (export launch-app)
+(define-library (pikkukivi command juosta)
+    (export juosta)
   (import
     (scheme base)
     (scheme write)
@@ -15,7 +15,7 @@
 
     (define additional-paths `(,(expand-path  "~/huone/ohjelmat/v2c")))
 
-    (define (launch app)
+    (define (juosta-app app)
       (if (or (find-file-in-paths (car app))
             (find-file-in-paths (car app)
                                 :paths additional-paths))
@@ -30,5 +30,5 @@
         (print (string-append "no such command "
                  (car app)))))
 
-    (define (launch-app args)
-      (launch args))))
+    (define (juosta args)
+      (juosta-app args))))

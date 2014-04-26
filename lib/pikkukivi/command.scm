@@ -17,6 +17,7 @@
       repl
       piip
       vittu
+      juosta
       ääliö)
   (import (scheme base)
           (pikkukivi command unpack)
@@ -26,7 +27,7 @@
           (pikkukivi command colour)
           (pikkukivi command topless)
           (pikkukivi command ascii-taide)
-          (pikkukivi command launch-app)
+          (pikkukivi command juosta)
           (pikkukivi command print-path)
           (pikkukivi command tmux-start)
           (pikkukivi command kuva)

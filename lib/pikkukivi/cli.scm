@@ -47,5 +47,7 @@
                 (ääliö rest))
                ("vittu"
                 (vittu rest))
+               ("juosta"
+                (juosta rest))
                )))
     ))
