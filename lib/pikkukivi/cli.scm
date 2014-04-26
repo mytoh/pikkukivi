@@ -48,6 +48,5 @@
                ("vittu"
                 (vittu rest))
                ("juosta"
-                (juosta rest))
-               )))
+                (juosta rest)))))
     ))
