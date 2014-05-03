@@ -15,7 +15,6 @@
     (define (run args)
       (let ((command (cadr args))
             (rest (cddr args)))
-        (display command)
         ((string->command command) rest)))
 
     ))
