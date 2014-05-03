@@ -1,24 +1,6 @@
 
 (define-library (pikkukivi command)
-    (export
-      futaba
-      commands
-      yotsuba
-      pervo
-      pahvi
-      ylilauta
-      pomfup
-      colour
-      kuva
-      print-path
-      launch-app
-      konachan
-      unpack
-      repl
-      piip
-      vittu
-      juosta
-      ääliö)
+    (export string->command)
   (import (scheme base)
           (pikkukivi command unpack)
           (pikkukivi command repl)
@@ -41,4 +23,38 @@
           (pikkukivi command scm)
 
           (pikkukivi command commands)
-          (pikkukivi command help)))
+          (pikkukivi command help))
+
+  (begin
+
+    (define-syntax cond-command
+      (syntax-rules ()
+        ((_ command command* ...)
+         (lambda (c)
+           (cond
+             ((equal? c (symbol->string 'command)) command)
+             ((equal? c (symbol->string 'command*)) command*)
+             ...)))))
+
+    (define string->command
+      (cond-command
+       futaba
+       commands
+       yotsuba
+       pervo
+       pahvi
+       ylilauta
+       pomfup
+       colour
+       kuva
+       print-path
+       launch-app
+       konachan
+       unpack
+       repl
+       piip
+       vittu
+       juosta
+       ääliö))
+
+    ))
