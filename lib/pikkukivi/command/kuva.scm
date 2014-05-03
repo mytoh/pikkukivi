@@ -16,7 +16,7 @@
     (define (usage status) (exit status "usage: ~a <file>\n" *program-name*))
 
     (define default-feh-options
-      '(--auto-zoom --fullscreen --quiet))
+      '(--auto-zoom --fullscreen --quiet --reverse --sort mtime))
 
     (define (open-directory dir)
       (run-process `(feh ,@default-feh-options ,dir) :wait #true))
