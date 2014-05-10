@@ -11,9 +11,9 @@
     (file util)
     (srfi 1)
     (srfi  13)
-    (maali)
-    (pikkukivi))
+    (maali))
   (begin
+
     (define (help args)
       (exit 0
         (string-append
