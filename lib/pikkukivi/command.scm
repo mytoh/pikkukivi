@@ -38,23 +38,35 @@
 
     (define string->command
       (cond-command
-       futaba
-       commands
-       yotsuba
-       pervo
-       pahvi
-       ylilauta
-       pomfup
+       ascii-taide
+       buk
        colour
-       kuva
-       print-path
-       launch-app
-       konachan
-       unpack
-       repl
-       piip
-       vittu
+       commands
+       emma
+       futaba
+       help
        juosta
-       ääliö))
-
+       konachan
+       kuva
+       pahvi
+       pervo
+       piip
+       pomfup
+       print-path
+       radio
+       repl
+       rm
+       sget
+       sssh
+       swap-extension
+       tmux-start
+       topless
+       unpack
+       vittu
+       yes
+       ylilauta
+       yotsuba
+       yotsuba-old
+       ääliö
+       ))
     ))
