@@ -129,7 +129,7 @@
                      (display (paint "=> " 4))
                      (display (paint (sys-basename (car dirs)) 3))
                      (newline)
-                     (run-process '(git pull) :wait #true :directory (car dirs)))
+                     (run-process `(git -C ,(car dirs) pull) :wait #true))
                  (newline)
                  (loop (cdr dirs)))))))
 
