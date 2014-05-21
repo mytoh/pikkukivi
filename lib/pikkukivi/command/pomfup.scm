@@ -8,7 +8,8 @@
           (gauche process)
           (srfi 13)
           (rfc http)
-          (rfc json))
+          (rfc json)
+          (rename (prefix (kirjasto avain) avain:)))
   (begin
     (define (post file)
       (receive (status header body)
@@ -18,9 +19,9 @@
         body))
 
     (define (parse-file-url-json json)
-      (cdr (assoc "url"
-             (vector-ref (cdr (assoc "files" (parse-json-string json)))
-               0))))
+      (avain:get "url"
+                 (vector-ref (avain:get "files" (parse-json-string json))
+                   0)))
 
     (define (compose-file-url name)
       (string-append "http://a.pomf.se/"

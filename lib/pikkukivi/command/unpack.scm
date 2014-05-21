@@ -9,7 +9,7 @@
     (gauche base)
     (gauche process)
     (file util) ; path-extension
-    )
+    (rename (prefix (kirjasto avain) avain:)))
   (begin
 
     (define (run command)
@@ -44,27 +44,27 @@
 
     (define-constant *unpacker-alist*
       `(
-        ("zip" ,zip-unpacker)
-        ("cbz" ,zip-unpacker)
+        ("zip" . ,zip-unpacker)
+        ("cbz" . ,zip-unpacker)
 
-        ("7z" ,sevenzip-unpacker)
+        ("7z" . ,sevenzip-unpacker)
 
-        ("rar" ,rar-unpacker)
-        ("cbr" ,rar-unpacker)
+        ("rar" . ,rar-unpacker)
+        ("cbr" . ,rar-unpacker)
 
-        ("lha" ,lha-unpacker)
+        ("lha" . ,lha-unpacker)
 
-        ("gz"  ,tar-unpacker)
-        ("tgz" ,tar-unpacker)
-        ("bz2" ,tar-unpacker)
-        ("xz"  ,tar-unpacker)
-        ("txz" ,tar-unpacker)
-        ("cbx" ,tar-unpacker)
-        ("tar" ,tar-unpacker)))
+        ("gz"  . ,tar-unpacker)
+        ("tgz" . ,tar-unpacker)
+        ("bz2" . ,tar-unpacker)
+        ("xz"  . ,tar-unpacker)
+        ("txz" . ,tar-unpacker)
+        ("cbx" . ,tar-unpacker)
+        ("tar" . ,tar-unpacker)))
 
     (define (unpacker file . directory)
-      (let ((unpacker (cadr (assoc (path-extension file)
-                              *unpacker-alist*))))
+      (let ((unpacker (avain:get (path-extension file)
+                                 *unpacker-alist*)))
         (print file)
         (if unpacker
           (if directory
