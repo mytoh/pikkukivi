@@ -26,10 +26,13 @@
     (define (tar outfile infile)
       (run-command `(tar --create --verbose --file ,outfile ,infile)))
 
+    (define (file-tar-xz file)
+      (string-append file ".tar.xz"))
+
     (define (backup args)
-      (tar (out-directory "vihko.tar.xz")
+      (tar (out-directory (file-tar-xz "vihko"))
            (home-directory ".org"))
-      (tar (out-directory "minorhythm.tar.xz")
+      (tar (out-directory (file-tar-xz "minorhythm"))
            (home-directory "huone/radio/minorhythm")))
 
     ))
