@@ -1,6 +1,6 @@
 ;;; yotsuba.scm
 
-(define-library (pikkukivi command verkko yotsuba)
+ (define-library (pikkukivi command verkko yotsuba)
     (export yotsuba)
   (import (scheme base)
           (scheme write)
@@ -23,6 +23,7 @@
           (kirjasto työkalu)
           (kirjasto merkkijono)
           (kirjasto pääte)
+          (rename (prefix (kirjasto avain) avain:))
           (maali)
           (clojure))
   (begin
@@ -143,12 +144,10 @@
           #false)))
 
     (define (post-tim post)
-      (let ((tim (assoc "tim" post)))
-        (if tim (cdr tim) #false)))
+      (avain:get "tim" post))
 
     (define (post-ext post)
-      (let ((ext (assoc "ext" post)))
-        (if ext (cdr ext) #false)))
+      (avain:get "ext" post))
 
     (define (thread-exists status)
       (string=? status "200"))
