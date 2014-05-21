@@ -18,6 +18,7 @@
           (pikkukivi command piip)
           (pikkukivi command pomfup)
           (pikkukivi command vittu)
+          (pikkukivi command backup)
 
           (pikkukivi command verkko)
           (pikkukivi command scm)
@@ -68,5 +69,6 @@
        yotsuba
        yotsuba-old
        ääliö
+       backup
        ))
     ))
