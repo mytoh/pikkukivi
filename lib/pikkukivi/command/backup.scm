@@ -16,12 +16,12 @@
     (define (home-directory file)
       (build-path (home) file))
 
-    (define default-directory
+    (define *default-directory*
       (make-parameter
           (home-directory "huone/varmuuskopio")))
 
     (define (out-directory file)
-      (build-path (default-directory) file))
+      (build-path (*default-directory*) file))
 
     (define (tar outfile infile)
       (run-command `(tar --create --verbose --file ,outfile ,infile)))
