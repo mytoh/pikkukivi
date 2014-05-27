@@ -28,6 +28,7 @@
             ;; fin
             (ylex "ylex" "http://mediau.yle.fi/liveylex?MSWMExt=.asf")
             (ylex2 "ylex"  "http://10.1.1.86:80/liveylex?MSWMExt=.asf")
+            (suomipop "suomipop" "http://rstream2.nelonenmedia.fi/RadioSuomiPop.mp3.m3u")
 
             ;; icecast
             (uzic-ch-techno-minimal "UZIC channel TECHNO MINIMAL" "http://stream.uzic.ch:8002/tek-minimal128.mp3")
@@ -176,7 +177,7 @@
             (sunshine "SunshineFM             (宮崎県宮崎市)" " mms://simul.freebit.net/sunshinefm")
             (miyazaki "SunshineFM             (宮崎県宮崎市)" " mms://simul.freebit.net/sunshinefm")
 
-            (osumi "おおすみ半島FM 24時間  (鹿児島県鹿屋市)" " -af volume 10:0 -playlist http://fm.osumi.or.jp:8000/0033FM.m3u")
+            (osumi "おおすみ半島FM 24時間  (鹿児島県鹿屋市)" "http://fm.osumi.or.jp:8000/0033FM.m3u")
             (amami "あまみFM               (鹿児島県奄美市)" "http://www.simulradio.jp/asx/AmamiFM.asx")
 
             (uruma "FMうるま       24時間  (沖縄県うるま市)" "http://www.simulradio.jp/asx/FmUruma.asx")
@@ -199,6 +200,8 @@
              (extension (path-extension station)))
         (match extension
                ("asx"
+                (run-process `(mplayer -playlist ,station) :wait #true))
+               ("m3u"
                 (run-process `(mplayer -playlist ,station) :wait #true))
                (else
                    (run-process `(mplayer ,@(cdr (assoc-ref (*station-list*) (string->symbol (car args))))) :wait #t)))))
