@@ -33,6 +33,8 @@
       (tar (out-directory (file-tar-xz "vihko"))
            (home-directory ".org"))
       (tar (out-directory (file-tar-xz "minorhythm"))
-           (home-directory "huone/radio/minorhythm")))
+           (home-directory "huone/radio/minorhythm"))
+      (tar (out-directory (file-tar-xz "501st"))
+           (home-directory "huone/radio/501st")))
 
     ))
