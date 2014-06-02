@@ -30,16 +30,17 @@
 
     (define (usage)
       (print-strings
-       '("Usage: yotsuba board thread"
-         "  option)"
-         "\t-a|all      get thread number from directories under cwd"
-         "\t-r|repeat   repeat script with interval 5 minutes"
-         "\tboard       b g a v hc ..."
-         "\tthread      3839 2230 93988 482208 ..."
-         "  expamle) "
-         "\t$ yotsuba b 999999        # get images from /b/999999 with repeat option"
-         "\t$ yotsuba -r g 9999       # get images from /g/9999 with repeat option"
-         "\t$ yotsuba -a b            # get images from b with directory name as thread number"))
+       '("get yotsuba thread images"
+         ""
+         "Usage:"
+         "  yotsuba <board> <thread>"
+         "  yotsuba --repeat <board> <thread>"
+         "  yotsuba --all <board> "
+         "  yotsuba --repeat --all <board>"
+         ""
+         "Options:"
+         "  -a --all     get thread number from directories under cwd"
+         "  -r --repeat  repeat script with interval 5 minutes"))
       (exit 2))
 
     (define (url->filename url)
