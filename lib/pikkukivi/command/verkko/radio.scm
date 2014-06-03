@@ -28,7 +28,8 @@
             ;; fin
             (ylex "ylex" "http://mediau.yle.fi/liveylex?MSWMExt=.asf")
             (ylex2 "ylex"  "http://10.1.1.86:80/liveylex?MSWMExt=.asf")
-            (suomipop "suomipop" "http://rstream2.nelonenmedia.fi/RadioSuomiPop.mp3.m3u")
+            (suomipop "radio suomipop" "http://rstream2.nelonenmedia.fi/RadioSuomiPop.mp3.m3u")
+            (nova "radio nova" "http://icelive0.41168-icelive0.cdn.qbrick.com/5050/41168_radionova1.mp3")
 
             ;; icecast
             (uzic-ch-techno-minimal "UZIC channel TECHNO MINIMAL" "http://stream.uzic.ch:8002/tek-minimal128.mp3")
