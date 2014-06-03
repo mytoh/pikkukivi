@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command verkko futaba)
+ (define-library (pikkukivi command verkko futaba)
     (export futaba)
 
   (import(scheme base)
@@ -26,16 +26,20 @@
 
     (define (usage)
       (print-strings
-       '("Usage: futaba board thread"
-         "  option:"
-         "\t-a|all      get thread number from directories under cwd"
-         "\t-r|repeat   repeat script with interval 5 minutes"
-         "\tboard      only supports b,k,l,7,40"
-         "\tthread      3839 2230 93988 482208 ..."
-         "  expamle: "
-         "\t$ futaba b 222222         # get images once from /b/222222 "
-         "\t$ futaba -r id 9999       # get images from /id/9999 with repeat option"
-         "\t$ futaba -a b             # get images from b with directory name as thread number"))
+       '("futaba board thread"
+         ""
+         "Usage:"
+         "  futaba <board> <thread>       # get images once from /b/222222 "
+         "  futaba -r <board> <thread>    # get images from /id/9999 with repeat option"
+         "  futaba -a <board>             # get images from b with directory name as thread number"
+         ""
+         "Options:"
+         "  -a --all      get thread number from directories under cwd"
+         "  -r --repeat   repeat script with interval 5 minutes"
+         ""
+         "Arguments:"
+         "  <board>      only supports b,k,l,7,40"
+         "  <thread>      3839 2230 93988 482208 ..."))
       (exit 2))
 
 
