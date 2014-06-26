@@ -99,7 +99,7 @@
    )
   )
 
-(define (main args)
+ (define (main args)
   (let-args (cdr args)
             ((w "w|write")
              (p "p|print")

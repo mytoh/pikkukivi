@@ -16,7 +16,7 @@
           (file util)
           (util match)
           (srfi 1)
-          (srfi  11)
+          (srfi 11)
           (srfi 13)
           (srfi 43)
           (kirjasto komento työkalu)

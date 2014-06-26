@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command scm ääliö)
+ (define-library (pikkukivi command scm ääliö)
     (export
       ääliö)
   (import
@@ -8,6 +8,7 @@
     (gauche base)
     (gauche process) ; run-process
     (gauche parseopt)
+    (srfi 13)
     (util match)
     (file util) ; directory-list, current-directory
     (maali)
@@ -152,7 +153,6 @@
                      (else  #true))
                  (loop (cdr dirs)))))))
 
-
     ;; clone git repository
     (define (clone-gitdir)
       (let ((clone (lambda (url dirname) (run-process `(git clone ,url ,dirname) :wait #true))))
@@ -204,6 +204,38 @@
     (define (usage status)
       (exit status "usage: ~a <command> <package-name>\n" *program-name*))
 
+    (define (do-get url)
+      (let* ((path (format-url->path url))
+             (full-path (string-append *gitdir* path))
+             (git-url (format-url->git url)))
+        (run-process `(git clone ,git-url ,path) :wait #true)))
+
+    (define (format-url->path url)
+      (cond
+        ((= 1 (string-count url #\/))
+         (string-append "github.com/" url))
+        (else
+            (trim-url-prefix url))))
+
+    (define (format-url->git url)
+      (cond
+        ((= 1 (string-count url #\/))
+         (string-append "git://github.com/" url))
+        (else
+            (string-append "git://" (trim-url-prefix url)))))
+
+    (define (trim-url-prefix url)
+      (define (drop-prefix url prefix)
+        (string-drop url (string-length prefix)))
+      (cond ((string= "http://"
+               (string-take url (string-length "http://")))
+             (drop-prefix url "http://"))
+            ((string= "https://"
+               (string-take url (string-length "httsp://")))
+             (drop-prefix url "https://"))
+            ((string= "git://"
+               (string-take url (string-length "git://")))
+             (drop-prefix url "git://"))))
 
     (define (ääliö args)
       (let-args args
@@ -224,6 +256,9 @@
                                   (begin
                                     (print (string-append (paint "cloning " 3) "repositories"))
                                     (clone-gitdir)))
+                                 ("get"
+                                  (do-get (cadr rest)))
                                  (_ (usage 1)))))
       0)
+
     ))
