@@ -13,6 +13,7 @@
     (file util) ; directory-list, current-directory
     (maali)
     (clojure)
+    (kirjasto list)
     (kirjasto tiedosto))
 
   (begin
@@ -120,20 +121,34 @@
 
     ;; update git repository
     (define (update-gitdir)
-      (let ((dirs (list (directory-list (expand-path *gitdir*) :children? #true :add-path? #true))))
-        (let loop ((dirs (car dirs)))
-             (cond
-               ((null? dirs)
-                (display "update finished!\n"))
-               (else
-                   (when (file-is-directory? (car dirs))
-                     (display (paint "=> " 4))
-                     (display (paint (sys-basename (car dirs)) 3))
-                     (newline)
-                     (run-process `(git -C ,(car dirs) pull) :wait #true))
-                 (newline)
-                 (loop (cdr dirs)))))))
+      (let ((repos (find-git-repository *gitdir*)))
+        (for-each
+            (lambda (r)
+              (update-git-repository r))
+          repos)
+        (display "update finished!")
+        (newline)))
 
+    (define (update-git-repository dir)
+      (display (paint "=> " 4))
+      (display (paint (sys-basename dir) 3))
+      (newline)
+      (run-process `(git -C ,dir pull) :wait #true)
+      (newline))
+
+    (define (git-repository? directory)
+      (file-exists? (build-path directory ".git")))
+
+    (define (find-git-repository directory)
+      (flatten
+       (map
+           (lambda (d)
+             (if (git-repository? d)
+               d
+               (find-git-repository d)))
+         (directory-list2 directory
+                          :children? #true
+                          :add-path? #true))))
 
     ;; clean git repository with "git gc"
     (define (clean-gitdir)
@@ -236,6 +251,7 @@
             ((string= "git://"
                (string-take url (string-length "git://")))
              (drop-prefix url "git://"))))
+
 
     (define (ääliö args)
       (let-args args
