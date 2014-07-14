@@ -120,7 +120,7 @@
         ))
 
     ;; update git repository
-    (define (update-gitdir)
+    (define (do-update)
       (let ((repos (find-git-repository *gitdir*)))
         (for-each
             (lambda (r)
@@ -184,7 +184,7 @@
           (lambda (e)
             (cond
               ((string? e)
-                                        ; normal repo
+               ;; normal repo
                (list (sys-basename (path-sans-extension e)) e))
               ((list? e)
                (cond
@@ -192,29 +192,29 @@
                                         ; normal repo
                   (list (cadr e) (car e)))
                  ((= (length e) 2)
-                                        ; github
-                  (list (cadr e) #`"git://github.com/,(car e)/,(cadr e)"))
-                                        ; github with renaming
+                  ;; github
+                  (list (cadr e)
+                    (string-append "git://github.com/" (car e)  "/" (cadr e))))
+                 ;; github with renaming
                  (else
-                     (list (caddr e) #`"git://github.com/,(car e)/,(cadr e)"))))
+                     (list (caddr e)
+                       (string-append "git://github.com/" (car e)  "/" (cadr e))))))
               ((symbol? e)
-                                        ; my github
-               (list e #`"git@github.com:mytoh/,|e|"))
+               ;; my github
+               (list e
+                 (string-append "git@github.com:mytoh/" e)))
               (else
                   (list e))))
         *repos* ))
 
-    (define (list-repos)
-      (map
-          (^ (x) (cond
-                   ((list? x)
-                    (print
-                     (string-append (paint (x->string (car x)) 33)
-                       ": "
-                       (paint (x->string (cadr x)) 93))))
-                   (else
-                       (print x))))
-        *repos*))
+    (define (do-list)
+      (let ((repos (find-git-repository *gitdir*)))
+        (map
+            (lambda (r)
+              (display
+                  (string-drop r (string-length *gitdir*)))
+              (newline))
+          repos)))
 
     (define (usage status)
       (exit status "usage: ~a <command> <package-name>\n" *program-name*))
@@ -223,7 +223,9 @@
       (let* ((path (format-url->path url))
              (full-path (string-append *gitdir* path))
              (git-url (format-url->git url)))
-        (run-process `(git clone ,git-url ,path) :wait #true)))
+        (display git-url)
+        (newline)
+        (run-process `(git clone --depth 1 ,git-url ,path) :wait #true)))
 
     (define (format-url->path url)
       (cond
@@ -263,11 +265,11 @@
                                  ((or "update" "up")
                                   (begin
                                     (print (string-append (paint "updating " 8) "repositories"))
-                                    (update-gitdir)))
+                                    (do-update)))
                                  ("clean"
                                   (clean-gitdir))
                                  ("list"
-                                  (list-repos))
+                                  (do-list))
                                  ("clone"
                                   (begin
                                     (print (string-append (paint "cloning " 3) "repositories"))
