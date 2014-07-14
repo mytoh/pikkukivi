@@ -6,6 +6,7 @@
           (scheme write)
           (scheme process-context)
           (kirjasto komento)
+          (gauche base)
           (file util))
 
   (begin
@@ -23,18 +24,19 @@
     (define (out-directory file)
       (build-path (*default-directory*) file))
 
-    (define (tar outfile infile)
-      (run-command `(tar --create --verbose --file ,outfile ,infile)))
-
     (define (file-tar-xz file)
       (string-append file ".tar.xz"))
 
+    (define (archive outfile infile)
+      (run-command `(tar --create --verbose --file ,outfile
+                         -C ,(sys-dirname infile) ,(sys-basename infile))))
+
     (define (backup args)
-      (tar (out-directory (file-tar-xz "vihko"))
-           (home-directory ".org"))
-      (tar (out-directory (file-tar-xz "minorhythm"))
-           (home-directory "huone/radio/minorhythm"))
-      (tar (out-directory (file-tar-xz "501st"))
-           (home-directory "huone/radio/501st")))
+      (archive (out-directory (file-tar-xz "vihko"))
+               (home-directory ".org"))
+      (archive (out-directory (file-tar-xz "minorhythm"))
+               (home-directory "huone/radio/minorhythm"))
+      (archive (out-directory (file-tar-xz "501st"))
+               (home-directory "huone/radio/501st")))
 
     ))
