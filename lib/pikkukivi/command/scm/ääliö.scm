@@ -9,6 +9,7 @@
     (gauche process) ; run-process
     (gauche parseopt)
     (srfi 13)
+    (srfi 37)
     (util match)
     (file util) ; directory-list, current-directory
     (maali)
@@ -207,14 +208,34 @@
                   (list e))))
         *repos* ))
 
-    (define (do-list)
-      (let ((repos (find-git-repository *gitdir*)))
-        (map
-            (lambda (r)
-              (display
-                  (string-drop r (string-length *gitdir*)))
-              (newline))
-          repos)))
+    (define options-list
+      (list (option '(#\p "full-path") (not 'require-arg?) (not 'optional-arg?)
+                    (lambda (option name arg full-path)
+                      (values #true)))))
+
+    (define (do-list args)
+      (receive (full-path?)
+        (args-fold (cdr args)
+          options-list
+          (lambda (option name arg . seeds)
+            (error "Unrecognized option:" name))
+          (lambda (operand full-path)
+            (values full-path))
+          #false)
+        (display full-path?)
+        (let ((repos (find-git-repository *gitdir*)))
+          (if full-path?
+            (map
+                (lambda (r)
+                  (display r)
+                  (newline))
+              repos)
+            (map
+                (lambda (r)
+                  (display
+                      (string-drop r (string-length *gitdir*)))
+                  (newline))
+              repos)))))
 
     (define (usage status)
       (exit status "usage: ~a <command> <package-name>\n" *program-name*))
@@ -269,7 +290,7 @@
                                  ("clean"
                                   (clean-gitdir))
                                  ("list"
-                                  (do-list))
+                                  (do-list rest))
                                  ("clone"
                                   (begin
                                     (print (string-append (paint "cloning " 3) "repositories"))
