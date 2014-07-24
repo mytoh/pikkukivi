@@ -4,7 +4,7 @@
   (import (scheme base)
           (scheme process-context)
           (scheme write)
-          (gauche base)
+          (gauche)
           (gauche process)
           (srfi 13)
           (rfc http)

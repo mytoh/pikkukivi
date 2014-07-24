@@ -3,7 +3,7 @@
     (export emma)
   (import
     (scheme base)
-    (gauche base)
+    (gauche)
     (gauche process)
     (kirjasto komento työkalu)
     (kirjasto väri)

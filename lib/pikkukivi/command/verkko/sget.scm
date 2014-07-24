@@ -4,7 +4,7 @@
   (import
     (scheme base)
     (scheme file)
-    (gauche base)
+    (gauche)
     (gauche net)
     (file util)
     (rfc http))

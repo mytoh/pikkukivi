@@ -5,7 +5,7 @@
       )
   (import
     (scheme base)
-    (gauche base)
+    (gauche)
     (text html-lite)
     (sxml ssax)
     (sxml sxpath)

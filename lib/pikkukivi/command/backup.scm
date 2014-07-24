@@ -6,7 +6,7 @@
           (scheme write)
           (scheme process-context)
           (kirjasto komento)
-          (gauche base)
+          (gauche)
           (file util))
 
   (begin
@@ -37,6 +37,8 @@
       (archive (out-directory (file-tar-xz "minorhythm"))
                (home-directory "huone/radio/minorhythm"))
       (archive (out-directory (file-tar-xz "501st"))
-               (home-directory "huone/radio/501st")))
+               (home-directory "huone/radio/501st"))
+      (archive (out-directory (file-tar-xz "v2c"))
+               (home-directory ".v2c")))
 
     ))

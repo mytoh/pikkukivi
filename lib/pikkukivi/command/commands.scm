@@ -4,7 +4,7 @@
       commands)
   (import
     (scheme base)
-    (gauche base)
+    (gauche)
     (gauche process)
     (util list) ; slices
     (util match)

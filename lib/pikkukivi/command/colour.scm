@@ -6,7 +6,7 @@
     (scheme base)
     (scheme write)
     (scheme file)
-    (gauche base)
+    (gauche)
     (gauche process)
     (util list) ; slices
     (util match)

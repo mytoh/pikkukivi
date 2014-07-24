@@ -5,7 +5,7 @@
       info)
   (import
     (scheme base)
-    (gauche base)
+    (gauche)
     (gauche interactive)
     (file util)
     (util list)
@@ -110,7 +110,7 @@
     (define prompter
       (lambda ()
         (print (symbol->string (module-name (current-module))))
-        (display (string-append (paint "#;" 238)
+        (display (string-append (paint "# (" 238)
                    (paint "> " 67)))
         (flush)))
 

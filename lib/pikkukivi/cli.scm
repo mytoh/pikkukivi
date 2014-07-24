@@ -5,7 +5,7 @@
           (scheme repl)
           (scheme eval)
           (scheme r5rs)
-          (gauche base)
+          (gauche)
           (file util)
           (util match)
           (util list)

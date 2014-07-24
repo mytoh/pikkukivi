@@ -4,7 +4,7 @@
     (export tmux-start)
   (import
     (scheme base)
-    (gauche base)
+    (gauche)
     (gauche process)
     (gauche parseopt)
     (util match)

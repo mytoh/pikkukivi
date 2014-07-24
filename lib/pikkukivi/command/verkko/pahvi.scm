@@ -5,7 +5,7 @@
     (scheme base)
     (scheme write)
     (scheme file)
-    (gauche base)
+    (gauche)
     (gauche parseopt)
     (gauche collection)
     (sxml ssax)

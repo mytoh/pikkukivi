@@ -5,7 +5,7 @@
   (import
     (scheme base)
     (scheme file)
-    (gauche base)
+    (gauche)
     (util match)
     (file util))
   (begin

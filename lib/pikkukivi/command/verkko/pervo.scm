@@ -4,7 +4,7 @@
   (import
     (scheme base)
     (scheme file)
-    (gauche base)
+    (gauche)
     (rfc http)
     (rfc uri)
     (rfc cookie)

@@ -7,7 +7,7 @@
     (scheme file)
     (scheme write)
     (srfi 8)
-    (gauche base)
+    (gauche)
     (rfc http)
     (gauche charconv)
     (gauche collection)

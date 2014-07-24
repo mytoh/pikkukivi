@@ -6,7 +6,7 @@
     (export unpack)
   (import
     (scheme base)
-    (gauche base)
+    (gauche)
     (gauche process)
     (file util) ; path-extension
     (rename (prefix (kirjasto avain) avain:)))

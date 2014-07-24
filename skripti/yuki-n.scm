@@ -2,7 +2,7 @@
 (import
   (scheme base)
   (scheme write)
-  (gauche base)
+  (gauche)
   (gauche process)
   (gauche threads))
 

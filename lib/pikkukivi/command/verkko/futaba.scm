@@ -1,11 +1,11 @@
 
- (define-library (pikkukivi command verkko futaba)
+(define-library (pikkukivi command verkko futaba)
     (export futaba)
 
   (import(scheme base)
          (scheme write)
          (scheme file)
-         (gauche base)
+         (gauche)
          (rfc http)
          (rfc uri)
          (gauche process)

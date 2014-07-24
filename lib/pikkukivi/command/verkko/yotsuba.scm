@@ -1,11 +1,11 @@
 ;;; yotsuba.scm
 
- (define-library (pikkukivi command verkko yotsuba)
+(define-library (pikkukivi command verkko yotsuba)
     (export yotsuba)
   (import (scheme base)
           (scheme write)
           (scheme file)
-          (gauche base)
+          (gauche)
           (gauche process)
           (gauche collection) ;find
           (gauche parseopt)

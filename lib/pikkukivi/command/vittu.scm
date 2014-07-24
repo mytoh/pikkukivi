@@ -5,7 +5,7 @@
   (import (scheme base)
           (scheme write)
           (srfi 13)
-          (gauche base)
+          (gauche)
           (gauche process)
           (kirjasto komento))
 
