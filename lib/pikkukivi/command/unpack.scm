@@ -42,7 +42,7 @@
         (run `(7z x ,file))
         (run `(7z x ,file -o ,(caar directory)))))
 
-    (define-constant *unpacker-alist*
+    (define *unpacker-alist*
       `(
         ("zip" . ,zip-unpacker)
         ("cbz" . ,zip-unpacker)
