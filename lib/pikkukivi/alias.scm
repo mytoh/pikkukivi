@@ -4,7 +4,7 @@
       alias-list)
   (import
     (scheme base)
-    (gauche)
+    (gauche base)
     (file util))
 
   (begin

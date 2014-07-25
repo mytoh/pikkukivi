@@ -5,7 +5,7 @@
       info)
   (import
     (scheme base)
-    (gauche)
+    (gauche base)
     (gauche interactive)
     (file util)
     (util list)

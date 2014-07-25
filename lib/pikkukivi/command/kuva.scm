@@ -5,7 +5,7 @@
   (import
     (scheme base)
     (scheme write)
-    (gauche)
+    (gauche base)
     (gauche process)
     (gauche parseopt)
     (util match)

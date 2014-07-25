@@ -4,7 +4,7 @@
       sssh)
   (import
     (scheme base)
-    (gauche)
+    (gauche base)
     (gauche process)
     (util list) ; slices
     (file util)

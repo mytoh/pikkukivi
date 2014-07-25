@@ -5,7 +5,7 @@
   (import (scheme base)
           (scheme write)
           (scheme file)
-          (gauche)
+          (gauche base)
           (gauche process)
           (gauche collection) ;find
           (gauche parseopt)
@@ -16,6 +16,7 @@
           (file util)
           (util match)
           (srfi 1)
+          (srfi 8)
           (srfi 11)
           (srfi 13)
           (srfi 43)
@@ -25,7 +26,7 @@
           (kirjasto pääte)
           (rename (prefix (kirjasto avain) avain:))
           (maali)
-          (clojure))
+          )
   (begin
 
     (define (usage)
@@ -55,7 +56,7 @@
           (let* ((file (url->filename uri))
                  (flusher (lambda (sink headers)  #true)))
             (cond
-              ((not (file-is-readable? file))
+              ((not (file-exists? file))
                (receive (temp-out temp-file)
                  (sys-mkstemp "yotsuba-temp")
                  (http-get hostname path
@@ -69,7 +70,7 @@
     (define (get-html bd td)
       (let-values (((status headers body)
                     (http-get  "boards.4chan.org"
-                               (str "/" bd "/thread/"  (x->string td)))))
+                               (string-append "/" bd "/thread/" td))))
         (cond
           ((string=? status "404")
            #false)
@@ -193,7 +194,7 @@
            (get-img (cdar response) board)
            (cd ".."))
           (else
-              (display (paint (str thread "'s gone") 103))
+              (display (paint (string-append thread "'s gone") 103))
             (flush)
             (sys-select #false #false #false 100000)
             (display "\r")

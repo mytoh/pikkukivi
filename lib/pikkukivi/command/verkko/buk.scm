@@ -3,7 +3,7 @@
     (export buk)
   (import
     (scheme base)
-    (gauche)
+    (gauche base)
     (pikkukivi command verkko buk ningen-ng)
     (pikkukivi command verkko buk ningen-ok)
     (util match))

@@ -5,7 +5,7 @@
   (import
     (scheme base)
     (scheme file)
-    (gauche))
+    (gauche base))
 
   (begin
     (define (piip args)

@@ -5,7 +5,7 @@
   (import
     (scheme base)
     (scheme write)
-    (gauche)
+    (gauche base)
     (gauche process) ; run-process
     (gauche parseopt)
     (srfi 13)
@@ -19,9 +19,9 @@
 
   (begin
 
-    (define-constant *gitdir*  (expand-path "~/huone/git/"))
+    (define *gitdir*  (expand-path "~/huone/git/"))
 
-    (define-constant *repos*
+    (define *repos*
       '(; normal repo
         "git://gitorious.org/cmus/cmus.git"
         "git://git.sv.gnu.org/screen.git"

@@ -3,7 +3,7 @@
     (export string->command)
   (import (scheme base)
           (pikkukivi command unpack)
-          (pikkukivi command repl)
+          ;; (pikkukivi command repl)
           (pikkukivi command rm)
           (pikkukivi command emma)
           (pikkukivi command colour)
@@ -55,7 +55,7 @@
        pomfup
        print-path
        radio
-       repl
+       ;; repl
        rm
        sget
        sssh
@@ -66,6 +66,7 @@
        vittu
        yes
        ylilauta
+       lainchan
        yotsuba
        yotsuba-old
        ääliö

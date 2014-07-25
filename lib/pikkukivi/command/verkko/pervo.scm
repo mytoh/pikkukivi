@@ -4,7 +4,7 @@
   (import
     (scheme base)
     (scheme file)
-    (gauche)
+    (gauche base)
     (rfc http)
     (rfc uri)
     (rfc cookie)
@@ -15,9 +15,10 @@
     (kirjasto verkko)
     (sxml ssax)
     (srfi 1)
+    (srfi 13)
+    (srfi 19)
     (srfi 27)
     (srfi 42)
-    (srfi 13)
     (math mt-random)
     (file util)
     (kirjasto merkkijono)
@@ -32,7 +33,7 @@
     (define *interval* 2)
 
     (define member-id
-      (let ((m (make <mersenne-twister> :seed (sys-time))))
+      (let ((m (make <mersenne-twister> :seed (date-nanosecond (current-date)))))
         (rxmatch->string #/(\d){6}/ (number->string (+ (mt-random-real m) (mt-random-real m))))))
 
     (define *eh-cookie*

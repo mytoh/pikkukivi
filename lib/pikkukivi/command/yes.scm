@@ -4,7 +4,7 @@
       yes)
   (import
     (scheme base)
-    (gauche)
+    (gauche base)
     (util match))
 
   (begin

@@ -6,7 +6,7 @@
   (import
     (scheme base)
     (scheme write)
-    (gauche)
+    (gauche base)
     (rfc http)
     (rfc uri)
     (gauche process)

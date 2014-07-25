@@ -2,7 +2,7 @@
     (export topless)
   (import
     (scheme base)
-    (gauche)
+    (gauche base)
     (gauche process)
     (kirjasto komento työkalu)
     (kirjasto väri)

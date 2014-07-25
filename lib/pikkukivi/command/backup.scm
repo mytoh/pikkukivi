@@ -6,7 +6,7 @@
           (scheme write)
           (scheme process-context)
           (kirjasto komento)
-          (gauche)
+          (gauche base)
           (file util))
 
   (begin

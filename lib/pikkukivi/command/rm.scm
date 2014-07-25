@@ -4,7 +4,7 @@
   (import
     (scheme base)
     (scheme file)
-    (gauche)
+    (gauche base)
     (file util)
     (gauche parseopt))
 
