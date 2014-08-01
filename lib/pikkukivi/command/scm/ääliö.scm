@@ -53,7 +53,7 @@
                           :add-path? #true))))
 
     ;; clean git repository with "git gc"
-    (define (clean-gitdir)
+    (define (do-clean)
       (let ((dirs (list (directory-list (expand-path *gitdir*) :children? #true :add-path? #true))))
         (let loop ((dirs (car dirs)))
              (cond
@@ -150,7 +150,7 @@
                                     (print (string-append (paint "updating " 8) "repositories"))
                                     (do-update)))
                                  ("clean"
-                                  (clean-gitdir))
+                                  (do-clean))
                                  ("list"
                                   (do-list rest))
                                  ("get"
