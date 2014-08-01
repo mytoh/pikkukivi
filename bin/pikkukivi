@@ -1,5 +1,4 @@
-#!/bin/sh
-:; exec gosh -r7 -- $0 "$@"
+#!/usr/bin/env gosh
 
 (import (scheme base)
         (scheme process-context)
