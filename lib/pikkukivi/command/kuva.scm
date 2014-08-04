@@ -5,6 +5,8 @@
   (import
     (scheme base)
     (scheme write)
+    (srfi 8)
+    (srfi 37)
     (gauche base)
     (gauche process)
     (gauche parseopt)
@@ -13,7 +15,7 @@
     (kirjasto arkisto)
     (pikkukivi command unpack))
   (begin
-    (define (usage status) (exit status "usage: ~a <file>\n" *program-name*))
+    (define (usage status) (exit status "usage: ~a <file>\n" "kuva"))
 
     (define default-feh-options
       '(--auto-zoom --fullscreen --quiet --reverse --sort mtime))
@@ -40,20 +42,39 @@
         (run-process `(feh ,@default-feh-options  -r ,temp) :wait #true)
         (remove-directory* temp)))
 
+    (define options
+      (list (option '(#\h "help") (not 'require-arg?) (not 'optional-arg?)
+                    (lambda (option name arg help)
+                      (values #true)))))
+
     (define open
       (lambda (args)
         (cond ((null? args)
                (run-process `(feh) :wait #true))
               (else
-                  (let-args args ((#false "h|help" (usage 0)) . rest)
-                            (match (car rest)
-                                   ((? file-is-directory? dir)
-                                    (open-directory dir))
-                                   ((? file-is-archive? file)
-                                    (open-archive file))
-                                   ((? file-is-regular? file)
-                                    (open-regular-file file))
-                                   (_ (usage 1))))))))
+                  (receive (help)
+                    (args-fold args
+                      options
+                      (lambda (option name arg . seeds)
+                        (error "Unrecognized option:" name))
+                      (lambda (operand help)
+                        (values help))
+                      #false ; default help
+                      )
+                    (cond
+                      (help
+                       (usage 0))
+                      (else
+                          (match (car args)
+                                 ((? file-is-directory? dir)
+                                  (open-directory dir))
+                                 ((? file-is-archive? file)
+                                  (open-archive file))
+                                 ((? file-is-regular? file)
+                                  (open-regular-file file))
+                                 (_ (usage 1))))))))))
 
     (define (kuva args)
-      (open args))))
+      (open args))
+
+    ))
