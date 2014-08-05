@@ -70,10 +70,7 @@
                      (else  #true))
                  (loop (cdr dirs)))))))
 
-    (define options-list
-      (list (option '(#\p "full-path") (not 'require-arg?) (not 'optional-arg?)
-                    (lambda (option name arg full-path)
-                      (values #true)))))
+
 
     (define (do-list args)
       (receive (full-path?)
@@ -144,12 +141,17 @@
                     (lambda (option name arg help)
                       (values #true)))))
 
+    (define options-list
+      (list (option '(#\p "full-path") (not 'require-arg?) (not 'optional-arg?)
+                    (lambda (option name arg full-path)
+                      (values #true)))))
+
     (define (ääliö args)
       (receive (help)
         (args-fold args
           options
           (lambda (option name arg . seeds)
-            (error "Unrecognized option:" name))
+            #false)
           (lambda (operand help)
             (values help))
           #false ; default help
