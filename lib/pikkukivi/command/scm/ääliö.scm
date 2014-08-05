@@ -99,8 +99,8 @@
                   (newline))
               repos)))))
 
-    (define (usage status)
-      (exit status "usage: ~a <command> <package-name>\n" *program-name*))
+    (define (do-usage status)
+      (exit status "usage: ~a <command> <package-name>\n" "ääliö"))
 
     (define (do-get url)
       (let* ((path (format-url->path url))
@@ -125,17 +125,19 @@
             (string-append "git://" (trim-url-prefix url)))))
 
     (define (trim-url-prefix url)
-      (define (drop-prefix url prefix)
-        (string-drop url (string-length prefix)))
-      (cond ((string= "http://"
-               (string-take url (string-length "http://")))
+      (define (drop-prefix u prefix)
+        (string-drop u (string-length prefix)))
+      (cond ((url-prefix-protocol? "http" url)
              (drop-prefix url "http://"))
-            ((string= "https://"
-               (string-take url (string-length "httsp://")))
+            ((url-prefix-protocol? "https" url)
              (drop-prefix url "https://"))
-            ((string= "git://"
-               (string-take url (string-length "git://")))
+            ((url-prefix-protocol? "git" url)
              (drop-prefix url "git://"))))
+
+    (define (url-prefix-protocol? p url)
+      (let ((proto (string-append p "://")))
+        (string= proto
+          (string-take url (string-length proto)))))
 
 
     (define (ääliö args)
@@ -155,7 +157,7 @@
                                   (do-list rest))
                                  ("get"
                                   (do-get (cadr rest)))
-                                 (_ (usage 1)))))
+                                 (_ (do-usage 1)))))
       0)
 
     ))
