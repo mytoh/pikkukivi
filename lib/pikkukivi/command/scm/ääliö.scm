@@ -124,14 +124,14 @@
     (define (trim-url-prefix url)
       (define (drop-prefix u prefix)
         (string-drop u (string-length prefix)))
-      (cond ((url-prefix-protocol? "http" url)
+      (cond ((url-protocol=? "http" url)
              (drop-prefix url "http://"))
-            ((url-prefix-protocol? "https" url)
+            ((url-protocol=? "https" url)
              (drop-prefix url "https://"))
-            ((url-prefix-protocol? "git" url)
+            ((url-protocol=? "git" url)
              (drop-prefix url "git://"))))
 
-    (define (url-prefix-protocol? p url)
+    (define (url-protocol=? p url)
       (let ((proto (string-append p "://")))
         (string= proto
           (string-take url (string-length proto)))))
