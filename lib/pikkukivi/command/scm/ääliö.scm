@@ -139,25 +139,39 @@
         (string= proto
           (string-take url (string-length proto)))))
 
+    (define options
+      (list (option '(#\h "help") (not 'require-arg?) (not 'optional-arg?)
+                    (lambda (option name arg help)
+                      (values #true)))))
 
     (define (ääliö args)
-      (let-args args
-                ((#false "h|help" (usage 0))
-                 . rest)
-                (with-cwd *gitdir*
-                          (match (car rest)
-                                 ;; commands
-                                 ((or "update" "up")
-                                  (begin
-                                    (print (string-append (paint "updating " 8) "repositories"))
-                                    (do-update)))
-                                 ("clean"
-                                  (do-clean))
-                                 ("list"
-                                  (do-list rest))
-                                 ("get"
-                                  (do-get (cadr rest)))
-                                 (_ (do-usage 1)))))
+      (receive (help)
+        (args-fold args
+          options
+          (lambda (option name arg . seeds)
+            (error "Unrecognized option:" name))
+          (lambda (operand help)
+            (values help))
+          #false ; default help
+          )
+        (cond
+          (help
+           (do-usage 0))
+          (else
+              (with-cwd *gitdir*
+                        (match (car args)
+                               ;; commands
+                               ((or "update" "up")
+                                (begin
+                                  (print (string-append (paint "updating " 8) "repositories"))
+                                  (do-update)))
+                               ("clean"
+                                (do-clean))
+                               ("list"
+                                (do-list args))
+                               ("get"
+                                (do-get (cadr args)))
+                               (_ (do-usage 1)))))))
       0)
 
     ))
