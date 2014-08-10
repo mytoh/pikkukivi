@@ -19,6 +19,7 @@
           (srfi 8)
           (srfi 11)
           (srfi 13)
+          (srfi 37)
           (srfi 43)
           (kirjasto komento työkalu)
           (kirjasto työkalu)
@@ -117,26 +118,6 @@
                    dirs)
                  (print "no directories")))))
 
-    (define (yotsuba args)
-      (let-args args
-                ((all "a|all")
-                 (repeat "r|repeat")
-                 (else (opt . _) (print "Unknown option: " opt) (usage))
-                 . restargs)
-                (tput-cursor-invisible)
-                (cond
-                  ((null? restargs)
-                   (usage))
-                  ((and all repeat)
-                   (yotsuba-get-all-repeat restargs))
-                  (repeat
-                   (yotsuba-get-one-repeat restargs))
-                  (all
-                   (yotsuba-get-all restargs))
-                  (else
-                      (yotsuba-get-one restargs)))
-                (tput-cursor-normal)))
-
     (define (api-thread board number)
       (let-values (((status headers body)
                     (http-get "api.4chan.org"
@@ -199,5 +180,50 @@
             (sys-select #false #false #false 100000)
             (display "\r")
             (tput-clr-eol)))))
+
+    (define options
+      (list
+          (option '(#\h "help") (not 'require-arg?) (not 'optional-arg?)
+                  (lambda (option name arg help all repeat rest)
+                    (values #true all repeat rest)))
+        (option '(#\a "all") (not 'require-arg?) (not 'optional-arg?)
+                (lambda (option name arg help all repeat rest)
+                  (values help #true repeat rest)))
+        (option '(#\r "repeat") (not 'require-arg?) (not 'optional-arg?)
+                (lambda (option name arg help all repeat rest)
+                  (values help all #true rest)))))
+
+    (define (yotsuba args)
+      (receive (help all repeat rest)
+        (args-fold args
+          options
+          (lambda (option name arg . seeds)
+            #false)
+          (lambda (operand help all repeat rest)
+            (values help all repeat (reverse (cons operand rest))))
+          #false ; default help
+          #false ; all
+          #false ; repeat
+          '()    ; rest
+          )
+
+        (tput-cursor-invisible)
+
+        (cond
+          ((null? rest)
+           (usage))
+          (help
+           (usage))
+          ((and all repeat)
+           (yotsuba-get-all-repeat rest))
+          (repeat
+           (yotsuba-get-one-repeat rest))
+          (all
+           (yotsuba-get-all rest))
+          (else
+              (yotsuba-get-one rest)))
+
+        (tput-cursor-normal)
+        ))
 
     ))
