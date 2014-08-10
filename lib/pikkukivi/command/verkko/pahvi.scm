@@ -14,6 +14,8 @@
     (rfc http)
     (rfc uri)
     (srfi 1)
+    (srfi 8)
+    (srfi 37)
     (srfi 11)
     (kirjasto komento työkalu)
     (kirjasto merkkijono)
@@ -138,10 +140,36 @@
     (define (usage status)
       (exit status "usage: ~a <command> <package-name>\n" "pahvi"))
 
+    (define options
+      (list
+          (option '(#\h "help") (not 'require-arg?) (not 'optional-arg?)
+                  (lambda (option name arg help tag)
+                    (values #true tag)))
+        (option '(#\t "tag") 'require-arg? 'optional-arg?
+                (lambda (option name arg help tag)
+                  (values help (or arg #false))))))
+
     (define (pahvi args)
-      (let-args args
-                ((tag "t|tag=s")
-                 (#false "h|help" (usage 0))
-                 . rest)
-                (command-get-posts-all tag)))
+      (receive (help tag)
+        (args-fold args
+          options
+          (lambda (option name arg . seeds)
+            (display "Unknown option: " name)
+            (newline)
+            (usage))
+          (lambda (operand help tag)
+            (values help tag))
+          #false ; default help
+          '()    ; tag
+          )
+
+        (display tag)
+        (cond
+          ((null? tag)
+           (usage))
+          (help
+           (usage))
+          (tag
+           (command-get-posts-all tag)))))
+
     ))

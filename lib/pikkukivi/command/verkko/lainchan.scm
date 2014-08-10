@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command verkko lainchan)
+(define-library (pikkukivi command verkko lainchan)
     (export lainchan)
 
   (import(scheme base)
@@ -19,7 +19,10 @@
          (kirjasto pääte)
          (maali)
          (srfi 1)
-         (srfi 11))
+         (srfi 11)
+         (srfi 8)
+         (srfi 37)
+         )
 
   (begin
 
@@ -175,23 +178,51 @@
          (tput-clr-bol)
          (print (paint "----------" 237)))))
 
+    (define options
+      (list
+          (option '(#\h "help") (not 'require-arg?) (not 'optional-arg?)
+                  (lambda (option name arg help all repeat rest)
+                    (values #true all repeat rest)))
+        (option '(#\a "all") (not 'require-arg?) (not 'optional-arg?)
+                (lambda (option name arg help all repeat rest)
+                  (values help #true repeat rest)))
+        (option '(#\r "repeat") (not 'require-arg?) (not 'optional-arg?)
+                (lambda (option name arg help all repeat rest)
+                  (values help all #true rest)))))
+
     (define (lainchan args)
-      (let-args args
-                ((all "a|all")
-                 (repeat "r|repeat")
-                 (else (opt . _) (print "Unknown option: " opt) (usage))
-                 . restargs)
-                (cond
-                  ((null? restargs)
-                   (usage))
-                  ((and all repeat)
-                   (lainchan-get-repeat-all restargs))
-                  (repeat
-                   (loop-forever
-                    (lainchan-get-repeat restargs)))
-                  (all
-                   (lainchan-get-all restargs))
-                  (else
-                      (lainchan-get restargs)))))
+      (receive (help all repeat rest)
+        (args-fold args
+          options
+          (lambda (option name arg . seeds)
+            (display "Unknown option: " name)
+            (newline)
+            (usage))
+          (lambda (operand help all repeat rest)
+            (values help all repeat (reverse (cons operand rest))))
+          #false ; default help
+          #false ; all
+          #false ; repeat
+          '()    ; rest
+          )
+
+        (tput-cursor-invisible)
+
+        (cond
+          ((null? rest)
+           (usage))
+          (help
+           (usage))
+          ((and all repeat)
+           (lainchan-get-repeat-all rest))
+          (repeat
+           (loop-forever
+            (lainchan-get-repeat rest)))
+          (all
+           (lainchan-get-all rest))
+          (else
+              (lainchan-get rest)))
+
+        (tput-cursor-normal)))
 
     ))
