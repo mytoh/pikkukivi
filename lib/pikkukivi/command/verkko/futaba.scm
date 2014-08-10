@@ -5,6 +5,10 @@
   (import(scheme base)
          (scheme write)
          (scheme file)
+         (srfi 1)
+         (srfi 11)
+         (srfi 8)
+         (srfi 37)
          (gauche base)
          (rfc http)
          (rfc uri)
@@ -19,8 +23,7 @@
          (kirjasto merkkijono)
          (kirjasto pääte)
          (maali)
-         (srfi 1)
-         (srfi 11))
+         )
 
   (begin
 
@@ -201,23 +204,51 @@
          (tput-clr-bol)
          (print (paint "----------" 237)))))
 
+    (define options
+      (list
+          (option '(#\h "help") (not 'require-arg?) (not 'optional-arg?)
+                  (lambda (option name arg help all repeat rest)
+                    (values #true all repeat rest)))
+        (option '(#\a "all") (not 'require-arg?) (not 'optional-arg?)
+                (lambda (option name arg help all repeat rest)
+                  (values help #true repeat rest)))
+        (option '(#\r "repeat") (not 'require-arg?) (not 'optional-arg?)
+                (lambda (option name arg help all repeat rest)
+                  (values help all #true rest)))))
+
     (define (futaba args)
-      (let-args args
-                ((all "a|all")
-                 (repeat "r|repeat")
-                 (else (opt . _) (print "Unknown option: " opt) (usage))
-                 . restargs)
-                (cond
-                  ((null? restargs)
-                   (usage))
-                  ((and all repeat)
-                   (futaba-get-repeat-all restargs))
-                  (repeat
-                   (loop-forever
-                    (futaba-get-repeat restargs)))
-                  (all
-                   (futaba-get-all restargs))
-                  (else
-                      (futaba-get restargs)))))
+      (receive (help all repeat rest)
+        (args-fold args
+          options
+          (lambda (option name arg . seeds)
+            (display "Unknown option: " name)
+            (newline)
+            (usage))
+          (lambda (operand help all repeat rest)
+            (values help all repeat (reverse (cons operand rest))))
+          #false ; default help
+          #false ; all
+          #false ; repeat
+          '()    ; rest
+          )
+
+        (tput-cursor-invisible)
+
+        (cond
+          ((null? rest)
+           (usage))
+          (help
+           (usage))
+          ((and all repeat)
+           (futaba-get-repeat-all rest))
+          (repeat
+           (loop-forever
+            (futaba-get-repeat rest)))
+          (all
+           (futaba-get-all rest))
+          (else
+              (futaba-get rest)))
+
+        (tput-cursor-normal)))
 
     ))
