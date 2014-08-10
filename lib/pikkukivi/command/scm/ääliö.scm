@@ -21,6 +21,10 @@
 
     (define *gitdir*  (expand-path "~/huone/git/"))
 
+    (define (do-root)
+      (display *gitdir*)
+      (newline))
+
     ;; update git repository
     (define (do-update)
       (let ((repos (find-git-repository *gitdir*)))
@@ -81,7 +85,6 @@
           (lambda (operand full-path)
             (values full-path))
           #false)
-        (display full-path?)
         (let ((repos (find-git-repository *gitdir*)))
           (if full-path?
             (map
@@ -173,6 +176,8 @@
                                 (do-list args))
                                ("get"
                                 (do-get (cadr args)))
+                               ("root"
+                                (do-root))
                                (_ (do-usage 1)))))))
       0)
 
