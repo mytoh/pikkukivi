@@ -1,6 +1,6 @@
 ;;; yotsuba.scm
 
-(define-library (pikkukivi command verkko yotsuba)
+ (define-library (pikkukivi command verkko yotsuba)
     (export yotsuba)
   (import (scheme base)
           (scheme write)
@@ -78,9 +78,9 @@
           ((string-incomplete? body)
            (if-let1 html (string-incomplete->complete body :omit)
                     html
-                    (ces-convert body "*jp" "utf-8")))
+                    body))
           (else
-              (ces-convert body "*jp" "utf-8")))))
+              body))))
 
     (define (string->html-file thread body)
       (with-output-to-file
@@ -223,7 +223,6 @@
           (else
               (yotsuba-get-one rest)))
 
-        (tput-cursor-normal)
-        ))
+        (tput-cursor-normal)))
 
     ))
