@@ -1,5 +1,5 @@
 ;; * ylilauta
-(define-library (pikkukivi command verkko ylilauta)
+ (define-library (pikkukivi command verkko ylilauta)
     ;; ** exports
     (export ylilauta)
   ;; ** imports
@@ -12,7 +12,6 @@
     (gauche process)
     (gauche charconv)
     (file util)
-    (util match)
     (gauche collection) ;find
     (gauche parseopt)
     (kirjasto komento työkalu)
@@ -69,11 +68,11 @@
         (let ((got-images (clear-list
                            (map (lambda (url) (fetch url))
                              image-url-list))))
-          (match (length got-images)
-                 (0 (newline))
-                 (1 (print (string-append " " (paint (number->string (length got-images)) 49)
-                                          " file")))
-                 (_ (print (string-append " " (paint (number->string (length got-images)) 49)
+          (case (length got-images)
+            ((0) (newline))
+            ((1) (println (string-append " " (paint (number->string (length got-images)) 49)
+                                         " file")))
+            (else (println (string-append " " (paint (number->string (length got-images)) 49)
                                           " files")))))))
 
     (define (url->filename url)
@@ -101,7 +100,7 @@
                     (http-get "ylilauta.org"
                               (string-append "/"  board "/" thread))))
         (cond ((not (string=? status "404"))
-               (let ((html (ces-convert body "*jp" "utf-8")))
+               (let ((html body))
                  (if (string-incomplete? html)
                    (string-incomplete->complete html :omit)
                    html)))
@@ -119,7 +118,7 @@
            (get-image html board)
            (cd ".."))
           (else
-              (print (paint (string-append thread "'s gone") 237))))))
+              (println (paint (string-append thread "'s gone") 237))))))
 
     (define (ylilauta-get-all args)
       (let ((board (car args))
@@ -131,7 +130,7 @@
                  (ylilauta-get (list board d)))
              dirs)
            (run-process `(notify-send ,(string-append "ylilauta " board  " fetch finished"))))
-          (else (print "no directories")))))
+          (else (println "no directories")))))
 
     (define (ylilauta-get-repeat args)
       (let* ((board (car args))
@@ -156,16 +155,16 @@
       (loop-forever
        (let ((board (car args))
              (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
-         (print (string-append "Board " (paint board 229)))
+         (println (string-append "Board " (paint board 229)))
          (cond
            ((not (null? dirs))
             (for-each
                 (lambda (d)
                   (ylilauta-get-repeat (list board d)))
               dirs))
-           (else (print "no directories")))
+           (else (println "no directories")))
          (tput-clr-bol)
-         (print (paint "----------" 237)))))
+         (println (paint "----------" 237)))))
 
     (define options
       (list
