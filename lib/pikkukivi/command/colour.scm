@@ -197,18 +197,18 @@
       (print "[0m"))
 
     (define (colour args)
-      (match (car args)
-             ("numbers"
+      (match args
+             (("numbers")
               (colour-numbers))
-             ("spect"
+             (("spect")
               (colour-spect))
-             ("pacman"
+             (("pacman")
               (colour-pacman))
-             ("invaders"
+             (("invaders")
               (colour-invaders))
-             ("guns"
+             (("guns")
               (colour-guns))
-             ("square"
+             (("square")
               (colour-square))
              (t
               (display "numbers\nspect\npacman\ninvaders\nguns\nsquare"))))
