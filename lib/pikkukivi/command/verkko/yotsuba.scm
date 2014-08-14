@@ -97,9 +97,9 @@
                (lambda (d)
                  (yotsuba-get-one (list bd d)))
              dirs)
-           (print (paint bd 33) " fetch finished"))
+           (println (paint bd 33) " fetch finished"))
           (else
-              (print "no directories")))))
+              (println "no directories")))))
 
     (define (yotsuba-get-one-repeat args)
       (loop-forever
@@ -110,13 +110,13 @@
       (loop-forever
        (let ((bd (car args))
              (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
-         (print "getting " bd)
+         (println "getting " bd)
          (if-not (null? dirs)
                  (for-each
                      (lambda (d)
                        (yotsuba-get-one (list bd d)))
                    dirs)
-                 (print "no directories")))))
+                 (println "no directories")))))
 
     (define (api-thread board number)
       (let-values (((status headers body)
@@ -156,10 +156,10 @@
                                         img-url-list))))
           (match (length got-images)
                  (0 (newline))
-                 (1 (print " " (paint (number->string (length got-images)) 49)
-                           " file"))
-                 (_ (print " " (paint (number->string (length got-images)) 49)
-                           " files"))))))
+                 (1 (println " " (paint (number->string (length got-images)) 49)
+                             " file"))
+                 (_ (println " " (paint (number->string (length got-images)) 49)
+                             " files"))))))
 
     (define (yotsuba-get-one args)
       (let* ((board (car args))
