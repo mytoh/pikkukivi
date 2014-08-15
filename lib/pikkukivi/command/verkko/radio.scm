@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command verkko radio)
+ (define-library (pikkukivi command verkko radio)
     (export
       radio)
   (import
@@ -49,8 +49,8 @@
             (jaga "FM-JAGA (北海道帯広市)" "mms://simul.freebit.net/fmjaga")
             (obihiroj "FM-JAGA (北海道帯広市)" "mms://simul.freebit.net/fmjaga")
             (wing "FM WING (北海道帯広市)" "mms://simul.freebit.net/fmwing")
-            (obihirow "FM WING  (北海道帯広市)" mms://simul.freebit.net/fmwing)
-            (kushiro "FMくしろ (北海道釧路市)" http://www.simulradio.jp/asx/FmKushiro.asx)
+            (obihirow "FM WING  (北海道帯広市)" "mms://simul.freebit.net/fmwing")
+            (kushiro "FMくしろ (北海道釧路市)" "http://www.simulradio.jp/asx/FmKushiro.asx")
 
             (morioka "ラヂオもりおか         (岩手県盛岡市)" " mms://simul.freebit.net/radiomorioka")
 
@@ -114,8 +114,8 @@
 
             (kahoku "FMかほく    24時間     (石川県かほく市)" " http://radio.kahoku.net:8000/")
 
-                                        ; ( sb-harbor779 "ハーバーステーション   (福井県敦賀市)" " `wget -O - http://www.web-services.jp/harbor779/radio.html | sed -n "/mp3/s/^.*\(http:[^;]*\).*$/\1/p"`" )
-                                        ; ( sb-tsuruga "ハーバーステーション   (福井県敦賀市)" " `wget -O - http://www.web-services.jp/harbor779/radio.html | sed -n "/mp3/s/^.*\(http:[^;]*\).*$/\1/p"`" )
+            ;; ( sb-harbor779 "ハーバーステーション   (福井県敦賀市)" " `wget -O - http://www.web-services.jp/harbor779/radio.html | sed -n "/mp3/s/^.*\(http:[^;]*\).*$/\1/p"`" )
+            ;; ( sb-tsuruga "ハーバーステーション   (福井県敦賀市)" " `wget -O - http://www.web-services.jp/harbor779/radio.html | sed -n "/mp3/s/^.*\(http:[^;]*\).*$/\1/p"`" )
 
             (ciao "エフエム熱海湯河原     (静岡県熱海市)" " http://simul.freebit.net:8310/ciao")
             (atami "エフエム熱海湯河原     (静岡県熱海市)" " http://simul.freebit.net:8310/ciao")
@@ -128,14 +128,14 @@
 
             (ikaru "FMいかる               (京都府綾部市)" " http://wms.shibapon.net/FMIkaruAtAyabe")
             (ayabe "FMいかる               (京都府綾部市)" " http://wms.shibapon.net/FMIkaruAtAyabe")
-                                        ; ( sb-castle "FM CASTLE   24時間     (京都府福知山市)"  `wget -O - http://www.fm-castle.jp/simul.asx | sed -n "s/^.*\(mms:[^\"]*\).*$/\1/p"`' )
-                                        ; ( sb-fukuchiyama "FM CASTLE   24時間     (京都府福知山市)"  `wget -O - http://www.fm-castle.jp/simul.asx | sed -n "s/^.*\(mms:[^\"]*\).*$/\1/p"`' )
+            ;; ( sb-castle "FM CASTLE   24時間     (京都府福知山市)"  `wget -O - http://www.fm-castle.jp/simul.asx | sed -n "s/^.*\(mms:[^\"]*\).*$/\1/p"`' )
+            ;; ( sb-fukuchiyama "FM CASTLE   24時間     (京都府福知山市)"  `wget -O - http://www.fm-castle.jp/simul.asx | sed -n "s/^.*\(mms:[^\"]*\).*$/\1/p"`' )
 
             (hirakata "FMひらかた  24時間     (大阪府枚方市)" " http://wms.shibapon.net/Fmhirakata")
             (minoh "みのおエフエム  24時間 (大阪府箕面市)" "http://fm.minoh.net/minohfm.asx")
             (senri "FM千里                 (大阪府豊中市)" " http://simul.freebit.net:8310/fmsenri")
-                                        ; ( sb-hanako "FM HANAKO              (大阪府守口市)" " -novideo `wget -O - http://fmhanako.jp/radio/824.asx | sed -n "/mms/{s/^.*\(mms:[^\"]*\).*$/\1/p; q;}"`" )
-                                        ; ( sb-moriguchi "FM HANAKO              (大阪府守口市)" " -novideo `wget -O - http://fmhanako.jp/radio/824.asx | sed -n "/mms/{s/^.*\(mms:[^\"]*\).*$/\1/p; q;}"`" )
+            ;; ( sb-hanako "FM HANAKO              (大阪府守口市)" " -novideo `wget -O - http://fmhanako.jp/radio/824.asx | sed -n "/mms/{s/^.*\(mms:[^\"]*\).*$/\1/p; q;}"`" )
+            ;; ( sb-moriguchi "FM HANAKO              (大阪府守口市)" " -novideo `wget -O - http://fmhanako.jp/radio/824.asx | sed -n "/mms/{s/^.*\(mms:[^\"]*\).*$/\1/p; q;}"`" )
             (umeda "ウメダFM Be Happy! 789  24時間  (大阪府大阪市)" "http://www.simulradio.jp/asx/FmKita.asx")
             (yes "YES-fm                          (大阪府大阪市中央区)" "http://www.simulradio.jp/asx/YesFM.asx")
             (nanba "YES-fm                          (大阪府大阪市中央区)" "http://www.simulradio.jp/asx/YesFM.asx")
@@ -213,7 +213,7 @@
              ((null? st)
               '())
              (else
-                 (print
+                 (println
                   (str
                    (paint
                     (symbol->string (car (car st)))
