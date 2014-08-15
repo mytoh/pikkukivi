@@ -17,6 +17,7 @@
     (clojure))
 
   (begin
+
     (define *station-list*
       (make-parameter
           '((bbc1 "bbc radio 1" "http://www.bbc.co.uk/radio/listen/live/r1.asx")
@@ -30,6 +31,17 @@
             (ylex2 "ylex"  "http://10.1.1.86:80/liveylex?MSWMExt=.asf")
             (suomipop "radio suomipop" "http://rstream2.nelonenmedia.fi/RadioSuomiPop.mp3.m3u")
             (nova "radio nova" "http://icelive0.41168-icelive0.cdn.qbrick.com/5050/41168_radionova1.mp3")
+            (metrofm "MetroFM" "http://rstream2.nelonenmedia.fi/MetroHelsinki.mp3.m3u")
+            (iskelmä "Iskelmä" "http://www.listenlive.eu/iskelma.m3u")
+            (iskelmä-rex "Iskelmä Rex" "http://media.innoventum.fi:8000/radiorex.m3u")
+            (oifm "Oi FM" "http://media.innoventum.fi:8000/oifm.m3u")
+            (spinfm "Spin FM" "http://www.listenlive.eu/spinfm_fi.m3u")
+            (kajaus "Radio Kajaus" "http://radio.6net.fi:8000/radiokajaus.m3u")
+            (voice "The Voice" "http://www.listenlive.eu/thevoice_fi.m3u")
+            (voice-fresh "The Voice Fresh" "http://www.listenlive.eu/thevoice_fi_fresh.m3u")
+            (seafm "Sea FM" "http://s3.myradiostream.com:4976/listen.pls")
+            (rondo "Rondo Classic Klasu" "http://stream.iradio.fi:8000/klasu-hi.mp3.m3u")
+            (rondo-pro "Rondo Classic Klasu Pro" "http://stream.iradio.fi:8000/klasupro-hi.mp3.m3u")
 
             ;; icecast
             (uzic-ch-techno-minimal "UZIC channel TECHNO MINIMAL" "http://stream.uzic.ch:8002/tek-minimal128.mp3")
@@ -229,15 +241,3 @@
              ("list"
               (list-stations))))
     ))
-
-
-
-
-
-
-
-
-
-
-
-                                        ; #
