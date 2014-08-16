@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command verkko radio)
+(define-library (pikkukivi command verkko radio)
     (export
       radio)
   (import
@@ -27,6 +27,8 @@
             (bbc6 "bbc radio 6" "http://www.bbc.co.uk/radio/listen/live/r6.asx")
 
             ;; fin
+            (yle1 "YLE Radio 1" "http://mediau.yle.fi/liveyleradio1?MSWMExt=.asf")
+            (ylepuhe "YLE Puhe" "http://mediau.yle.fi/liveradiopuhe?MSWMExt=.asf")
             (ylex "ylex" "http://mediau.yle.fi/liveylex?MSWMExt=.asf")
             (ylex2 "ylex"  "http://10.1.1.86:80/liveylex?MSWMExt=.asf")
             (suomipop "radio suomipop" "http://rstream2.nelonenmedia.fi/RadioSuomiPop.mp3.m3u")
