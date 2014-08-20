@@ -7,7 +7,8 @@
           (srfi 13)
           (gauche base)
           (gauche process)
-          (kirjasto komento))
+          (kirjasto komento)
+          (kirjasto merkkijono))
 
   (begin
 
@@ -20,15 +21,13 @@
       (run-command `(killall -9 ,prog)))
 
     (define (process-not-found prog)
-      (display (string-append prog " not found"))
-      (newline))
+      (println (string-append prog " not found")))
 
     (define (message-killed prog)
       (let* ((result (process-output->string `(toilet -f term -F rotate ,prog)))
              (message (string-append " (╯°□°）╯︵ " result)))
         (newline)
-        (display message)
-        (newline)))
+        (println message)))
 
     (define (kill-processes procs)
       (for-each

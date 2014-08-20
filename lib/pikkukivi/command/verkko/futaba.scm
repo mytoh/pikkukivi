@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command verkko futaba)
+ (define-library (pikkukivi command verkko futaba)
     (export futaba)
 
   (import(scheme base)
@@ -221,8 +221,7 @@
         (args-fold args
           options
           (lambda (option name arg . seeds)
-            (display "Unknown option: " name)
-            (newline)
+            (println "Unknown option: " name)
             (usage))
           (lambda (operand help all repeat rest)
             (values help all repeat (reverse (cons operand rest))))

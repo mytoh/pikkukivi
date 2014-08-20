@@ -14,6 +14,7 @@
     (file util) ; directory-list, current-directory
     (maali)
     (clojure)
+    (kirjasto merkkijono)
     (kirjasto list)
     (kirjasto tiedosto))
 
@@ -22,8 +23,7 @@
     (define *gitdir*  (expand-path "~/huone/git/"))
 
     (define (do-root)
-      (display *gitdir*)
-      (newline))
+      (println *gitdir*))
 
     ;; update git repository
     (define (do-update)
@@ -32,13 +32,11 @@
             (lambda (r)
               (update-git-repository r))
           repos)
-        (display "update finished!")
-        (newline)))
+        (println "update finished!")))
 
     (define (update-git-repository dir)
       (display (paint "=> " 4))
-      (display (paint (sys-basename dir) 3))
-      (newline)
+      (println (paint (sys-basename dir) 3))
       (run-process `(git -C ,dir pull) :wait #true)
       (newline))
 
@@ -67,8 +65,7 @@
                    (cond
                      ((file-is-directory? (car dirs))
                       (display (paint "=> " 4))
-                      (display (paint (sys-basename (car dirs)) 3))
-                      (newline)
+                      (println (paint (sys-basename (car dirs)) 3))
                       (run-process '(git gc) :wait #true :directory (car dirs))
                       (newline))
                      (else  #true))
@@ -88,15 +85,11 @@
         (let ((repos (find-git-repository *gitdir*)))
           (if full-path?
             (map
-                (lambda (r)
-                  (display r)
-                  (newline))
+                println
               repos)
             (map
                 (lambda (r)
-                  (display
-                      (string-drop r (string-length *gitdir*)))
-                  (newline))
+                  (println (string-drop r (string-length *gitdir*))))
               repos)))))
 
     (define (do-usage status)
@@ -106,8 +99,7 @@
       (let* ((path (format-url->path url))
              (full-path (string-append *gitdir* path))
              (git-url (format-url->git url)))
-        (display git-url)
-        (newline)
+        (println git-url)
         (run-process `(git clone --depth 1 ,git-url ,path) :wait #true)))
 
     (define (format-url->path url)
