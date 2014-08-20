@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command scm ääliö)
+ (define-library (pikkukivi command ääliö main)
     (export
       ääliö)
   (import

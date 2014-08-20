@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command)
+ (define-library (pikkukivi command)
     (export string->command)
   (import (scheme base)
           (pikkukivi command unpack)
@@ -12,17 +12,17 @@
           (pikkukivi command juosta)
           (pikkukivi command print-path)
           (pikkukivi command tmux-start)
-          (pikkukivi command kuva)
+          (pikkukivi command kuva main)
           (pikkukivi command yes)
           (pikkukivi command swap-extension)
           (pikkukivi command piip)
           (pikkukivi command pomfup)
-          (pikkukivi command vittu)
+          (pikkukivi command vittu main)
           (pikkukivi command backup)
-          (pikkukivi command spin spin)
+          (pikkukivi command spin main)
+          (pikkukivi command ääliö main)
 
           (pikkukivi command verkko)
-          (pikkukivi command scm)
 
           (pikkukivi command commands)
           (pikkukivi command help))

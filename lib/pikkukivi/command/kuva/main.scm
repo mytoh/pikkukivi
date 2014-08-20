@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command kuva)
+ (define-library (pikkukivi command kuva main)
     (export
       kuva)
   (import

@@ -1,6 +1,6 @@
 ;;; spin.scm
 
-(define-library (pikkukivi command spin spin)
+ (define-library (pikkukivi command spin main)
 
     (export spin)
 
