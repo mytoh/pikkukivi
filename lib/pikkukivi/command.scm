@@ -19,6 +19,7 @@
           (pikkukivi command pomfup)
           (pikkukivi command vittu)
           (pikkukivi command backup)
+          (pikkukivi command spin spin)
 
           (pikkukivi command verkko)
           (pikkukivi command scm)
@@ -71,5 +72,6 @@
        yotsuba-old
        ääliö
        backup
+       spin
        ))
     ))
