@@ -1,6 +1,6 @@
 ;;; yotsuba.scm
 
- (define-library (pikkukivi command verkko yotsuba)
+(define-library (pikkukivi command verkko yotsuba)
     (export yotsuba)
   (import (scheme base)
           (scheme write)
@@ -8,7 +8,6 @@
           (gauche base)
           (gauche process)
           (gauche collection) ;find
-          (gauche parseopt)
           (gauche charconv)
           (rfc http)
           (rfc uri)
