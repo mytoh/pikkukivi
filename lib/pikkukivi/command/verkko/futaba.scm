@@ -125,12 +125,12 @@
                                     (receive (a b c)
                                       (fget srv)
                                       (when (not (string=? a "404")) (values a b c))))))
-                  (or (and-let* ((s (get-res "jun")))
-                                (get-values "jun"))
-                    (and-let* ((s (get-res "dec")))
-                              (get-values "dec"))
-                    (and-let* ((s (get-res "may")))
-                              (get-values "may"))
+                  (or (because ((s (get-res "jun")))
+                               (get-values s))
+                    (because ((s (get-res "dec")))
+                             (get-values s))
+                    (because ((s (get-res "may")))
+                             (get-values s))
                     (values "404" #false #false))))
                ("7" ;ゆり
                 (fget "zip"))
@@ -190,7 +190,7 @@
             (tput-clr-eol)))))
 
     (define (futaba-get-repeat-all args)
-      (loop-forever
+      (forever
        (let ((board (car args))
              (dirs (list-directories (current-directory))))
          (print (string-append "Board " (paint board 229)))
@@ -241,7 +241,7 @@
           ((and all repeat)
            (futaba-get-repeat-all rest))
           (repeat
-           (loop-forever
+           (forever
             (futaba-get-repeat rest)))
           (all
            (futaba-get-all rest))

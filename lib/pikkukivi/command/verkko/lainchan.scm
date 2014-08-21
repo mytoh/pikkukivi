@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command verkko lainchan)
+ (define-library (pikkukivi command verkko lainchan)
     (export lainchan)
 
   (import(scheme base)
@@ -164,7 +164,7 @@
             (tput-clr-eol)))))
 
     (define (lainchan-get-repeat-all args)
-      (loop-forever
+      (forever
        (let ((board (car args))
              (dirs (list-directories (current-directory))))
          (print (string-append "Board " (paint board 229)))
@@ -216,7 +216,7 @@
           ((and all repeat)
            (lainchan-get-repeat-all rest))
           (repeat
-           (loop-forever
+           (forever
             (lainchan-get-repeat rest)))
           (all
            (lainchan-get-all rest))

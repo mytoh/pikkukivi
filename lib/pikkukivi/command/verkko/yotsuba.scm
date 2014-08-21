@@ -1,6 +1,6 @@
 ;;; yotsuba.scm
 
-(define-library (pikkukivi command verkko yotsuba)
+ (define-library (pikkukivi command verkko yotsuba)
     (export yotsuba)
   (import (scheme base)
           (scheme write)
@@ -100,12 +100,12 @@
               (println "no directories")))))
 
     (define (yotsuba-get-one-repeat args)
-      (loop-forever
+      (forever
        (begin
          (yotsuba-get-one args))))
 
     (define (yotsuba-get-all-repeat args)
-      (loop-forever
+      (forever
        (let ((bd (car args))
              (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
          (println "getting " bd)

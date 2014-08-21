@@ -152,7 +152,7 @@
             (tput-clr-eol)))))
 
     (define (ylilauta-get-repeat-all args)
-      (loop-forever
+      (forever
        (let ((board (car args))
              (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
          (println (string-append "Board " (paint board 229)))
@@ -205,7 +205,7 @@
           ((and all repeat)
            (ylilauta-get-repeat-all rest))
           (repeat
-           (loop-forever
+           (forever
             (ylilauta-get-repeat rest)))
           (all
            (ylilauta-get-all rest))
