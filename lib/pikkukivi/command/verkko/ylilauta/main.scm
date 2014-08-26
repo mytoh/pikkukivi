@@ -1,5 +1,5 @@
 ;; * ylilauta
- (define-library (pikkukivi command verkko ylilauta)
+ (define-library (pikkukivi command verkko ylilauta main)
     ;; ** exports
     (export ylilauta)
   ;; ** imports
@@ -90,7 +90,8 @@
               (receive (temp-out temp-file)
                 (sys-mkstemp "yli-temp")
                 (http-get hostname path
-                          :sink temp-out :flusher flusher)
+                          :sink temp-out :flusher flusher
+                          :secure #true)
                 (close-output-port temp-out)
                 (move-file temp-file file))
               #false)))))
@@ -98,7 +99,8 @@
     (define (get-thread-html board thread)
       (let-values (((status headers body)
                     (http-get "ylilauta.org"
-                              (string-append "/"  board "/" thread))))
+                              (string-append "/"  board "/" thread)
+                              :secure #true)))
         (cond ((not (string=? status "404"))
                (let ((html body))
                  (if (string-incomplete? html)

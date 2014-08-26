@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command verkko pahvi)
+ (define-library (pikkukivi command verkko pahvi main)
     (export pahvi)
   (import
     (scheme base)

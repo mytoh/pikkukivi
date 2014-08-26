@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command kuva main)
+ (define-library (pikkukivi command kuva main)
     (export
       kuva)
   (import
@@ -10,9 +10,9 @@
     (gauche base)
     (gauche process)
     (gauche parseopt)
-    (util match)
     (file util)
     (kirjasto arkisto)
+    (kirjasto työkalu)
     (pikkukivi command unpack))
   (begin
     (define (usage status) (exit status "usage: ~a <file>\n" "kuva"))
@@ -31,7 +31,7 @@
                    :wait #true))
 
     (define (open-directory dir)
-      (open-directory-feh dir))
+      (open-directory-sxiv dir))
 
     (define (open-regular-file-feh file)
       (run-process `(feh ,@feh-default-options
@@ -41,11 +41,12 @@
                    :wait #true))
 
     (define (open-regular-file-sxiv file)
-      (run-process `(sxiv ,@sxiv-directory-options ".")
+      (run-process `(sxiv ,@sxiv-directory-options
+                          ,(sys-dirname file))
                    :wait #true))
 
     (define (open-regular-file file)
-      (open-regular-file-feh file))
+      (open-regular-file-sxiv file))
 
     (define (open-archive file)
       (let ((temp (build-path
@@ -81,14 +82,15 @@
                     (help
                      (usage 0))
                     (else
-                        (match (car args)
-                               ((? file-is-directory? dir)
-                                (open-directory dir))
-                               ((? file-is-archive? file)
-                                (open-archive file))
-                               ((? file-is-regular? file)
-                                (open-regular-file file))
-                               (_ (usage 1)))))))))
+                        (let ((file (car args)))
+                          (fcond file
+                                 (file-is-directory?
+                                  (open-directory file))
+                                 (file-is-archive?
+                                  (open-archive file))
+                                 (file-is-regular?
+                                  (open-regular-file file))
+                                 (else (usage 1))))))))))
 
     (define (kuva args)
       (open args))

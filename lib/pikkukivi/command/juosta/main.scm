@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command juosta)
+ (define-library (pikkukivi command juosta main)
     (export juosta)
   (import
     (scheme base)

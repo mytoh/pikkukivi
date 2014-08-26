@@ -6,10 +6,10 @@
           ;; (pikkukivi command repl)
           (pikkukivi command rm)
           (pikkukivi command emma)
-          (pikkukivi command colour)
+          (pikkukivi command colour main)
           (pikkukivi command topless)
           (pikkukivi command ascii-taide)
-          (pikkukivi command juosta)
+          (pikkukivi command juosta main)
           (pikkukivi command print-path)
           (pikkukivi command tmux-start)
           (pikkukivi command kuva main)
@@ -21,6 +21,7 @@
           (pikkukivi command backup)
           (pikkukivi command spin main)
           (pikkukivi command ääliö main)
+          (pikkukivi command sanoa main)
 
           (pikkukivi command verkko)
 
@@ -73,5 +74,6 @@
        ääliö
        backup
        spin
+       sanoa
        ))
     ))

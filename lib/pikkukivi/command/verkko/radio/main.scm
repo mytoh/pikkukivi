@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command verkko radio)
+ (define-library (pikkukivi command verkko radio main)
     (export
       radio)
   (import

@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command colour)
+ (define-library (pikkukivi command colour main)
     (export
       colour)
   (import

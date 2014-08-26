@@ -7,7 +7,6 @@
           (scheme r5rs)
           (gauche base)
           (file util)
-          (util match)
           (util list)
           (pikkukivi command))
   (begin

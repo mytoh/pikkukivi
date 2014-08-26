@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command verkko futaba)
+ (define-library (pikkukivi command verkko futaba main)
     (export futaba)
 
   (import(scheme base)
@@ -62,8 +62,7 @@
                                                       (lambda (in)
                                                         (port-map
                                                          (lambda (line)
-                                                           (let ((m (parse-img-url line board)))
-                                                             m))
+                                                           (parse-img-url line board))
                                                          (cut read-line in #true)))))))
         (flush)
         (let ((got-images (remove not
@@ -202,7 +201,8 @@
               dirs))
            (else (print "no directories")))
          (tput-clr-bol)
-         (print (paint "----------" 237)))))
+         (print (paint "----------" 237)))
+       (sys-sleep 5)))
 
     (define options
       (list

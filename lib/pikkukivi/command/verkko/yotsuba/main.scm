@@ -1,6 +1,6 @@
 ;;; yotsuba.scm
 
- (define-library (pikkukivi command verkko yotsuba)
+ (define-library (pikkukivi command verkko yotsuba main)
     (export yotsuba)
   (import (scheme base)
           (scheme write)
@@ -81,10 +81,13 @@
               body))))
 
     (define (string->html-file thread body)
-      (with-output-to-file
-          (path-swap-extension thread "html")
-        (lambda () (display body)))
-      body)
+      (if body
+        (begin
+          (with-output-to-file
+              (path-swap-extension thread "html")
+            (lambda () (display body)))
+          body)
+        #false))
 
     (define (yotsuba-get-all args)
       (let ((bd (car args))
@@ -102,7 +105,8 @@
     (define (yotsuba-get-one-repeat args)
       (forever
        (begin
-         (yotsuba-get-one args))))
+         (yotsuba-get-one args))
+       (sys-sleep 5)))
 
     (define (yotsuba-get-all-repeat args)
       (forever
@@ -114,7 +118,8 @@
                      (lambda (d)
                        (yotsuba-get-one (list bd d)))
                    dirs)
-                 (println "no directories")))))
+                 (println "no directories"))))
+      (sys-sleep 5))
 
     (define (api-thread board number)
       (let-values (((status headers body)
