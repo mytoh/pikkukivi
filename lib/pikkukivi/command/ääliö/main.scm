@@ -5,6 +5,7 @@
   (import
     (scheme base)
     (scheme write)
+    (scheme process-context)
     (gauche base)
     (gauche process) ; run-process
     (gauche parseopt)
@@ -20,14 +21,18 @@
 
   (begin
 
-    (define *gitdir*  (expand-path "~/huone/git/"))
+    (define *ääliöpath*
+      (let ((ääliöpath (get-environment-variable "ääliöpath")))
+        (if ääliöpath
+          ääliöpath
+          (expand-path "~/huone/git/"))))
 
     (define (do-root)
-      (println *gitdir*))
+      (println *ääliöpath*))
 
     ;; update git repository
     (define (do-update)
-      (let ((repos (find-git-repository *gitdir*)))
+      (let ((repos (find-git-repository *ääliöpath*)))
         (for-each
             (lambda (r)
               (update-git-repository r))
@@ -35,10 +40,16 @@
         (println "update finished!")))
 
     (define (update-git-repository dir)
-      (display (paint "=> " 4))
-      (println (paint (sys-basename dir) 3))
+      (message-update dir)
       (run-process `(git -C ,dir pull) :wait #true)
       (newline))
+
+    (define (message-update dir)
+      (display (paint "=> " 4))
+      (display (paint (sys-basename dir) 3))
+      (display " ")
+      (println (paint (string-drop dir (string-length *ääliöpath*))
+                      39)))
 
     (define (git-repository? directory)
       (file-exists? (build-path directory ".git")))
@@ -56,7 +67,7 @@
 
     ;; clean git repository with "git gc"
     (define (do-clean)
-      (let ((dirs (list (directory-list (expand-path *gitdir*) :children? #true :add-path? #true))))
+      (let ((dirs (list (directory-list (expand-path *ääliöpath*) :children? #true :add-path? #true))))
         (let loop ((dirs (car dirs)))
              (cond
                ((null? dirs)
@@ -82,14 +93,14 @@
           (lambda (operand full-path)
             (values full-path))
           #false)
-        (let ((repos (find-git-repository *gitdir*)))
+        (let ((repos (find-git-repository *ääliöpath*)))
           (if full-path?
             (map
                 println
               repos)
             (map
                 (lambda (r)
-                  (println (string-drop r (string-length *gitdir*))))
+                  (println (string-drop r (string-length *ääliöpath*))))
               repos)))))
 
     (define (do-usage status)
@@ -97,15 +108,20 @@
 
     (define (do-get url)
       (let* ((path (format-url->path url))
-             (full-path (string-append *gitdir* path))
+             (full-path (string-append *ääliöpath* path))
              (git-url (format-url->git url)))
         (println git-url)
         (run-process `(git clone --depth 1 ,git-url ,path) :wait #true)))
 
     (define (format-url->path url)
       (cond
+        ;; user/repo
         ((= 1 (string-count url #\/))
          (string-append "github.com/" url))
+        ;; github.com/user/repo
+        ((and (= 2 (string-count url #\/))
+           (string-prefix? "github.com" url))
+         url)
         (else
             (trim-url-prefix url))))
 
@@ -113,6 +129,9 @@
       (cond
         ((= 1 (string-count url #\/))
          (string-append "git://github.com/" url))
+        ((and (= 2 (string-count url #\/))
+           (string-prefix? "github.com" url))
+         (string-append "git://" url))
         (else
             (string-append "git://" (trim-url-prefix url)))))
 
@@ -155,7 +174,7 @@
           (help
            (do-usage 0))
           (else
-              (with-cwd *gitdir*
+              (with-cwd *ääliöpath*
                         (match (car args)
                                ;; commands
                                ((or "update" "up")
