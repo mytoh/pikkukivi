@@ -22,8 +22,7 @@
     (srfi 1)
     (srfi 11)
     (srfi 8)
-    (srfi 37)
-    )
+    (srfi 37))
   ;; ** code
   (begin
 
@@ -214,7 +213,6 @@
           (else
               (ylilauta-get rest)))
 
-        (tput-cursor-normal))
-      )
+        (tput-cursor-normal)))
 
     ))
