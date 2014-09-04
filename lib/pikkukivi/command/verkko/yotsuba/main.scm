@@ -141,7 +141,7 @@
     (define (make-post-image-url board post)
       (if (post-tim post)
         (string-append
-            "http://images.4cdn.org/"
+            "https://i.4cdn.org/"
           board "/"
           (number->string (post-tim post))
           (post-ext post))
