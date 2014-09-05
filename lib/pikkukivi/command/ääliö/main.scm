@@ -113,27 +113,32 @@
         (println git-url)
         (run-process `(git clone --depth 1 ,git-url ,path) :wait #true)))
 
+    (define (url-is-github-short? url)
+      (= 1 (string-count url #\/)))
+
+    (define (url-is-github? url)
+      (and (= 2 (string-count url #\/))
+        (string-prefix? "github.com" url)))
+
     (define (format-url->path url)
       (cond
         ;; user/repo
-        ((= 1 (string-count url #\/))
+        ((url-is-github-short? url)
          (string-append "github.com/" url))
         ;; github.com/user/repo
-        ((and (= 2 (string-count url #\/))
-           (string-prefix? "github.com" url))
+        ((url-is-github? url)
          url)
         (else
             (trim-url-prefix url))))
 
     (define (format-url->git url)
       (cond
-        ((= 1 (string-count url #\/))
+        ((url-is-github-short? url)
          (string-append "git://github.com/" url))
-        ((and (= 2 (string-count url #\/))
-           (string-prefix? "github.com" url))
+        ((url-is-github? url)
          (string-append "git://" url))
         (else
-            (string-append "git://" (trim-url-prefix url)))))
+            url)))
 
     (define (trim-url-prefix url)
       (define (drop-prefix u prefix)
