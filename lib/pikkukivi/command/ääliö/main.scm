@@ -41,7 +41,7 @@
 
     (define (update-git-repository dir)
       (message-update dir)
-      (run-process `(git -C ,dir pull) :wait #true)
+      (run-process `(git -C ,dir pull) ':wait #true)
       (newline))
 
     (define (message-update dir)
@@ -62,12 +62,14 @@
                d
                (find-git-repository d)))
          (directory-list2 directory
-                          :children? #true
-                          :add-path? #true))))
+                          ':children? #true
+                          ':add-path? #true))))
 
     ;; clean git repository with "git gc"
     (define (do-clean)
-      (let ((dirs (list (directory-list (expand-path *ääliöpath*) :children? #true :add-path? #true))))
+      (let ((dirs (list (directory-list (expand-path *ääliöpath*)
+                                        ':children? #true
+                                        ':add-path? #true))))
         (let loop ((dirs (car dirs)))
              (cond
                ((null? dirs)
@@ -77,7 +79,9 @@
                      ((file-is-directory? (car dirs))
                       (display (paint "=> " 4))
                       (println (paint (sys-basename (car dirs)) 3))
-                      (run-process '(git gc) :wait #true :directory (car dirs))
+                      (run-process '(git gc)
+                                   ':wait #true
+                                   ':directory (car dirs))
                       (newline))
                      (else  #true))
                  (loop (cdr dirs)))))))
@@ -111,7 +115,8 @@
              (full-path (string-append *ääliöpath* path))
              (git-url (format-url->git url)))
         (println git-url)
-        (run-process `(git clone --depth 1 ,git-url ,path) :wait #true)))
+        (run-process `(git clone --depth 1 ,git-url ,path)
+                     ':wait #true)))
 
     (define (url-is-github-short? url)
       (= 1 (string-count url #\/)))
