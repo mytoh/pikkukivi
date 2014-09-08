@@ -209,7 +209,7 @@
             (tomigusuku "FMとよみ               (沖縄県豊見城市)" "http://www.simulradio.jp/asx/FmToyomi.asx")
             )))
 
-    (define (listen args)
+    (define (do-listen args)
       (let* ((station (string-trim
                           (cadr (assoc-ref (*station-list*)
                                            (string->symbol (car args))))))
@@ -222,7 +222,7 @@
                (else
                    (run-process `(mplayer ,@(cdr (assoc-ref (*station-list*) (string->symbol (car args))))) ':wait #t)))))
 
-    (define (list-stations)
+    (define (do-list)
       (let loop ((st (*station-list*)))
            (cond
              ((null? st)
@@ -238,7 +238,7 @@
     (define (radio args)
       (match (car args)
              ("listen"
-              (listen (cdr args)))
+              (do-listen (cdr args)))
              ("list"
-              (list-stations))))
+              (do-list))))
     ))
