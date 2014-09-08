@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command verkko radio main)
+(define-library (pikkukivi command verkko radio main)
     (export
       radio)
   (import
@@ -13,6 +13,7 @@
     (srfi 1)
     (srfi  13)
     (kirjasto merkkijono)
+    (kirjasto threading)
     (maali)
     (clojure))
 
@@ -215,11 +216,11 @@
              (extension (path-extension station)))
         (match extension
                ("asx"
-                (run-process `(mplayer -playlist ,station) :wait #true))
+                (run-process `(mplayer -playlist ,station) ':wait #true))
                ("m3u"
-                (run-process `(mplayer -playlist ,station) :wait #true))
+                (run-process `(mplayer -playlist ,station) ':wait #true))
                (else
-                   (run-process `(mplayer ,@(cdr (assoc-ref (*station-list*) (string->symbol (car args))))) :wait #t)))))
+                   (run-process `(mplayer ,@(cdr (assoc-ref (*station-list*) (string->symbol (car args))))) ':wait #t)))))
 
     (define (list-stations)
       (let loop ((st (*station-list*)))
@@ -227,13 +228,11 @@
              ((null? st)
               '())
              (else
-                 (println
-                  (str
-                   (paint
-                    (symbol->string (car (car st)))
-                    123)
-                   ": "
-                   (cadr (car st))))
+                 (-> (car (car st))
+                     symbol->string
+                     (paint 123)
+                     (str ": " (cadr (car st)))
+                     println)
                (loop (cdr st))))))
 
     (define (radio args)
