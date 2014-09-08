@@ -90,7 +90,7 @@
               (receive (temp-out temp-file)
                 (sys-mkstemp "futaba-temp")
                 (http-get hostname path
-                          :sink temp-out :flusher flusher)
+                          ':sink temp-out ':flusher flusher)
                 (close-output-port temp-out)
                 (move-file temp-file file))
               #false)))))
@@ -101,7 +101,7 @@
         (cond ((not (string=? status "404"))
                (let ((html (ces-convert body "*jp" "utf-8")))
                  (if (string-incomplete? html)
-                   (string-incomplete->complete html :omit)
+                   (string-incomplete->complete html ':omit)
                    html)))
               (else  #false))))
 
@@ -154,7 +154,7 @@
 
     (define (list-directories dir)
       (receive (dirs _x)
-        (directory-list2 dir :children? #true)
+        (directory-list2 dir ':children? #true)
         dirs))
 
     (define (futaba-get-all args)

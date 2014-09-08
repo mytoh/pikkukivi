@@ -59,7 +59,7 @@
                (receive (temp-out temp-file)
                  (sys-mkstemp "yotsuba-temp")
                  (http-get hostname path
-                           :sink temp-out :flusher flusher)
+                           ':sink temp-out ':flusher flusher)
                  (close-output-port temp-out)
                  (move-file temp-file file))
                file)
@@ -74,7 +74,7 @@
           ((string=? status "404")
            #false)
           ((string-incomplete? body)
-           (if-let1 html (string-incomplete->complete body :omit)
+           (if-let1 html (string-incomplete->complete body ':omit)
                     html
                     body))
           (else
@@ -91,7 +91,7 @@
 
     (define (yotsuba-get-all args)
       (let ((bd (car args))
-            (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
+            (dirs (values-ref (directory-list2 (current-directory) ':children? #true) 0)))
         (cond
           ((not (null? dirs))
            (for-each
@@ -111,7 +111,7 @@
     (define (yotsuba-get-all-repeat args)
       (forever
        (let ((bd (car args))
-             (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
+             (dirs (values-ref (directory-list2 (current-directory) ':children? #true) 0)))
          (println "getting " bd)
          (if-not (null? dirs)
                  (for-each

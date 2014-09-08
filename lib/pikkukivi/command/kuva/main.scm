@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command kuva main)
+(define-library (pikkukivi command kuva main)
     (export
       kuva)
   (import
@@ -24,11 +24,11 @@
       '(-s f -f -b -a -r))
 
     (define (open-directory-feh dir)
-      (run-process `(feh ,@feh-default-options ,dir) :wait #true))
+      (run-process `(feh ,@feh-default-options ,dir) ':wait #true))
 
     (define (open-directory-sxiv dir)
       (run-process `(sxiv ,@sxiv-directory-options ,dir)
-                   :wait #true))
+                   ':wait #true))
 
     (define (open-directory dir)
       (open-directory-sxiv dir))
@@ -38,12 +38,12 @@
                          --start-at
                          ,(sys-realpath file)
                          ,(sys-dirname (sys-realpath file)))
-                   :wait #true))
+                   ':wait #true))
 
     (define (open-regular-file-sxiv file)
       (run-process `(sxiv ,@sxiv-directory-options
                           ,(sys-dirname file))
-                   :wait #true))
+                   ':wait #true))
 
     (define (open-regular-file file)
       (open-regular-file-sxiv file))
@@ -57,7 +57,7 @@
                      (path-sans-extension file))))))
         (make-directory* temp)
         (unpack (list file temp))
-        (run-process `(feh ,@feh-default-options  -r ,temp) :wait #true)
+        (run-process `(feh ,@feh-default-options  -r ,temp) ':wait #true)
         (remove-directory* temp)))
 
     (define options

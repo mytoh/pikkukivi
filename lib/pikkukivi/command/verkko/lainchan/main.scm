@@ -98,8 +98,8 @@
               (receive (temp-out temp-file)
                 (sys-mkstemp "lainchan-temp")
                 (http-get hostname path
-                          :sink temp-out :flusher flusher
-                          :secure #true)
+                          ':sink temp-out ':flusher flusher
+                          ':secure #true)
                 (close-output-port temp-out)
                 (move-file temp-file file))
               #false)))))
@@ -110,7 +110,7 @@
                     (http-get "lainchan.org"
                               (string-append
                                   "/" board "/res/"thread ".html")
-                              :secure #true)))
+                              ':secure #true)))
         (cond ((not (string=? status "404"))
                body)
               (else  #false))))
@@ -131,7 +131,7 @@
 
     (define (list-directories dir)
       (receive (dirs _x)
-        (directory-list2 dir :children? #true)
+        (directory-list2 dir ':children? #true)
         dirs))
 
     (define (lainchan-get-all args)

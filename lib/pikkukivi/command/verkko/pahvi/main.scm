@@ -45,8 +45,8 @@
             (receive (temp-out temp-file)
               (sys-mkstemp "pahvi-temp")
               (http-get hostname path
-                        :sink temp-out
-                        :flusher flusher)
+                        ':sink temp-out
+                        ':flusher flusher)
               (close-output-port temp-out)
               (move-file temp-file orig-file))
             (print orig-file)))))
@@ -66,7 +66,7 @@
                                                                  (ssax:xml->sxml in ())))))
                  (caddr (find-max
                          ((node-closure (ntype-names?? '(a))) page)
-                         :key (lambda (e) (x->number (caddr e))))))
+                         ':key (lambda (e) (x->number (caddr e))))))
                1))
 
     (define (parse-next-page-number body)

@@ -89,8 +89,8 @@
               (receive (temp-out temp-file)
                 (sys-mkstemp "yli-temp")
                 (http-get hostname path
-                          :sink temp-out :flusher flusher
-                          :secure #true)
+                          ':sink temp-out ':flusher flusher
+                          ':secure #true)
                 (close-output-port temp-out)
                 (move-file temp-file file))
               #false)))))
@@ -99,11 +99,11 @@
       (let-values (((status headers body)
                     (http-get "ylilauta.org"
                               (string-append "/"  board "/" thread)
-                              :secure #true)))
+                              ':secure #true)))
         (cond ((not (string=? status "404"))
                (let ((html body))
                  (if (string-incomplete? html)
-                   (string-incomplete->complete html :omit)
+                   (string-incomplete->complete html ':omit)
                    html)))
               (else  #false))))
 
@@ -123,7 +123,7 @@
 
     (define (ylilauta-get-all args)
       (let ((board (car args))
-            (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
+            (dirs (values-ref (directory-list2 (current-directory) ':children? #true) 0)))
         (cond
           ((not (null? dirs))
            (for-each
@@ -155,7 +155,7 @@
     (define (ylilauta-get-repeat-all args)
       (forever
        (let ((board (car args))
-             (dirs (values-ref (directory-list2 (current-directory) :children? #true) 0)))
+             (dirs (values-ref (directory-list2 (current-directory) ':children? #true) 0)))
          (println (string-append "Board " (paint board 229)))
          (cond
            ((not (null? dirs))
