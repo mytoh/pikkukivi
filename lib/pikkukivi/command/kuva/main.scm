@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command kuva main)
+ (define-library (pikkukivi command kuva main)
     (export
       kuva)
   (import
@@ -21,7 +21,7 @@
       '(--auto-zoom --fullscreen --quiet --reverse --sort mtime))
 
     (define sxiv-directory-options
-      '(-s f -f -b -a -r))
+      '(-s f -f -b -r))
 
     (define (open-directory-feh dir)
       (run-process `(feh ,@feh-default-options ,dir) ':wait #true))
