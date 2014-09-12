@@ -49,6 +49,9 @@
             ;; icecast
             (uzic-ch-techno-minimal "UZIC channel TECHNO MINIMAL" "http://stream.uzic.ch:8002/tek-minimal128.mp3")
 
+            (shadows-ebm "Only the finest selection of Industrial, EBM, Synthpop, and Darkwave music bands." "http://listen.radionomy.com/shadowsradio-ebmindustrialsynthpop-.m3u")
+            (shadows-neo "Only the finest selections of Neoclassical Darkwave and Dark ambient music." "http://listen.radionomy.com/shadowsradio-neoclassicaldarkwave-.m3u")
+
             (nhkr1 "NHK第一" "http://mfile.akamai.com/129931/live/reflector:46032.asx")
             (nhkr2   "NHK第二" "http://mfile.akamai.com/129932/live/reflector:46056.asx")
             (nhkfm  "NHK-FM" "http://mfile.akamai.com/129933/live/reflector:46051.asx")
