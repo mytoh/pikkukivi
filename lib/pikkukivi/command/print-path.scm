@@ -19,7 +19,7 @@
              ((env)
               (print env)
               (cond
-                ((sys-getenv env)
+                ((get-environment-variable env)
                  (for-each print
                    (string-split (get-environment-variable env)
                                  ":")))
