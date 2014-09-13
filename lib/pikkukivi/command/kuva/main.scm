@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command kuva main)
+(define-library (pikkukivi command kuva main)
     (export
       kuva)
   (import
@@ -13,6 +13,7 @@
     (file util)
     (kirjasto arkisto)
     (kirjasto työkalu)
+    (rename (prefix (kirjasto tiedosto polku) path:))
     (pikkukivi command unpack))
   (begin
     (define (usage status) (exit status "usage: ~a <file>\n" "kuva"))
@@ -37,12 +38,12 @@
       (run-process `(feh ,@feh-default-options
                          --start-at
                          ,(sys-realpath file)
-                         ,(sys-dirname (sys-realpath file)))
+                         ,(path:parent (sys-realpath file)))
                    ':wait #true))
 
     (define (open-regular-file-sxiv file)
       (run-process `(sxiv ,@sxiv-directory-options
-                          ,(sys-dirname file))
+                          ,(path:parent file))
                    ':wait #true))
 
     (define (open-regular-file file)
@@ -53,7 +54,7 @@
                    (temporary-directory)
                    "kuva"
                    (string-incomplete->complete
-                    (sys-basename
+                    (path:child
                      (path-sans-extension file))))))
         (make-directory* temp)
         (unpack (list file temp))
