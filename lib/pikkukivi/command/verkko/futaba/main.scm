@@ -202,7 +202,7 @@
            (else (print "no directories")))
          (tput-clr-bol)
          (print (paint "----------" 237)))
-       (sys-sleep 5)))
+       (sys-sleep 300)))
 
     (define options
       (list
