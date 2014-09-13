@@ -53,7 +53,7 @@
                       39)))
 
     (define (git-repository? directory)
-      (file-exists? (build-path directory ".git")))
+      (file-exists? (path:join directory ".git")))
 
     (define (find-git-repository directory)
       (flatten
