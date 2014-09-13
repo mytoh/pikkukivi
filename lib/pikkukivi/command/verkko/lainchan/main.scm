@@ -109,7 +109,7 @@
       (let-values (((status headers body)
                     (http-get "lainchan.org"
                               (string-append
-                                  "/" board "/res/"thread ".html")
+                                  "/" board "/res/" thread ".html")
                               ':secure #true)))
         (cond ((not (string=? status "404"))
                body)
