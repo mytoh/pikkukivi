@@ -10,20 +10,21 @@
     (gauche process)
     (util list) ; slices
     (util match)
-    (file util))
+    (file util)
+    (kirjasto merkkijono))
 
   (begin
 
     (define (print-path args)
       (match args
              ((env)
-              (print env)
+              (println env)
               (cond
                 ((get-environment-variable env)
-                 (for-each print
+                 (for-each println
                    (string-split (get-environment-variable env)
                                  ":")))
                 (else env)))
              (_
-              (for-each print
+              (for-each println
                 (string-split (get-environment-variable"PATH") ":")))))))
