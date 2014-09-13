@@ -5,9 +5,11 @@
   (import (scheme base)
           (scheme write)
           (scheme process-context)
-          (kirjasto komento)
           (gauche base)
-          (file util))
+          (file util)
+          (kirjasto komento)
+          (rename (prefix (kirjasto tiedosto polku) path:))
+          )
 
   (begin
 
@@ -29,7 +31,7 @@
 
     (define (archive outfile infile)
       (run-command `(tar --create --verbose --file ,outfile
-                         -C ,(sys-dirname infile) ,(sys-basename infile))))
+                         -C ,(path:parent infile) ,(path:child infile))))
 
     (define (backup args)
       (archive (out-directory (file-tar-xz "vihko"))

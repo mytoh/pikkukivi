@@ -17,7 +17,8 @@
     (clojure)
     (kirjasto merkkijono)
     (kirjasto list)
-    (kirjasto tiedosto))
+    (kirjasto tiedosto)
+    (rename (prefix (kirjasto tiedosto polku) path:)))
 
   (begin
 
@@ -46,7 +47,7 @@
 
     (define (message-update dir)
       (display (paint "=> " 4))
-      (display (paint (sys-basename dir) 3))
+      (display (paint (path:child dir) 3))
       (display " ")
       (println (paint (string-drop dir (string-length *ääliöpath*))
                       39)))
@@ -78,7 +79,7 @@
                    (cond
                      ((file-is-directory? (car dirs))
                       (display (paint "=> " 4))
-                      (println (paint (sys-basename (car dirs)) 3))
+                      (println (paint (path:child (car dirs)) 3))
                       (run-process '(git gc)
                                    ':wait #true
                                    ':directory (car dirs))
