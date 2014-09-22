@@ -49,6 +49,8 @@
             ;; icecast
             (uzic-ch-techno-minimal "UZIC channel TECHNO MINIMAL" "http://stream.uzic.ch:8002/tek-minimal128.mp3")
 
+            (radioparadise "radio paradise" "http://stream-dc1.radioparadise.com/rp_192m.ogg")
+
             (shadows-ebm "Only the finest selection of Industrial, EBM, Synthpop, and Darkwave music bands." "http://listen.radionomy.com/shadowsradio-ebmindustrialsynthpop-.m3u")
             (shadows-neo "Only the finest selections of Neoclassical Darkwave and Dark ambient music." "http://listen.radionomy.com/shadowsradio-neoclassicaldarkwave-.m3u")
 
@@ -219,11 +221,11 @@
              (extension (path-extension station)))
         (match extension
                ("asx"
-                (run-process `(mplayer -playlist ,station) ':wait #true))
+                (run-process `(mplayer -playlist ,station -volume 20) ':wait #true))
                ("m3u"
-                (run-process `(mplayer -playlist ,station) ':wait #true))
+                (run-process `(mplayer -playlist ,station -volume 20) ':wait #true))
                (else
-                   (run-process `(mplayer ,@(cdr (assoc-ref (*station-list*) (string->symbol (car args))))) ':wait #t)))))
+                   (run-process `(mplayer ,@(cdr (assoc-ref (*station-list*) (string->symbol (car args)))) -volume 20) ':wait #t)))))
 
     (define (do-list)
       (let loop ((st (*station-list*)))
