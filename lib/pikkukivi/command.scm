@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command)
+(define-library (pikkukivi command)
     (export string->command)
   (import (scheme base)
           (pikkukivi command unpack)
@@ -69,6 +69,7 @@
        yes
        ylilauta
        lainchan
+       8chan
        yotsuba
        yotsuba-old
        ääliö

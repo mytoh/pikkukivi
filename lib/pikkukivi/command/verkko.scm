@@ -11,6 +11,7 @@
       ;; pervo
       ylilauta
       lainchan
+      8chan
       sssh)
   (import
     (scheme base)
@@ -24,4 +25,5 @@
     (pikkukivi command verkko sget)
     ;; (pikkukivi command verkko pervo)
     (pikkukivi command verkko ylilauta main)
+    (pikkukivi command verkko 8chan main)
     (pikkukivi command verkko sssh)))
