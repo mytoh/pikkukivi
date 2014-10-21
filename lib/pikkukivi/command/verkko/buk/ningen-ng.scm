@@ -1,5 +1,5 @@
 
-(define-library (pikkukivi command verkko buk ningen-ng)
+ (define-library (pikkukivi command verkko buk ningen-ng)
     (export ningen-ng)
   (import
     (scheme base)
@@ -74,7 +74,7 @@
     (define (get-ningen-ng-all)
       (let ((dirs (values-ref (directory-list2 (current-directory)
                                                :children? #true) 0)))
-        (if (not (null? dirs))
+        (if (some? dirs)
           (for-each
               (lambda (d)
                 (get-ningen-ng d))

@@ -42,7 +42,7 @@
 
     (define (update-git-repository dir)
       (message-update dir)
-      (run-process `(git -C ,dir pull) ':wait #true)
+      (run-process `(git -C ,dir pull --ff --ff-only) ':wait #true)
       (newline))
 
     (define (message-update dir)

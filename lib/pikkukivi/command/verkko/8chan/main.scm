@@ -1,29 +1,29 @@
 ;;; main.scm
 
-(define-library (pikkukivi command verkko 8chan main)
+ (define-library (pikkukivi command verkko 8chan main)
     (export 8chan)
 
-  (import(scheme base)
-         (scheme write)
-         (scheme file)
-         (gauche base)
-         (rfc http)
-         (rfc uri)
-         (gauche process)
-         (gauche charconv)
-         (file util)
-         (util match)
-         (gauche parseopt)
-         (kirjasto komento työkalu)
-         (kirjasto työkalu)
-         (kirjasto merkkijono)
-         (kirjasto pääte)
-         (maali)
-         (srfi 1)
-         (srfi 11)
-         (srfi 8)
-         (srfi 37)
-         )
+  (import (scheme base)
+          (scheme write)
+          (scheme file)
+          (gauche base)
+          (rfc http)
+          (rfc uri)
+          (gauche process)
+          (gauche charconv)
+          (file util)
+          (util match)
+          (gauche parseopt)
+          (kirjasto komento työkalu)
+          (kirjasto työkalu)
+          (kirjasto merkkijono)
+          (kirjasto pääte)
+          (maali)
+          (srfi 1)
+          (srfi 11)
+          (srfi 8)
+          (srfi 37)
+          )
 
   (begin
 
@@ -59,7 +59,6 @@
         (string-append
             "<a href=\"(/" board "/src/(\\d+).[^\"]+)\">"))
        line))
-    ;; <a href="/l/src/1405141982668.jpg">
 
     (define (parse-image-url-list html board)
       (car (delete-duplicates
@@ -100,7 +99,7 @@
                 (sys-mkstemp "8chan-temp")
                 (http-get hostname path
                           ':sink temp-out ':flusher flusher
-                          ':secure #true)
+                          ':secure #false)
                 (close-output-port temp-out)
                 (move-file temp-file file))
               #false)))))
@@ -111,7 +110,7 @@
                     (http-get "8chan.co"
                               (string-append
                                   "/" board "/res/" thread ".html")
-                              ':secure #true)))
+                              ':secure #false)))
         (cond ((not (string=? status "404"))
                body)
               (else  #false))))
@@ -149,12 +148,11 @@
       (let ((board (car args))
             (dirs (list-directories (current-directory))))
         (cond
-          ((not (null? dirs))
+          ((some? dirs)
            (for-each
                (lambda (d)
                  (8chan-get (list board d)))
-             dirs)
-           (run-process `(notify-send ,(string-append "8chan " board  " fetch finished"))))
+             dirs))
           (else (print "no directories")))))
 
     (define (8chan-get-repeat args)
@@ -183,7 +181,7 @@
              (dirs (list-directories (current-directory))))
          (print (string-append "Board " (paint board 229)))
          (cond
-           ((not (null? dirs))
+           ((some? dirs)
             (for-each
                 (lambda (d)
                   (8chan-get-repeat (list board d)))

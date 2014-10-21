@@ -53,7 +53,7 @@
 
     (define (get-images id-num-list)
       (let loop ((lst  id-num-list))
-           (when (not (null?  lst))
+           (when (some? lst)
              (let ((id (car (car lst)))
                    (url (cadr (car lst))))
                (swget url id)

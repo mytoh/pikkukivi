@@ -32,7 +32,7 @@
                    ':wait #true))
 
     (define (open-directory dir)
-      (open-directory-sxiv dir))
+      (open-directory-feh dir))
 
     (define (open-regular-file-feh file)
       (run-process `(feh ,@feh-default-options
@@ -47,7 +47,7 @@
                    ':wait #true))
 
     (define (open-regular-file file)
-      (open-regular-file-sxiv file))
+      (open-regular-file-feh file))
 
     (define (open-archive file)
       (let ((temp (build-path

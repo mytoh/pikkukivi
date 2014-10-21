@@ -161,7 +161,7 @@
       (let ((board (car args))
             (dirs (list-directories (current-directory))))
         (cond
-          ((not (null? dirs))
+          ((some? dirs)
            (for-each
                (lambda (d)
                  (futaba-get (list board d)))
@@ -194,7 +194,7 @@
              (dirs (list-directories (current-directory))))
          (print (string-append "Board " (paint board 229)))
          (cond
-           ((not (null? dirs))
+           ((some? dirs)
             (for-each
                 (lambda (d)
                   (futaba-get-repeat (list board d)))

@@ -23,9 +23,9 @@
           (kirjasto työkalu)
           (kirjasto merkkijono)
           (kirjasto pääte)
+          (clojure)
           (rename (prefix (kirjasto avain) avain:))
-          (maali)
-          )
+          (maali))
   (begin
 
     (define (usage)
@@ -93,7 +93,7 @@
       (let ((bd (car args))
             (dirs (values-ref (directory-list2 (current-directory) ':children? #true) 0)))
         (cond
-          ((not (null? dirs))
+          ((some? dirs)
            (for-each
                (lambda (d)
                  (yotsuba-get-one (list bd d)))
@@ -119,7 +119,7 @@
                        (yotsuba-get-one (list bd d)))
                    dirs)
                  (println "no directories"))))
-      (sys-sleep 5))
+      (sys-sleep 60))
 
     (define (api-thread board number)
       (let-values (((status headers body)

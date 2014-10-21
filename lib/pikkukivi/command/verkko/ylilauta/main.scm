@@ -125,7 +125,7 @@
       (let ((board (car args))
             (dirs (values-ref (directory-list2 (current-directory) ':children? #true) 0)))
         (cond
-          ((not (null? dirs))
+          ((some? dirs)
            (for-each
                (lambda (d)
                  (ylilauta-get (list board d)))
@@ -158,7 +158,7 @@
              (dirs (values-ref (directory-list2 (current-directory) ':children? #true) 0)))
          (println (string-append "Board " (paint board 229)))
          (cond
-           ((not (null? dirs))
+           ((some? dirs)
             (for-each
                 (lambda (d)
                   (ylilauta-get-repeat (list board d)))
