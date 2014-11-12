@@ -1,5 +1,5 @@
 
- (define-library (pikkukivi command verkko futaba main)
+(define-library (pikkukivi command verkko futaba main)
     (export futaba)
 
   (import(scheme base)
@@ -105,6 +105,15 @@
                    html)))
               (else  #false))))
 
+    (define (string->html-file thread body)
+      (if body
+        (begin
+          (with-output-to-file
+              (path-swap-extension thread "html")
+            (lambda () (display body)))
+          body)
+        #false))
+
     (define (detect-server board thread)
       (let* ((fget (lambda (server)
                      (http-get (string-append server ".2chan.net")
@@ -115,7 +124,7 @@
                ("k" ;壁紙
                 (fget "cgi"))
                ("b" ;虹裏
-                (let ((servs '("jun" "dec" "may"))
+                (let ((servs '( "may" "jun" "dec"))
                       (get-res (lambda (srv)
                                  (receive (a b c)
                                    (fget srv)
@@ -124,13 +133,15 @@
                                     (receive (a b c)
                                       (fget srv)
                                       (when (not (string=? a "404")) (values a b c))))))
-                  (or (because ((s (get-res "jun")))
+                  (or
+                      (because ((s (get-res "may")))
                                (get-values s))
+                    (because ((s (get-res "jun")))
+                             (get-values s))
                     (because ((s (get-res "dec")))
                              (get-values s))
-                    (because ((s (get-res "may")))
-                             (get-values s))
-                    (values "404" #false #false))))
+                    (values "404" #false #false))
+                  ))
                ("7" ;ゆり
                 (fget "zip"))
                ("16" ;二次元壁紙
@@ -147,6 +158,7 @@
            (display (paint thread 4))
            (mkdir thread)
            (cd thread)
+           (string->html-file thread html)
            (get-image html board)
            (cd ".."))
           (else
@@ -179,6 +191,7 @@
            (display (paint thread 4))
            (mkdir thread)
            (cd thread)
+           (string->html-file thread html)
            (get-image html board)
            (cd ".."))
           (else
