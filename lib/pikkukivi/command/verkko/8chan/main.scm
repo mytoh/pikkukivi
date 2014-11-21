@@ -1,6 +1,6 @@
 ;;; main.scm
 
- (define-library (pikkukivi command verkko 8chan main)
+(define-library (pikkukivi command verkko 8chan main)
     (export 8chan)
 
   (import (scheme base)
@@ -57,7 +57,7 @@
       (rxmatch
        (string->regexp
         (string-append
-            "<a href=\"(/" board "/src/(\\d+).[^\"]+)\">"))
+            "<a href=\"https://media.8chan.co(/" board "/src/(\\d+).[^\"]+)\">"))
        line))
 
     (define (parse-image-url-list html board)
