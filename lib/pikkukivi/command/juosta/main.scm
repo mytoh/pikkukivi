@@ -1,34 +1,45 @@
+;;; vittu.scm
 
- (define-library (pikkukivi command juosta main)
-    (export juosta)
-  (import
-    (scheme base)
-    (scheme write)
-    (gauche base)
-    (gauche process)
-    (gauche parseopt)
-    (util match)
-    (file util))
+ (define-library (pikkukivi command vittu main)
+    (export vittu)
+  (import (scheme base)
+          (scheme write)
+          (srfi 13)
+          (gauche base)
+          (gauche process)
+          (kirjasto komento)
+          (kirjasto merkkijono))
 
   (begin
 
-    (define additional-paths `(,(expand-path  "~/huone/ohjelmat/v2c")))
+    (define (search-process prog)
+      (let ((result (process-output->string `(pgrep ,prog)
+                                            :on-abnormal-exit :ignore)))
+        (not (string-null? result))))
 
-    (define (juosta-app command)
-      (let ((app (car command)))
-        (if (or (find-file-in-paths app)
-              (find-file-in-paths app
-                                  :paths additional-paths))
-          (begin
-            (display "launching ")
-            (display app)
-            (newline)
-            (run-process command
-                         :detached #true
-                         :output :null
-                         :error :null))
-          (print (string-append "no such command "
-                   app)))))
+    (define (kill-process prog)
+      (run-command `(killall -9 ,prog)))
 
-    (define (juosta args)
-      (juosta-app args))))
+    (define (process-not-found prog)
+      (println (string-append prog " not found")))
+
+    (define (message-killed prog)
+      (let* ((result (process-output->string `(toilet -f term -F rotate ,prog)))
+             (message (string-append " (╯°□°）╯︵ " result)))
+        (newline)
+        (println message)))
+
+    (define (kill-processes procs)
+      (for-each
+          (lambda (proc)
+            (cond
+              ((search-process proc)
+               (kill-process proc)
+               (message-killed proc))
+              (else (process-not-found proc))))
+        procs))
+
+    (define (vittu args)
+      (kill-processes args))
+
+    ))

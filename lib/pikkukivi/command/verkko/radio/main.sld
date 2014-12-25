@@ -45,6 +45,7 @@
             (seafm "Sea FM" "http://s3.myradiostream.com:4976/listen.pls")
             (rondo "Rondo Classic Klasu" "http://stream.iradio.fi:8000/klasu-hi.mp3.m3u")
             (rondo-pro "Rondo Classic Klasu Pro" "http://stream.iradio.fi:8000/klasupro-hi.mp3.m3u")
+            (pasiradio "Pasiradio on nettiradio" "http://releet.pasiradio.com:8000/listen.pls")
 
             ;; icecast
             (uzic-ch-techno-minimal "UZIC channel TECHNO MINIMAL" "http://stream.uzic.ch:8002/tek-minimal128.mp3")

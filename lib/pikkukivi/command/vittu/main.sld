@@ -1,6 +1,6 @@
 ;;; vittu.scm
 
- (define-library (pikkukivi command vittu main)
+(define-library (pikkukivi command vittu main)
     (export vittu)
   (import (scheme base)
           (scheme write)

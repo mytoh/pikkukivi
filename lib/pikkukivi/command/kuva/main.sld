@@ -15,6 +15,7 @@
     (kirjasto työkalu)
     (rename (prefix (kirjasto tiedosto polku) path:))
     (pikkukivi command unpack))
+
   (begin
     (define (usage status) (exit status "usage: ~a <file>\n" "kuva"))
 
@@ -31,9 +32,6 @@
       (run-process `(sxiv ,@sxiv-directory-options ,dir)
                    ':wait #true))
 
-    (define (open-directory dir)
-      (open-directory-feh dir))
-
     (define (open-regular-file-feh file)
       (run-process `(feh ,@feh-default-options
                          --start-at
@@ -48,6 +46,9 @@
 
     (define (open-regular-file file)
       (open-regular-file-feh file))
+
+    (define (open-directory dir)
+      (open-directory-feh dir))
 
     (define (open-archive file)
       (let ((temp (build-path

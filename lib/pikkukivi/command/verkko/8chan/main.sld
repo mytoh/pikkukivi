@@ -1,40 +1,40 @@
+;;; main.scm
 
-(define-library (pikkukivi command verkko futaba main)
-    (export futaba)
+(define-library (pikkukivi command verkko 8chan main)
+    (export 8chan)
 
-  (import(scheme base)
-         (scheme write)
-         (scheme file)
-         (srfi 1)
-         (srfi 11)
-         (srfi 8)
-         (srfi 37)
-         (gauche base)
-         (rfc http)
-         (rfc uri)
-         (gauche process)
-         (gauche charconv)
-         (file util)
-         (util match)
-         (gauche collection) ;find
-         (gauche parseopt)
-         (kirjasto komento työkalu)
-         (kirjasto työkalu)
-         (kirjasto merkkijono)
-         (kirjasto pääte)
-         (maali)
-         )
+  (import (scheme base)
+          (scheme write)
+          (scheme file)
+          (gauche base)
+          (rfc http)
+          (rfc uri)
+          (gauche process)
+          (gauche charconv)
+          (file util)
+          (util match)
+          (gauche parseopt)
+          (kirjasto komento työkalu)
+          (kirjasto työkalu)
+          (kirjasto merkkijono)
+          (kirjasto pääte)
+          (maali)
+          (srfi 1)
+          (srfi 11)
+          (srfi 8)
+          (srfi 37)
+          )
 
   (begin
 
     (define (usage)
       (print-strings
-       '("futaba board thread"
+       '("8chan board thread"
          ""
          "Usage:"
-         "  futaba <board> <thread>       # get images once from /b/222222 "
-         "  futaba -r <board> <thread>    # get images from /id/9999 with repeat option"
-         "  futaba -a <board>             # get images from b with directory name as thread number"
+         "  8chan <board> <thread>       # get images once from /b/222222 "
+         "  8chan -r <board> <thread>    # get images from /id/9999 with repeat option"
+         "  8chan -a <board>             # get images from b with directory name as thread number"
          ""
          "Options:"
          "  -a --all      get thread number from directories under cwd"
@@ -45,28 +45,36 @@
          "  <thread>      3839 2230 93988 482208 ..."))
       (exit 2))
 
+    (define (parse-image-url line board)
+      (let loop ((res '())
+                 (match (match-image-url line board)))
+           (if match
+             (loop (cons (match 1) res)
+                   (match-image-url (match 'after) board))
+             res)))
 
-    (define (parse-img-url line board)
-      (rxmatch->string
+    (define (match-image-url line board)
+      (rxmatch
        (string->regexp
         (string-append
-            "http\:\/\/(\\w+)\\.2chan\\.net\/(\\w+)\/"
-          board
-          "\/src\/[^\"]+"))
+            "<a href=\"https://media.8chan.co(/" board "/src/(\\d+).[^\"]+)\""))
        line))
 
+    (define (parse-image-url-list html board)
+      (car (delete-duplicates
+               (remove not
+                 (call-with-input-string html
+                                         (lambda (in)
+                                           (port-map
+                                            (lambda (line)
+                                              (parse-image-url line board))
+                                            (cut read-line in #true))))))))
 
     (define (get-image html board)
-      (let ((image-url-list (remove not
-                              (call-with-input-string html
-                                                      (lambda (in)
-                                                        (port-map
-                                                         (lambda (line)
-                                                           (parse-img-url line board))
-                                                         (cut read-line in #true)))))))
-        (flush)
+      (let ((image-url-list (parse-image-url-list html board)))
         (let ((got-images (remove not
-                            (map (lambda (url) (fetch url))
+                            (map (lambda (url)
+                                   (fetch (string-append "https://8chan.co" url)))
                               image-url-list))))
           (match (length got-images)
                  (0 (newline))
@@ -88,21 +96,23 @@
                  (flusher (lambda (sink headers)  #true)))
             (if (not (file-is-readable? file))
               (receive (temp-out temp-file)
-                (sys-mkstemp "futaba-temp")
+                (sys-mkstemp "8chan-temp")
                 (http-get hostname path
-                          ':sink temp-out ':flusher flusher)
+                          ':sink temp-out ':flusher flusher
+                          ':secure #false)
                 (close-output-port temp-out)
                 (move-file temp-file file))
               #false)))))
 
+
     (define (get-html board thread)
       (let-values (((status headers body)
-                    (detect-server board thread)))
+                    (http-get "8chan.co"
+                              (string-append
+                                  "/" board "/res/" thread ".html")
+                              ':secure #false)))
         (cond ((not (string=? status "404"))
-               (let ((html (ces-convert body "*jp" "utf-8")))
-                 (if (string-incomplete? html)
-                   (string-incomplete->complete html ':omit)
-                   html)))
+               body)
               (else  #false))))
 
     (define (string->html-file thread body)
@@ -114,42 +124,7 @@
           body)
         #false))
 
-    (define (detect-server board thread)
-      (let* ((fget (lambda (server)
-                     (http-get (string-append server ".2chan.net")
-                               (string-append "/" board "/res/" thread ".htm")))))
-        (match board
-               ("l" ;二次元壁紙
-                (fget  "dat"))
-               ("k" ;壁紙
-                (fget "cgi"))
-               ("b" ;虹裏
-                (let ((servs '( "may" "jun" "dec"))
-                      (get-res (lambda (srv)
-                                 (receive (a b c)
-                                   (fget srv)
-                                   (if (not (string=? a "404")) srv #false))))
-                      (get-values (lambda (srv)
-                                    (receive (a b c)
-                                      (fget srv)
-                                      (when (not (string=? a "404")) (values a b c))))))
-                  (or
-                      (because ((s (get-res "may")))
-                               (get-values s))
-                    (because ((s (get-res "jun")))
-                             (get-values s))
-                    (because ((s (get-res "dec")))
-                             (get-values s))
-                    (values "404" #false #false))
-                  ))
-               ("7" ;ゆり
-                (fget "zip"))
-               ("16" ;二次元壁紙
-                (fget "dat"))
-               ("40" ;東方
-                (fget "may")))))
-
-    (define (futaba-get args)
+    (define (8chan-get args)
       (let* ((board (car args))
              (thread (cadr args))
              (html (get-html board thread)))
@@ -158,8 +133,8 @@
            (display (paint thread 4))
            (mkdir thread)
            (cd thread)
-           (string->html-file thread html)
            (get-image html board)
+           (string->html-file thread html)
            (cd ".."))
           (else
               (print (paint (string-append thread "'s gone") 237))))))
@@ -169,19 +144,18 @@
         (directory-list2 dir ':children? #true)
         dirs))
 
-    (define (futaba-get-all args)
+    (define (8chan-get-all args)
       (let ((board (car args))
             (dirs (list-directories (current-directory))))
         (cond
           ((some? dirs)
            (for-each
                (lambda (d)
-                 (futaba-get (list board d)))
-             dirs)
-           (run-process `(notify-send ,(string-append "futaba " board  " fetch finished"))))
+                 (8chan-get (list board d)))
+             dirs))
           (else (print "no directories")))))
 
-    (define (futaba-get-repeat args)
+    (define (8chan-get-repeat args)
       (let* ((board (car args))
              (thread (cadr args))
              (html (get-html board thread)))
@@ -191,8 +165,8 @@
            (display (paint thread 4))
            (mkdir thread)
            (cd thread)
-           (string->html-file thread html)
            (get-image html board)
+           (string->html-file thread html)
            (cd ".."))
           (else
               (display (paint (string-append thread "'s gone") 237))
@@ -201,7 +175,7 @@
             (display "\r")
             (tput-clr-eol)))))
 
-    (define (futaba-get-repeat-all args)
+    (define (8chan-get-repeat-all args)
       (forever
        (let ((board (car args))
              (dirs (list-directories (current-directory))))
@@ -210,12 +184,11 @@
            ((some? dirs)
             (for-each
                 (lambda (d)
-                  (futaba-get-repeat (list board d)))
+                  (8chan-get-repeat (list board d)))
               dirs))
            (else (print "no directories")))
          (tput-clr-bol)
-         (print (paint "----------" 237)))
-       (sys-sleep 300)))
+         (print (paint "----------" 237)))))
 
     (define options
       (list
@@ -229,12 +202,13 @@
                 (lambda (option name arg help all repeat rest)
                   (values help all #true rest)))))
 
-    (define (futaba args)
+    (define (8chan args)
       (receive (help all repeat rest)
         (args-fold args
           options
           (lambda (option name arg . seeds)
-            (println "Unknown option: " name)
+            (display "Unknown option: " name)
+            (newline)
             (usage))
           (lambda (operand help all repeat rest)
             (values help all repeat (reverse (cons operand rest))))
@@ -252,14 +226,14 @@
           (help
            (usage))
           ((and all repeat)
-           (futaba-get-repeat-all rest))
+           (8chan-get-repeat-all rest))
           (repeat
            (forever
-            (futaba-get-repeat rest)))
+            (8chan-get-repeat rest)))
           (all
-           (futaba-get-all rest))
+           (8chan-get-all rest))
           (else
-              (futaba-get rest)))
+              (8chan-get rest)))
 
         (tput-cursor-normal)))
 
