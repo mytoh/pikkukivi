@@ -57,7 +57,8 @@
       (or (rxmatch
            (string->regexp
             (string-append
-                "File: <a href=\"(/" board "/src/(\\d+).[^\"]+)\""))
+                "<a href=\"(/" board
+                "/src/[^\".]+.[^\"]+)\""))
            line)
         (rxmatch
          (string->regexp
