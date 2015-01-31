@@ -57,8 +57,9 @@
       (rxmatch
        (string->regexp
         (string-append
-            "<a href=\"https://media.8chan.co(/" board "/src/(\\d+).[^\"]+)\""))
+            "File: <a href=\"(/" board "/src/(\\d+).[^\"]+)\""))
        line))
+    ;; File: <a href="/b/src/1422512072915.jpg">1
 
     (define (parse-image-url-list html board)
       (car (delete-duplicates
@@ -74,7 +75,7 @@
       (let ((image-url-list (parse-image-url-list html board)))
         (let ((got-images (remove not
                             (map (lambda (url)
-                                   (fetch (string-append "https://8chan.co" url)))
+                                   (fetch (string-append "https://8ch.net" url)))
                               image-url-list))))
           (match (length got-images)
                  (0 (newline))
