@@ -54,12 +54,16 @@
              res)))
 
     (define (match-image-url line board)
-      (rxmatch
-       (string->regexp
-        (string-append
-            "File: <a href=\"(/" board "/src/(\\d+).[^\"]+)\""))
-       line))
-    ;; File: <a href="/b/src/1422512072915.jpg">1
+      (or (rxmatch
+           (string->regexp
+            (string-append
+                "File: <a href=\"(/" board "/src/(\\d+).[^\"]+)\""))
+           line)
+        (rxmatch
+         (string->regexp
+          (string-append
+              "<a href=\"https://media.8ch.net(/" board "/src/(\\d+).[^\"]+)\""))
+         line)))
 
     (define (parse-image-url-list html board)
       (car (delete-duplicates
