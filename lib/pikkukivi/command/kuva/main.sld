@@ -1,20 +1,20 @@
 
-(define-library (pikkukivi command kuva main)
-    (export
-      kuva)
+ (define-library (pikkukivi command kuva main)
+  (export
+   kuva)
   (import
-    (scheme base)
-    (scheme write)
-    (srfi 8)
-    (srfi 37)
-    (gauche base)
-    (gauche process)
-    (gauche parseopt)
-    (file util)
-    (kirjasto arkisto)
-    (kirjasto työkalu)
-    (rename (prefix (kirjasto tiedosto polku) path:))
-    (pikkukivi command unpack))
+   (scheme base)
+   (scheme write)
+   (srfi 8)
+   (srfi 37)
+   (gauche base)
+   (gauche process)
+   (gauche parseopt)
+   (file util)
+   (kirjasto arkisto)
+   (kirjasto työkalu)
+   (rename (prefix (kirjasto tiedosto polku) path:))
+   (pikkukivi command unpack))
 
   (begin
     (define (usage status) (exit status "usage: ~a <file>\n" "kuva"))
@@ -71,19 +71,19 @@
       (cond ((null? args)
              (open-directory "."))
             (else
-                (receive (help)
-                  (args-fold args
-                    options
-                    (lambda (option name arg . seeds)
-                      (error "Unrecognized option:" name))
-                    (lambda (operand help)
-                      (values help))
-                    #false ; default help
-                    )
-                  (cond
-                    (help
-                     (usage 0))
-                    (else
+             (receive (help)
+                      (args-fold args
+                                 options
+                                 (lambda (option name arg . seeds)
+                                   (error "Unrecognized option:" name))
+                                 (lambda (operand help)
+                                   (values help))
+                                 #false ; default help
+                                 )
+                      (cond
+                       (help
+                        (usage 0))
+                       (else
                         (let ((file (car args)))
                           (fcond file
                                  (file-is-directory?
