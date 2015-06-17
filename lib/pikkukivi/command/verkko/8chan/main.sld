@@ -63,12 +63,14 @@
         (rxmatch
          (string->regexp
           (string-append
-              "<a href=\"https://media.8ch.net(/" board "/src/(\\d+).[^\"]+)\""))
+              "<a href=\"https://media.8ch.net(/" board
+              "/src/[^\".]+.[^\"]+)\""))
          line)
         (rxmatch
          (string->regexp
           (string-append
-              "<a href=\"https://media.8chan.co(/" board "/src/(\\d+).[^\"]+)\""))
+              "<a href=\"https://media.8chan.co(/" board
+              "/src/[^\".]+.[^\"]+)\""))
          line)))
 
     (define (parse-image-url-list html board)
