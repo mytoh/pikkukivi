@@ -171,7 +171,7 @@
     (define (list-directories dir)
       (receive (dirs _x)
         (directory-list2 dir ':children? #true)
-        dirs))
+        (reverse dirs)))
 
     (define (futaba-get-all args)
       (let ((board (car args))
