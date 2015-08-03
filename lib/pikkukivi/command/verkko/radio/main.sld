@@ -55,6 +55,9 @@
             (shadows-ebm "Only the finest selection of Industrial, EBM, Synthpop, and Darkwave music bands." "http://listen.radionomy.com/shadowsradio-ebmindustrialsynthpop-.m3u")
             (shadows-neo "Only the finest selections of Neoclassical Darkwave and Dark ambient music." "http://listen.radionomy.com/shadowsradio-neoclassicaldarkwave-.m3u")
 
+            (pluz "Radio Pluz" "http://dir.xiph.org/listen/1986757/listen.xspf")
+            (xrm "[XRM] - Electronic" "http://dir.xiph.org/listen/1427086/listen.xspf")
+
             (nhkr1 "NHK第一" "http://mfile.akamai.com/129931/live/reflector:46032.asx")
             (nhkr2   "NHK第二" "http://mfile.akamai.com/129932/live/reflector:46056.asx")
             (nhkfm  "NHK-FM" "http://mfile.akamai.com/129933/live/reflector:46051.asx")

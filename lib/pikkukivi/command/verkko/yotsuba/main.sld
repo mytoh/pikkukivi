@@ -1,6 +1,6 @@
 ;;; yotsuba.scm
 
- (define-library (pikkukivi command verkko yotsuba main)
+(define-library (pikkukivi command verkko yotsuba main)
     (export yotsuba)
   (import (scheme base)
           (scheme write)
@@ -78,15 +78,15 @@
                     html
                     body))
           (else
-              body))))
+            body))))
 
     (define (string->html-file thread body)
       (if body
         (begin
           (with-output-to-file
               (path-swap-extension thread "html")
-            (lambda () (display body)))
-          body)
+            (lambda () (display body)
+                    (set! body #false))))
         #false))
 
     (define (yotsuba-get-all args)
@@ -100,7 +100,7 @@
              dirs)
            (println (paint bd 33) " fetch finished"))
           (else
-              (println "no directories")))))
+            (println "no directories")))))
 
     (define (yotsuba-get-one-repeat args)
       (forever
@@ -176,9 +176,10 @@
            (cd thread)
            (string->html-file thread (get-html board thread))
            (get-img (cdar response) board)
+           (set! response #false)
            (cd ".."))
           (else
-              (display (paint (string-append thread "'s gone") 103))
+            (display (paint (string-append thread "'s gone") 103))
             (flush)
             (sys-select #false #false #false 100000)
             (display "\r")
@@ -224,7 +225,7 @@
           (all
            (yotsuba-get-all rest))
           (else
-              (yotsuba-get-one rest)))
+            (yotsuba-get-one rest)))
 
         (tput-cursor-normal)))
 

@@ -64,6 +64,7 @@
                                                          (lambda (line)
                                                            (parse-img-url line board))
                                                          (cut read-line in #true)))))))
+        (set! html #false)
         (flush)
         (let ((got-images (remove not
                             (map (lambda (url) (fetch url))
@@ -100,6 +101,7 @@
                     (detect-server board thread)))
         (cond ((not (string=? status "404"))
                (let ((html (ces-convert body "*jp" "utf-8")))
+                 (set! body #false)
                  (if (string-incomplete? html)
                    (string-incomplete->complete html ':omit)
                    html)))
@@ -164,6 +166,7 @@
            (cd thread)
            (string->html-file thread html)
            (get-image html board)
+           (set! html #false)
            (cd ".."))
           (else
               (print (paint (string-append thread "'s gone") 237))))))
@@ -197,6 +200,7 @@
            (cd thread)
            (string->html-file thread html)
            (get-image html board)
+           (set! html #false)
            (cd ".."))
           (else
               (display (paint (string-append thread "'s gone") 237))
