@@ -12,6 +12,7 @@
       ylilauta
       lainchan
       8chan
+      shanachan
       sssh)
   (import
     (scheme base)
@@ -26,4 +27,5 @@
     ;; (pikkukivi command verkko pervo)
     (pikkukivi command verkko ylilauta main)
     (pikkukivi command verkko 8chan main)
+    (pikkukivi command verkko shanachan main)
     (pikkukivi command verkko sssh)))

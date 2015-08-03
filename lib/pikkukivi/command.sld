@@ -70,6 +70,7 @@
        ylilauta
        lainchan
        8chan
+       shanachan
        yotsuba
        yotsuba-old
        ääliö
