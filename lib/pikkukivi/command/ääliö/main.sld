@@ -115,7 +115,7 @@
       (receive (branch-name rest)
         (args-fold (cdr args)
           options-get
-          (lambda (option name arg . seeds)
+          (lambda (opt  name arg branch . seeds)
             (error "Unrecognized option: " name))
           (lambda (operand branch rest)
             (values branch (reverse (cons operand rest))))
@@ -129,6 +129,11 @@
                          ':wait #true)
             (run-process `(git clone --depth 1 ,git-url ,path)
                          ':wait #true)))))
+
+    (define options-get
+      (list (option '(#\b "branch") 'required-arg? (not 'optional-arg?)
+                    (lambda (opt name arg branch rest)
+                      (values arg  rest)))))
 
     (define (url-is-github-short? url)
       (= 1 (string-count url #\/)))
@@ -174,25 +179,20 @@
 
     (define options
       (list (option '(#\h "help") (not 'required-arg?) (not 'optional-arg?)
-                    (lambda (option name arg help)
-                      (values #true)))))
+                    (lambda (opt name arg help)
+                      (values (or arg #true))))))
 
     (define options-list
       (list (option '(#\p "full-path") (not 'required-arg?) (not 'optional-arg?)
-                    (lambda (option name arg full-path)
+                    (lambda (opt name arg full-path)
                       (values #true)))))
-
-    (define options-get
-      (list (option '(#\b "branch") 'required-arg? (not 'optional-arg?)
-                    (lambda (option name arg branch rest)
-                      (values arg rest)))))
 
     (define (ääliö args)
       (receive (help)
         (args-fold args
           options
-          (lambda (option name arg . seeds)
-            #false)
+          (lambda (opt name arg . seeds)
+            (values #false))
           (lambda (operand help)
             (values help))
           #false ; default help
